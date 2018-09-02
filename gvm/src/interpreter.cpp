@@ -599,31 +599,50 @@ forever:
       NEXT;
     }
 
+    // Multiply integer register by 4-bit literal
     IS(MUL_LR) {
       // [opcode:8] [(L-1):4 | d:4] 
       r[d].i *= s;
       NEXT;
     }
 
+    // Multiply integer indirect by 4-bit literal
     IS(MUL_LI) {
+      // [opcode:8] [s:4 d:4] [d_index:8]
+      tmp1 = *pc++;
+      r[d].pi[tmp1] *= s;
       NEXT;
     }
 
+    // Multiply integer register by register
     IS(MUL_RR) {
       // [opcode:8] [s:4 d:4]
       r[d].i *= r[s].i;
       NEXT;
     }
 
+    // Multiply integer indirect by register
     IS(MUL_RI) {
+      // [opcode:8] [s:4 d:4] [d_index:8]
+      tmp1 = *pc++;
+      r[d].pi[tmp1] *= r[s].i;
       NEXT;
     }
 
+    // Multiply integer register by indirect
     IS(MUL_IR) {
+      // [opcode:8] [s:4 d:4] [s_index:8]
+      tmp1 = *pc++;
+      r[d].i *= r[s].pi[tmp1];
       NEXT;
     }
 
+    // Multiply integer indirect by indirect
     IS(MUL_II) {
+      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      r[d].pi[tmp2] *= r[s].pi[tmp1];
       NEXT;
     }
 
