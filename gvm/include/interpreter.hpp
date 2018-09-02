@@ -32,7 +32,7 @@ namespace GVM {
         int32   i, *pi;
         float32 f, *pf;
         vec3f      *pv;
-        uint32  w;
+        uint32  w, *pw;
       };
 
       typedef void (*HostCall)(Interpreter* vm);
