@@ -78,7 +78,6 @@ namespace GVM {
       // Float/Integer Branch if Equal  (16-bit offset)
       _BEQ_RR,
       _BEQ_RI,
-      _BEQ_IR,
       _BEQ_II,
 
       // Integer Branch if Greater or Equal  (16-bit offset)

@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cmath>
 #include "include/stub_types.hpp"
 #include "include/opcode.hpp"
 #include "include/interpreter.hpp"
@@ -20,8 +21,8 @@ forever:
 
   // Speculatively decode the next byte as an operand pair as that is the most common case
   uint8 tmp2 = *pc++;  
-  uint8 d    = tmp2 & 0x0F;
-  uint8 s    = tmp2 >> 4;
+  uint8 dst  = tmp2 & 0x0F;
+  uint8 src  = tmp2 >> 4;
 
   DISPATCH(tmp1) {
 
@@ -34,48 +35,48 @@ forever:
 
     // Move 4-bit literal to register
     IS(MOVE_LR) {
-      // [opcode:8] [L:4 | d:4] 
-      r[d].i = s;
+      // [opcode:8] [L:4 | dst:4] 
+      reg[dst].i = src;
       NEXT;
     }
 
     // Move 4-bit literal to indirect
     IS(MOVE_LI) {
-      // [opcode:8] [L:4 | d:4] [d_index:8]
+      // [opcode:8] [L:4 | dst:4] [dst_index:8]
       tmp2 = *pc++;
-      r[d].pi[tmp2] = s;
+      reg[dst].pi[tmp2] = src;
       NEXT;
     }
 
     // Move register to register
     IS(MOVE_RR) {
-      // [opcode:8] [s:4 | d:4]
-      r[d].w = r[s].w;
+      // [opcode:8] [src:4 | dst:4]
+      reg[dst].w = reg[src].w;
       NEXT;
     }
 
     // Move register to indirect
     IS(MOVE_RI) {
-      // [opcode:8] [s:4 | d:4] [d_index:8]
+      // [opcode:8] [src:4 | dst:4] [dst_index:8]
       tmp2 = *pc++;
-      r[d].pi[tmp2] = r[s].i;
+      reg[dst].pi[tmp2] = reg[src].i;
       NEXT;
     }
 
     // Move indirect to register
     IS(MOVE_IR) {
-      // [opcode:8] [s:4 | d:4] [s_index:8]
+      // [opcode:8] [src:4 | dst:4] [src_index:8]
       tmp2 = *pc++;
-      r[d].i = r[s].pi[tmp2];
+      reg[dst].i = reg[src].pi[tmp2];
       NEXT;
     }
 
     // Move indirect to indirect
     IS(MOVE_II) {
-      // [opcode:8] [s:4 | d:4] [s_index:8] [d_index:8]
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      r[d].pi[tmp2] = r[s].pi[tmp1];
+      reg[dst].pi[tmp2] = reg[src].pi[tmp1];
       NEXT;
     }
 
@@ -161,13 +162,13 @@ forever:
     IS(PUSHR) {
       // [opcode:8] [reg_mask_msb:8] [reg_mask_lsb:8]
       uint16    mask = ((uint16)tmp2) << 8 | *pc++;
-      Register* x    = r;
+      Register* push = reg;
       while (mask && (dataStack < dataStackTop)) {
         if (mask & 1) {
-          *dataStack++ = x->w;
+          *dataStack++ = push->w;
           mask >>= 1;
         }
-        ++x;
+        ++push;
       }
       if (mask) {
         status = DATA_STACK_OVERFLOW;
@@ -180,13 +181,13 @@ forever:
     IS(POPR) {
       // [opcode:8] [reg_mask_msb:8] [reg_mask_lsb:8]
       uint16    mask = ((uint16)tmp2) << 8 | *pc++;
-      Register* x    = r + 15;
+      Register* pop  = reg + NUM_REG - 1;
       while (mask && (dataStack > dataStackBase)) {
         if (mask & 0x8000) {
-          x->w = *(--dataStack);
+          pop->w = *(--dataStack);
           mask <<= 1;
         }
-        --x;
+        --pop;
       }
       if (mask) {
         status = DATA_STACK_OVERFLOW;
@@ -197,10 +198,10 @@ forever:
 
     // Allocate Stack Frame Storage (up to 256 entries)
     IS(ASF) {
-      // [opcode:8] [0:4 | d:4] [(size-1):8]
+      // [opcode:8] [0:4 | dst:4] [(size-1):8]
       uint16 size = (uint16)tmp2 + 1;
       if (dataStack + size < dataStackTop) {
-        r[d].pw = dataStack;
+        reg[dst].pw = dataStack;
         dataStack += size;
         NEXT;
       }
@@ -210,8 +211,8 @@ forever:
 
     // Free Stack Frame Storage
     IS(FSF) {
-      // [opcode:8] [0:4 | d:4]
-      uint32* last = r[d].pw;
+      // [opcode:8] [0:4 | dst:4]
+      uint32* last = reg[dst].pw;
       if (last < dataStackBase) {
         status = DATA_STACK_UNDERFLOW;
         EXIT;
@@ -226,8 +227,8 @@ forever:
 
     // Decrement register counter and branch on non-zero
     IS(DBNZ_R) {
-      // [opcode:8] [0:4 d:4] [signed_offset_msb:8] [signed_offset_lsb:8]
-      if (--r[d].i) {
+      // [opcode:8] [0:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (--reg[dst].i) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -239,9 +240,9 @@ forever:
 
     // Load Link and Branch if Not Null
     IS(LBNN_IR) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if ( (r[d].w = r[s].pw[tmp1]) ) {
+      if ( (reg[dst].w = reg[src].pw[tmp1]) ) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -253,8 +254,8 @@ forever:
 
     // Branch if register equal to zero
     IS(BEZ_R) {
-      // [opcode:8] [0:4 d:4] [signed_offset_msb:8] [signed_offset_lsb:8]
-      if (!r[d].w) {
+      // [opcode:8] [0:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (!reg[dst].w) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -266,9 +267,9 @@ forever:
    
     // Branch if indirect equal to zero
     IS(BEZ_I) {
-      // [opcode:8] [0:4 d:4] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [0:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if (!r[d].pw[tmp1]) {
+      if (!reg[dst].pw[tmp1]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -280,8 +281,8 @@ forever:
 
     // Branch if register not equal to zero
     IS(BNZ_R) {
-      // [opcode:8] [0:4 d:4] [signed_offset_msb:8] [signed_offset_lsb:8]
-      if (r[d].w) {
+      // [opcode:8] [0:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (reg[dst].w) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -293,9 +294,9 @@ forever:
 
     // Branch if indirect not equal to zero
     IS(BNZ_I) {
-      // [opcode:8] [0:4 d:4] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [0:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if (r[d].pw[tmp1]) {
+      if (reg[dst].pw[tmp1]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -307,8 +308,8 @@ forever:
 
     // Branch if registers are equal
     IS(BEQ_RR) {
-      // [opcode:8] [s:4 d:4] [signed_offset_msb:8] [signed_offset_lsb:8]
-      if (r[s].w == r[d].w) {
+      // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (reg[src].w == reg[dst].w) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -320,23 +321,9 @@ forever:
 
     // Branch if register and indirect are equal
     IS(BEQ_RI) {
-      // [opcode:8] [s:4 d:4] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if (r[s].w == r[d].pw[tmp1]) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
-        pc += (int16)offset;
-      } else {
-        pc += 2;
-      }
-      NEXT;
-    }
-
-    // Branch if indirect and register are equal - redundant?
-    IS(BEQ_IR) {
-      // [opcode:8] [s:4 d:4] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
-      tmp1 = *pc++;
-      if (r[s].pw[tmp1] == r[d].w) {
+      if (reg[src].w == reg[dst].pw[tmp1]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -348,10 +335,10 @@ forever:
 
     // Branch if indirects are equal
     IS(BEQ_II) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      if (r[s].pw[tmp1] == r[d].pw[tmp2]) {
+      if (reg[src].pw[tmp1] == reg[dst].pw[tmp2]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -363,8 +350,8 @@ forever:
 
     // Branch if integer register source greater than or equal to register destination
     IS(BGE_RR) {
-      // [opcode:8] [s:4 d:4] [signed_offset_msb:8] [signed_offset_lsb:8]
-      if (r[s].i >= r[d].i) {
+      // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (reg[src].i >= reg[dst].i) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -376,9 +363,9 @@ forever:
 
     // Branch if integer register source greater than or equal to indirect destination
     IS(BGE_RI) {
-      // [opcode:8] [s:4 d:4] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if (r[s].i >= r[d].pi[tmp1]) {
+      if (reg[src].i >= reg[dst].pi[tmp1]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -390,9 +377,9 @@ forever:
 
     // Branch if integer indirect source greater than or equal to register destination
     IS(BGE_IR) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if (r[s].pi[tmp1] >= r[d].i) {
+      if (reg[src].pi[tmp1] >= reg[dst].i) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -404,10 +391,10 @@ forever:
 
     // Branch if integer indirect source greater than or equal to indirect destination
     IS(BGE_II) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      if (r[s].pi[tmp1] >= r[d].pi[tmp2]) {
+      if (reg[src].pi[tmp1] >= reg[dst].pi[tmp2]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -419,8 +406,8 @@ forever:
 
     // Branch if integer register source greater than register destination
     IS(BGT_RR) {
-      // [opcode:8] [s:4 d:4] [signed_offset_msb:8] [signed_offset_lsb:8]
-      if (r[s].i > r[d].i) {
+      // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (reg[src].i > reg[dst].i) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -432,9 +419,9 @@ forever:
 
     // Branch if integer register source greater than indirect destination
     IS(BGT_RI) {
-      // [opcode:8] [s:4 d:4] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if (r[s].i > r[d].pi[tmp1]) {
+      if (reg[src].i > reg[dst].pi[tmp1]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -446,9 +433,9 @@ forever:
 
     // Branch if integer indirect register source greater than register destination
     IS(BGT_IR) {
-      // [opcode:8] [s:4 d:4] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
-      if (r[s].pi[tmp1] > r[d].i) {
+      if (reg[src].pi[tmp1] > reg[dst].i) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -460,10 +447,10 @@ forever:
 
     // Branch if integer indirect register source greater than indirect destination
     IS(BGT_II) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      if (r[s].pi[tmp1] > r[d].pi[tmp2]) {
+      if (reg[src].pi[tmp1] > reg[dst].pi[tmp2]) {
         tmp2 = *pc++;
         uint16 offset = ((uint16)tmp2) << 8 | *pc;
         pc += (int16)offset;
@@ -475,190 +462,198 @@ forever:
 
     // Negate integer register to register
     IS(NEG_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].i = -r[s].i;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].i = -reg[src].i;
       NEXT;
     }
 
     // Negate integer register to indirect
     IS(NEG_RI) {
-      // [opcode:8] [s:4 d:4] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
       tmp1 = *pc++;
-      r[d].pi[tmp1] = -r[s].i;
+      reg[dst].pi[tmp1] = -reg[src].i;
       NEXT;
     }
 
     // Negate integer indirect to register
     IS(NEG_IR) {
-      // [opcode:8] [s:4 d:4] [s_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8]
       tmp1 = *pc++;
-      r[d].i = -r[s].pi[tmp1];
+      reg[dst].i = -reg[src].pi[tmp1];
       NEXT;
     }
 
     // Negate integer indirect to indirect
     IS(NEG_II) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      r[d].pi[tmp2] = -r[s].pi[tmp1];
+      reg[dst].pi[tmp2] = -reg[src].pi[tmp1];
       NEXT;
     }
 
-    // Add 4-bit integer literal to register
+    // Add 4-bit integer literal to register. The literal is 1-16, encoded as 0-15.
     IS(ADD_LR) {
-      // [opcode:8] [L:4 | d:4] 
-      r[d].i += s;
+      // [opcode:8] [(L-1):4 | dst:4] 
+      reg[dst].i += (src + 1);
       NEXT;
     }
 
-    // Add 4-bit integer literal to indirect
+    // Add 4-bit integer literal to indirect. The literal is 1-16, encoded as 0-15.
     IS(ADD_LI) {
-      // [opcode:8] [L:4 | d:4] [d_index:8]
+      // [opcode:8] [L:4 | dst:4] [dst_index:8]
       tmp1 = *pc++;
-      r[d].pi[tmp1] += s;
+      reg[dst].pi[tmp1] += (src + 1);
       NEXT;
     }
 
     // Add integer register to register
     IS(ADD_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].i += r[s].i;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].i += reg[src].i;
       NEXT;
     }
 
     // Add integer register to indirect
     IS(ADD_RI) {
-      // [opcode:8] [s:4 d:4] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
       tmp1 = *pc++;
-      r[d].pi[tmp1] += r[s].i;
+      reg[dst].pi[tmp1] += reg[src].i;
       NEXT;
     }
 
     // Add integer indirect to register
     IS(ADD_IR) {
-      // [opcode:8] [s:4 d:4] [s_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8]
       tmp1 = *pc++;
-      r[d].i += r[s].pi[tmp1];
+      reg[dst].i += reg[src].pi[tmp1];
       NEXT;
     }
 
     // Add integer indirect to indirect
     IS(ADD_II) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      r[d].pi[tmp2] += r[s].pi[tmp1];
+      reg[dst].pi[tmp2] += reg[src].pi[tmp1];
       NEXT;
     }
 
-    // Subtract 4-bit integer literal from register 
+    // Subtract 4-bit integer literal from register. The literal is 1-16 encoded as 0-15.
     IS(SUB_LR) {
-      // [opcode:8] [L:4 | d:4] 
-      r[d].i -= s;
+      // [opcode:8] [(L-1):4 | dst:4] 
+      reg[dst].i -= (src + 1);
       NEXT;
     }
 
-    // Subtract 4-bit integer literal from indirect 
+    // Subtract 4-bit integer literal from indirect. The literal is 1-16 encoded as 0-15.
     IS(SUB_LI) {
-      // [opcode:8] [s:4 d:4] [d_index:8]
+      // [opcode:8] [(L-1):4 dst:4] [dst_index:8]
       tmp1 = *pc++;
-      r[d].pi[tmp1] -= s;
+      reg[dst].pi[tmp1] -= (src + 1);
       NEXT;
     }
 
     // Subtract integer register from register
     IS(SUB_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].i -= r[s].i;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].i -= reg[src].i;
       NEXT;
     }
 
     // Subtract integer register from indirect
     IS(SUB_RI) {
-      // [opcode:8] [s:4 d:4] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
       tmp1 = *pc++;
-      r[d].pi[tmp1] -= r[s].i;
+      reg[dst].pi[tmp1] -= reg[src].i;
       NEXT;
     }
 
     // Subtract integer indirect from register
     IS(SUB_IR) {
-      // [opcode:8] [s:4 d:4] [s_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8]
       tmp1 = *pc++;
-      r[d].i -= r[s].pi[tmp1];
+      reg[dst].i -= reg[src].pi[tmp1];
       NEXT;
     }
 
     // Subtract integer indirect from indirect
     IS(SUB_II) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      r[d].pi[tmp2] -= r[s].pi[tmp1];
+      reg[dst].pi[tmp2] -= reg[src].pi[tmp1];
       NEXT;
     }
 
-    // Multiply integer register by 4-bit literal
+    // Multiply integer register by 4-bit literal. The literal is 2-17, encoded as 0-15.
     IS(MUL_LR) {
-      // [opcode:8] [(L-1):4 | d:4] 
-      r[d].i *= s;
+      // [opcode:8] [(L-2):4 | dst:4] 
+      reg[dst].i *= (src + 2);
       NEXT;
     }
 
-    // Multiply integer indirect by 4-bit literal
+    // Multiply integer indirect by 4-bit literal. The literal is 2-17, encoded as 0-15.
     IS(MUL_LI) {
-      // [opcode:8] [s:4 d:4] [d_index:8]
+      // [opcode:8] [(L-2):4 dst:4] [dst_index:8]
       tmp1 = *pc++;
-      r[d].pi[tmp1] *= s;
+      reg[dst].pi[tmp1] *= (src + 2);
       NEXT;
     }
 
     // Multiply integer register by register
     IS(MUL_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].i *= r[s].i;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].i *= reg[src].i;
       NEXT;
     }
 
     // Multiply integer indirect by register
     IS(MUL_RI) {
-      // [opcode:8] [s:4 d:4] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
       tmp1 = *pc++;
-      r[d].pi[tmp1] *= r[s].i;
+      reg[dst].pi[tmp1] *= reg[src].i;
       NEXT;
     }
 
     // Multiply integer register by indirect
     IS(MUL_IR) {
-      // [opcode:8] [s:4 d:4] [s_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8]
       tmp1 = *pc++;
-      r[d].i *= r[s].pi[tmp1];
+      reg[dst].i *= reg[src].pi[tmp1];
       NEXT;
     }
 
     // Multiply integer indirect by indirect
     IS(MUL_II) {
-      // [opcode:8] [s:4 d:4] [s_index:8] [d_index:8]
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      r[d].pi[tmp2] *= r[s].pi[tmp1];
+      reg[dst].pi[tmp2] *= reg[src].pi[tmp1];
       NEXT;
     }
 
+    // Divide integer literal into register
     IS(DIV_LR) {
+      // [opcode:8] [(L-2):4 dst:4]. The literal is 2-17, encoded as 0-15.
+      reg[dst].i /= (src + 2);
       NEXT;
     }
 
+    // Divide integer literal into indirect
     IS(DIV_LI) {
+      // [opcode:8] [(L-2):4 dst:4] [dst_index:8]. The literal is 2-17, encoded as 0-15.
+      tmp1 = *pc++;
+      reg[dst].pi[tmp1] /= (src + 2);
       NEXT;
     }
 
+    // Divide integer register into register
     IS(DIV_RR) {
-      // [opcode:8] [s:4 d:4]
-      int32 denominator =  r[s].i;
+      // [opcode:8] [src:4 dst:4]
+      int32 denominator =  reg[src].i;
       if (denominator) {
-        r[d].i /= denominator;
+        reg[dst].i /= denominator;
         NEXT;
       } else {
         status = ZERO_DIVIDE;
@@ -666,31 +661,13 @@ forever:
       }
     }
 
+    // Divide integer register into indirect
     IS(DIV_RI) {
-      NEXT;
-    }
-
-    IS(DIV_IR) {
-      NEXT;
-    }
-
-    IS(DIV_II) {
-      NEXT;
-    }
-
-    IS(MOD_LR) {
-      NEXT;
-    }
-
-    IS(MOD_LI) {
-      NEXT;
-    }
-
-    IS(MOD_RR) {
-      // [opcode:8] [s:4 d:4]
-      int32 denominator =  r[s].i;
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      int32 denominator =  reg[src].i;
       if (denominator) {
-        r[d].i %= denominator;
+        reg[dst].pi[tmp1] /= denominator;
         NEXT;
       } else {
         status = ZERO_DIVIDE;
@@ -698,245 +675,518 @@ forever:
       }
     }
 
+    // Divide integer indirect int register
+    IS(DIV_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      int32 denominator =  reg[src].pi[tmp1];
+      if (denominator) {
+        reg[dst].i /= denominator;
+        NEXT;
+      } else {
+        status = ZERO_DIVIDE;
+        EXIT;
+      }
+    }
+
+    // Divide integer indirect into indirect
+    IS(DIV_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      int32 denominator =  reg[src].pi[tmp1];
+      if (denominator) {
+        reg[dst].pi[tmp2] /= denominator;
+        NEXT;
+      } else {
+        status = ZERO_DIVIDE;
+        EXIT;
+      }
+    }
+
+    // Modlulo integer literal into register
+    IS(MOD_LR) {
+      // [opcode:8] [(L-2):4 dst:4]. The literal is 2-17, encoded as 0-15.
+      reg[dst].i %= (src + 2);
+      NEXT;
+    }
+
+    // Modlulo integer literal into indirect
+    IS(MOD_LI) {
+      // [opcode:8] [(L-2):4 dst:4] [dst_index:8]. The literal is 2-17, encoded as 0-15.
+      tmp1 = *pc++;
+      reg[dst].pi[tmp1] %= (src + 2);
+      NEXT;
+    }
+
+    // Modlulo integer register into register
+    IS(MOD_RR) {
+      // [opcode:8] [src:4 dst:4]
+      int32 denominator =  reg[src].i;
+      if (denominator) {
+        reg[dst].i %= denominator;
+        NEXT;
+      } else {
+        status = ZERO_DIVIDE;
+        EXIT;
+      }
+    }
+
+    // Modlulo integer register into indirect
     IS(MOD_RI) {
-      NEXT;
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      int32 denominator =  reg[src].i;
+      if (denominator) {
+        reg[dst].pi[tmp1] %= denominator;
+        NEXT;
+      } else {
+        status = ZERO_DIVIDE;
+        EXIT;
+      }
     }
 
+    // Modlulo integer indirect into register
     IS(MOD_IR) {
-      NEXT;
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      int32 denominator =  reg[src].pi[tmp1];
+      if (denominator) {
+        reg[dst].i %= denominator;
+        NEXT;
+      } else {
+        status = ZERO_DIVIDE;
+        EXIT;
+      }
     }
 
+    // Modlulo integer indirect into indirect
     IS(MOD_II) {
-      NEXT;
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      int32 denominator =  reg[src].pi[tmp1];
+      if (denominator) {
+        reg[dst].pi[tmp2] &= denominator;
+        NEXT;
+      } else {
+        status = ZERO_DIVIDE;
+        EXIT;
+      }
     }
 
+    // Logical AND register to register
     IS(AND_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].w &= r[s].w;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].w &= reg[src].w;
       NEXT;
     }
 
+    // Logical AND register to indirect
     IS(AND_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] &= reg[src].w;
       NEXT;
     }
 
+    // Logical AND indirect to register
     IS(AND_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].w &= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical AND indirect to indirect
     IS(AND_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pw[tmp2] &= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical OR register to register
     IS(OR_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].w |= r[s].w;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].w |= reg[src].w;
       NEXT;
     }
 
+    // Logical OR register to indirect
     IS(OR_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] |= reg[src].w;
       NEXT;
     }
 
+    // Logical OR indirect to register
     IS(OR_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].w |= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical OR indirect to indirect
     IS(OR_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pw[tmp2] |= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical XOR register to register
     IS(XOR_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].w ^= r[s].w;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].w ^= reg[src].w;
       NEXT;
     }
 
+    // Logical XOR register to indirect
     IS(XOR_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] ^= reg[src].w;
       NEXT;
     }
 
+    // Logical XOR indirect to register
     IS(XOR_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].w ^= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical XOR indirect to indirect
     IS(XOR_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pw[tmp2] ^= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical NOT register to register
     IS(NOT_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].w = ~(r[s].w);
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].w = ~(reg[src].w);
       NEXT;
     }
 
+    // Logical NOT register to indirect
     IS(NOT_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] = ~(reg[src].w);
       NEXT;
     }
 
+    // Logical NOT indirect to register
     IS(NOT_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].w = ~(reg[src].pw[tmp1]);
       NEXT;
     }
 
+    // Logical NOT indirect to indirect
     IS(NOT_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pw[tmp2] = ~(reg[src].pw[tmp1]);
       NEXT;
     }
 
+    // Logical Shift Left register by literal
     IS(LSL_LR) {
+      // [opcode:8] [(L-1):4 dst:4]. The literal is 1-16, encoded as 0-15.
+      reg[dst].w <<= (src + 1);
       NEXT;
     }
 
+    // Logical Shift Left indirect by literal
     IS(LSL_LI) {
+      // [opcode:8] [(L-1):4 dst:4]. The literal is 1-16, encoded as 0-15.
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] <<= (src + 1);
       NEXT;
     }
 
+    // Logical Shift Left register by register
     IS(LSL_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].w <<= r[s].w;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].w <<= reg[src].w;
       NEXT;
     }
 
+    // Logical Shift Left indirect by register
     IS(LSL_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] <<= reg[src].w;
       NEXT;
     }
 
+    // Logical Shift Left register by indirect
     IS(LSL_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].w <<= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical Shift Left indirect by indirect
     IS(LSL_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pw[tmp2] <<= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical Shift Right register by literal
     IS(LSR_LR) {
+      // [opcode:8] [(L-1):4 dst:4]. The literal is 1-16, encoded as 0-15.
+      reg[dst].w >>= (src + 1);
       NEXT;
     }
 
+    // Logical Shift Right indirect by literal
     IS(LSR_LI) {
+      // [opcode:8] [(L-1):4 dst:4]. The literal is 1-16, encoded as 0-15.
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] >>= (src + 1);
       NEXT;
     }
 
+    // Logical Shift Right register by register
     IS(LSR_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].w >>= r[s].w;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].w >>= reg[src].w;
       NEXT;
     }
 
+    // Logical Shift Right indirect by register
     IS(LSR_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] >>= reg[src].w;
       NEXT;
     }
 
+    // Logical Shift Right register by indirect
     IS(LSR_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].w >>= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Logical Shift Right indirect by indirect
     IS(LSR_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pw[tmp2] >>= reg[src].pw[tmp1];
       NEXT;
     }
 
+    // Negate float register to register
     IS(FNEG_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].f = -r[s].f;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f = -reg[src].f;
       NEXT;
     }
 
+    // Negate float register to indirect
     IS(FNEG_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] = -reg[src].f;
       NEXT;
     }
 
+    // Negate float indirect to register
     IS(FNEG_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f = -reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Negate float indirect to indirect
     IS(FNEG_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] = -reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Add float register to register
     IS(FADD_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].f += r[s].f;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f += reg[src].f;
       NEXT;
     }
 
+    // Add float register to indirect
     IS(FADD_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] += reg[src].f;
       NEXT;
     }
 
+    // Add float indirect to register
     IS(FADD_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f += reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Add float indirect to indirect
     IS(FADD_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] += reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Subtract float register to register
     IS(FSUB_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].f -= r[s].f;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f -= reg[src].f;
       NEXT;
     }
 
+    // Subtract float register to indirect
     IS(FSUB_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] -= reg[src].f;
       NEXT;
     }
 
+    // Subtract float indirect to register
     IS(FSUB_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f -= reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Subtract float indirect to indirect
     IS(FSUB_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] -= reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Multiply float register to register
     IS(FMUL_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].f *= r[s].f;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f *= reg[src].f;
       NEXT;
     }
 
+    // Multiply float register to indirect
     IS(FMUL_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] *= reg[src].f;
       NEXT;
     }
 
+    // Multiply float indirect to register
     IS(FMUL_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f *= reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Multiply float indirect to indirect
     IS(FMUL_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] *= reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Divide float register to register
     IS(FDIV_RR) {
-      // [opcode:8] [s:4 d:4]
-      r[d].f /= r[s].f;
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f /= reg[src].f;
       NEXT;
     }
 
+    // Divide float register to indirect
     IS(FDIV_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] /= reg[src].f;
       NEXT;
     }
 
+    // Divide float indirect to register
     IS(FDIV_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f /= reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Divide float indirect to indirect
     IS(FDIV_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] /= reg[src].pf[tmp1];
       NEXT;
     }
 
+    // Modulus float register to register
     IS(FMOD_RR) {
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f = std::fmod(reg[dst].f, reg[src].f);
       NEXT;
     }
 
+    // Modulus float register to indirect
     IS(FMOD_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* f = &reg[dst].pf[tmp1];
+      *f = std::fmod(*f, reg[src].f);
       NEXT;
     }
 
+    // Modulus float indirect to register
     IS(FMOD_IR) {
-      NEXT;
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f = std::fmod(reg[dst].f, reg[src].pf[tmp1]);
     }
 
+    // Modulus float indirect to indirect
     IS(FMOD_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* f = &reg[dst].pf[tmp2];
+      *f = std::fmod(*f, reg[src].pf[tmp1]);
       NEXT;
     }
 
@@ -988,122 +1238,199 @@ forever:
       NEXT;
     }
 
+    // Square root float register to register
     IS(FSQRT_RR) {
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f = std::sqrt(reg[src].f);
       NEXT;
     }
 
+    // Square root float register to indirect
     IS(FSQRT_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] = std::sqrt(reg[src].f);
       NEXT;
     }
 
+    // Square root float indirect to register
     IS(FSQRT_IR) {
-      NEXT;
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f = std::sqrt(reg[src].pf[tmp1]);
     }
 
+    // Square root float indirect to indirect
     IS(FSQRT_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] = std::sqrt(reg[src].pf[tmp1]);
       NEXT;
     }
 
+    // Sine float register to register
     IS(FSIN_RR) {
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f = std::sin(reg[src].f);
       NEXT;
     }
 
+    // Sine float register to indirect
     IS(FSIN_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] = std::sin(reg[src].f);
       NEXT;
     }
 
+    // Sine float indirect to register
     IS(FSIN_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f = std::sin(reg[src].pf[tmp1]);
       NEXT;
     }
 
+    // Sine float indirect to indirect
     IS(FSIN_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] = std::sin(reg[src].pf[tmp1]);
       NEXT;
     }
 
+    // Cosine float register to register
     IS(FCOS_RR) {
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f = std::cos(reg[src].f);
       NEXT;
     }
 
+    // Cosine float register to indirect
     IS(FCOS_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] = std::cos(reg[src].f);
       NEXT;
     }
 
+    // Cosine float indirect to register
     IS(FCOS_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f = std::cos(reg[src].pf[tmp1]);
       NEXT;
     }
 
+    // Cosine float indirect to indirect
     IS(FCOS_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] = std::cos(reg[src].pf[tmp1]);
       NEXT;
     }
 
+    // Tangent float register to register
     IS(FTAN_RR) {
+      // [opcode:8] [src:4 dst:4]
+      reg[dst].f = std::tan(reg[src].f);
       NEXT;
     }
 
+    // Tangent float register to indirect
     IS(FTAN_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] = std::tan(reg[src].f);
       NEXT;
     }
 
+    // Tangent float indirect to register
     IS(FTAN_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8]
+      tmp1 = *pc++;
+      reg[dst].f = std::tan(reg[src].pf[tmp1]);
       NEXT;
     }
 
+    // Tangent float indirect to indirect
     IS(FTAN_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      reg[dst].pf[tmp2] = std::tan(reg[src].pf[tmp1]);
       NEXT;
     }
 
+    // Vector3 splat literal to vector
     IS(VSPL_LI) {
       NEXT;
     }
 
+    // Vector3 splat register to vector
     IS(VSPL_RI) {
       NEXT;
     }
 
+    // Vector3 splat register to vector
     IS(VSPL_II) {
       NEXT;
     }
 
+    // Vector3 copy vector indirect to vector
     IS(VMVE_II) {
       NEXT;
     }
 
+    // Vector3 branch if vector equal
     IS(VBEQ_II) {
       NEXT;
     }
 
+    // Vector3 branch if vector not equal
     IS(VBNE_II) {
       NEXT;
     }
 
+    // Vector3 add
     IS(VADD_II) {
       NEXT;
     }
 
+    // Vector3 subract
     IS(VSUB_II) {
       NEXT;
     }
 
+    // Vector3 cross product
     IS(VMUL_II) {
       NEXT;
     }
 
+    // Vector3 dot product to register
     IS(VDOT_IR) {
       NEXT;
     }
 
+    // Vector3 dot product to indirect
     IS(VDOT_II) {
       NEXT;
     }
 
+    // Vector3 magnitude to register
     IS(VMAG_IR) {
       NEXT;
     }
 
+    // Vector3 magnitude to indirect
     IS(VMAG_II) {
       NEXT;
     }
 
+    // Vector3 normalise
     IS(VNRM_II) {
       NEXT;
     }

@@ -6,6 +6,10 @@ namespace GVM {
   class Interpreter {
 
     public:
+      enum {
+        NUM_REG = 16
+      };
+
       // Machune statys
       typedef enum {
         RUNNING = 0,
@@ -37,8 +41,9 @@ namespace GVM {
 
       typedef void (*HostCall)(Interpreter* vm);
 
-    private:
-      Register r[16];
+    //private:
+    public:
+      Register reg[NUM_REG];
 
       // Program counter
       const uint8*  pc;
