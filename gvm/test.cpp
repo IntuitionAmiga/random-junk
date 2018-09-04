@@ -4,8 +4,7 @@
 #include "include/interpreter.hpp"
 int main() {
   std::printf(
-      "EA:%d\nOC:%d\n\nSize %d\n",
-      GVM::AddressingMode::_MAX,
+      "Max Opcode:%d\n\nInterpreter Size %d\n",
       GVM::Opcode::_MAX,
       (int)sizeof(GVM::Interpreter)
   );

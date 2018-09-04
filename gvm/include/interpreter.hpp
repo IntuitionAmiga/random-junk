@@ -43,7 +43,11 @@ namespace GVM {
 
     //private:
     public:
+      // General Purpose Registers
       Register reg[NUM_REG];
+
+      // Vector3 Accumulator
+      float32  vacc[4];
 
       // Program counter
       const uint8*  pc;
