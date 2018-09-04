@@ -260,35 +260,54 @@ namespace GVM {
       _VSPL_LI,
       _VSPL_RI,
       _VSPL_II,
+      _VSPL_LA,
+      _VSPL_RA,
+      _VSPL_IA,
 
       // Vec3 Move
       _VMVE_II,
+      _VMVE_IA,
+      _VMVE_AI,
 
       // Vec3 Branch if equal
       _VBEQ_II,
+      _VBEQ_IA,
 
       // Vec3 Branch if not equal
       _VBNE_II,
+      _VBNE_IA,
 
       // Vec3 Add
       _VADD_II,
+      _VADD_IA,
+      _VADD_AI,
+      _VADD_IIA,
 
       // Vec3 Sub
       _VSUB_II,
+      _VSUB_IA,
+      _VSUB_AI,
+      _VSUB_IIA,
 
       // Vec3 Cross
-      _VMUL_II,
+      _VMUL_IIA,
 
       // Vec3 Dot
-      _VDOT_IR,
       _VDOT_II,
 
       // Vec3 Mag
       _VMAG_IR,
       _VMAG_II,
+      _VMAG_AR,
+      _VMAG_AI,
+      _VMAG_A,
 
       // Vec3 Normalize
+      _VNRM_I,
       _VNRM_II,
+      _VNRM_IA,
+      _VNRM_AI,
+      _VNRM_A,
 
       _MAX
     } Enumeration;

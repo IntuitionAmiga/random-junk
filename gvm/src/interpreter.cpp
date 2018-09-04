@@ -1511,7 +1511,7 @@ forever:
       NEXT;
     }
 
-    // Vector3 splat register to vector
+    // Vector3 splat indirect to vector
     IS(VSPL_II) {
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
@@ -1521,6 +1521,35 @@ forever:
       f[0] = v;
       f[1] = v;
       f[2] = v;
+      NEXT;
+    }
+
+    // Vector3 splat literal to vector accumulator
+    IS(VSPL_LA) {
+      // [opcode:8] [L:4 | dst:4]
+      vacc[0] = src;
+      vacc[1] = src;
+      vacc[2] = src;
+      NEXT;
+    }
+
+    // Vector3 splat register to vector accumulator
+    IS(VSPL_RA) {
+      // [opcode:8] [src:4 | dst:4]
+      vacc[0] = reg[src].f;
+      vacc[1] = reg[src].f;
+      vacc[2] = reg[src].f;
+      NEXT;
+    }
+
+    // Vector3 splat indirect to vector accumulator
+    IS(VSPL_IA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8]
+      tmp1 = *pc++;
+      float32  v = reg[src].pf[tmp1];
+      vacc[0] = v;
+      vacc[1] = v;
+      vacc[2] = v;
       NEXT;
     }
 
@@ -1537,13 +1566,46 @@ forever:
       NEXT;
     }
 
-    // Vector3 branch if vector equal
+    // Vector3 copy vector indirect to accumulator
+    IS(VMVE_IA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8]
+      tmp1 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      vacc[0] = vs[0];
+      vacc[1] = vs[1];
+      vacc[2] = vs[2];
+      NEXT;
+    }
+
+    // Vector3 copy vector indirect to accumulator
+    IS(VMVE_AI) {
+      // [opcode:8] [src:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      vd[0] = vacc[0];
+      vd[1] = vacc[1];
+      vd[2] = vacc[2];
+      NEXT;
+    }
+
+    // Vector3 branch if vectors equal
     IS(VBEQ_II) {
       NEXT;
     }
 
-    // Vector3 branch if vector not equal
+    // Vector3 branch if vector and accumulator equal
+    IS(VBEQ_IA) {
+      NEXT;
+    }
+
+
+    // Vector3 branch if vectors not equal
     IS(VBNE_II) {
+      NEXT;
+    }
+
+    // Vector3 branch if vector and accumulator not equal
+    IS(VBNE_IA) {
       NEXT;
     }
 
@@ -1560,6 +1622,41 @@ forever:
       NEXT;
     }
 
+    // Vector3 add to accumulator
+    IS(VADD_IA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8]
+      tmp1 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      vacc[0] += vs[0];
+      vacc[1] += vs[1];
+      vacc[2] += vs[2];
+      NEXT;
+    }
+
+    // Vector3 add from accumulator
+    IS(VADD_AI) {
+      // [opcode:8] [src:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      vd[0] += vacc[0];
+      vd[1] += vacc[1];
+      vd[2] += vacc[2];
+      NEXT;
+    }
+
+    // Vector3 add pair and replace accumulator
+    IS(VADD_IIA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vacc[0] = vd[0] + vs[0];
+      vacc[1] = vd[1] + vs[1];
+      vacc[2] = vd[2] + vs[2];
+      NEXT;
+    }
+
     // Vector3 subract
     IS(VSUB_II) {
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
@@ -1573,17 +1670,56 @@ forever:
       NEXT;
     }
 
-    // Vector3 cross product
-    IS(VMUL_II) {
+    // Vector3 subtract from accumulator
+    IS(VSUB_IA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8]
+      tmp1 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      vacc[0] -= vs[0];
+      vacc[1] -= vs[1];
+      vacc[2] -= vs[2];
       NEXT;
     }
 
-    // Vector3 dot product to register
-    IS(VDOT_IR) {
+    // Vector3 subtract accumulator from vector
+    IS(VSUB_AI) {
+      // [opcode:8] [src:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      vd[0] -= vacc[0];
+      vd[1] -= vacc[1];
+      vd[2] -= vacc[2];
       NEXT;
     }
 
-    // Vector3 dot product to indirect
+    // Vector3 subtract pair and replace accumulator
+    IS(VSUB_IIA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vacc[0] = vd[0] - vs[0];
+      vacc[1] = vd[1] - vs[1];
+      vacc[2] = vd[2] - vs[2];
+      NEXT;
+    }
+
+    // Vector3 cross product vectors into accumulator
+    IS(VMUL_IIA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vacc[0] = vd[0] - vs[0];
+      vacc[1] = vd[1] - vs[1];
+      vacc[2] = vd[2] - vs[2];
+      NEXT;
+      NEXT;
+    }
+
+    // Vector3 dot product
     IS(VDOT_II) {
       NEXT;
     }
@@ -1607,6 +1743,43 @@ forever:
       NEXT;
     }
 
+    // Vector3 accumulator magnitude to register
+    IS(VMAG_AR) {
+      // [opcode:8] [0:4 | dst:4]
+      reg[dst].f = std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+      NEXT;
+    }
+
+    // Vector3 accumulator magnitude to indirect
+    IS(VMAG_AI) {
+      // [opcode:8] [0:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] = std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+      NEXT;
+    }
+
+    // Vector3 accumulator magnitude to accumulator
+    IS(VMAG_A) {
+      // [opcode:8]
+      vacc[3] = std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+
+      // No operands, back up a byte
+      --pc;
+      NEXT;
+    }
+
+    // Vector3 normalise in place
+    IS(VNRM_I) {
+      // [opcode:8] [0:4 dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      float32  sf = 1.0f/std::sqrt(vd[0]*vd[0] + vd[1]*vd[1] + vd[2]*vd[2]);
+      vd[0] *= sf;
+      vd[1] *= sf;
+      vd[2] *= sf;
+      NEXT;
+    }
+
     // Vector3 normalise
     IS(VNRM_II) {
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
@@ -1621,8 +1794,45 @@ forever:
       NEXT;
     }
 
+    // Vector3 normalise to accumulator
+    IS(VNRM_IA) {
+      // [opcode:8] [src:4 | 0:4] [src_index:8]
+      tmp1 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32  sf = 1.0f/std::sqrt(vs[0]*vs[0] + vs[1]*vs[1] + vs[2]*vs[2]);
+      vacc[0] = sf*vs[0];
+      vacc[1] = sf*vs[1];
+      vacc[2] = sf*vs[2];
+      NEXT;
+    }
+
+    // Vector3 normalise from accumulator
+    IS(VNRM_AI) {
+      // [opcode:8] [0:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      float32  sf = 1.0f/std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+      vd[0] = sf*vacc[0];
+      vd[1] = sf*vacc[1];
+      vd[2] = sf*vacc[2];
+      NEXT;
+    }
+
+    // Vector3 normalise accumulator in place
+    IS(VNRM_A) {
+      // [opcode:8]
+      float32  sf = 1.0f/std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+      vacc[0] *= sf;
+      vacc[1] *= sf;
+      vacc[2] *= sf;
+
+      // no operands, back up a byte
+      --pc;
+      NEXT;
+    }
+
     default:
-      break;
+      status = ILLEGAL_OPCODE;
   }
 
 bailout:

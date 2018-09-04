@@ -7,73 +7,75 @@
 	.globl _ZN3GVM11Interpreter7executeEv
 	.type	_ZN3GVM11Interpreter7executeEv, @function
 _ZN3GVM11Interpreter7executeEv:
-	stwu %r1,-80(%r1)
+	stwu %r1,-96(%r1)
 	mflr %r0
-	stw %r0,84(%r1)
+	stw %r0,100(%r1)
 	li %r0,0
-	stw %r17,20(%r1)
-	stw %r18,24(%r1)
-	stw %r19,28(%r1)
-	stw %r20,32(%r1)
-	stw %r21,36(%r1)
-	stw %r22,40(%r1)
+	stw %r17,36(%r1)
+	stw %r18,40(%r1)
+	stw %r19,44(%r1)
+	stw %r20,48(%r1)
+	stw %r21,52(%r1)
+	stw %r22,56(%r1)
 	stw %r0,84(%r3)
-	stw %r25,52(%r1)
-	lis %r25,.LC4@ha
-	stw %r26,56(%r1)
+	stw %r25,68(%r1)
+	lis %r25,.LC1@ha
+	stw %r26,72(%r1)
 	lis %r26,.LC3@ha
-	la %r25,.LC4@l(%r25)
-	stw %r28,64(%r1)
-	lis %r28,.LC1@ha
+	la %r25,.LC1@l(%r25)
+	stw %r28,80(%r1)
+	lis %r28,.LC0@ha
 	la %r26,.LC3@l(%r26)
-	stw %r29,68(%r1)
-	lis %r29,.LC0@ha
-	la %r28,.LC1@l(%r28)
-	stw %r30,72(%r1)
-	lis %r30,.L161@ha
-	la %r29,.LC0@l(%r29)
+	stw %r29,84(%r1)
+	lis %r29,.LC4@ha
+	la %r28,.LC0@l(%r28)
+	stw %r30,88(%r1)
+	lis %r30,.L180@ha
+	la %r29,.LC4@l(%r29)
 	lwz %r9,80(%r3)
-	la %r30,.L161@l(%r30)
-	stw %r23,44(%r1)
+	la %r30,.L180@l(%r30)
+	stw %r23,60(%r1)
 	addi %r23,%r3,60
-	stw %r24,48(%r1)
+	stw %r24,64(%r1)
 	li %r24,10
-	stw %r27,60(%r1)
+	stw %r27,76(%r1)
 	lis %r27,0x4330
-	stw %r31,76(%r1)
+	stw %r31,92(%r1)
 	mr %r31,%r3
 .L2:
 	lbz %r0,0(%r9)
 	addi %r11,%r9,1
 	stw %r11,80(%r31)
-	cmplwi %cr7,%r0,161
+	cmplwi %cr7,%r0,180
 	lbz %r11,1(%r9)
 	addi %r9,%r9,2
 	stw %r9,80(%r31)
 	rlwinm %r22,%r11,0,28,31
 	srwi %r10,%r11,4
-	ble- %cr7,.L272
-.L235:
-	lwz %r0,84(%r1)
-	lwz %r17,20(%r1)
+	ble- %cr7,.L292
+	li %r0,4
+	stw %r0,84(%r31)
+.L255:
+	lwz %r0,100(%r1)
+	lwz %r17,36(%r1)
 	mtlr %r0
-	lwz %r18,24(%r1)
-	lwz %r19,28(%r1)
-	lwz %r20,32(%r1)
-	lwz %r21,36(%r1)
-	lwz %r22,40(%r1)
-	lwz %r23,44(%r1)
-	lwz %r24,48(%r1)
-	lwz %r25,52(%r1)
-	lwz %r26,56(%r1)
-	lwz %r27,60(%r1)
-	lwz %r28,64(%r1)
-	lwz %r29,68(%r1)
-	lwz %r30,72(%r1)
-	lwz %r31,76(%r1)
-	addi %r1,%r1,80
+	lwz %r18,40(%r1)
+	lwz %r19,44(%r1)
+	lwz %r20,48(%r1)
+	lwz %r21,52(%r1)
+	lwz %r22,56(%r1)
+	lwz %r23,60(%r1)
+	lwz %r24,64(%r1)
+	lwz %r25,68(%r1)
+	lwz %r26,72(%r1)
+	lwz %r27,76(%r1)
+	lwz %r28,80(%r1)
+	lwz %r29,84(%r1)
+	lwz %r30,88(%r1)
+	lwz %r31,92(%r1)
+	addi %r1,%r1,96
 	blr
-.L272:
+.L292:
 	slwi %r0,%r0,2
 	lwzx %r0,%r30,%r0
 	add %r0,%r0,%r30
@@ -82,182 +84,189 @@ _ZN3GVM11Interpreter7executeEv:
 	.section	.rodata
 	.align 2
 	.align 2
-.L161:
-	.long .L4-.L161
-	.long .L5-.L161
-	.long .L6-.L161
-	.long .L7-.L161
-	.long .L8-.L161
-	.long .L9-.L161
-	.long .L10-.L161
-	.long .L11-.L161
-	.long .L12-.L161
-	.long .L13-.L161
-	.long .L14-.L161
-	.long .L15-.L161
-	.long .L16-.L161
-	.long .L17-.L161
-	.long .L18-.L161
-	.long .L19-.L161
-	.long .L20-.L161
-	.long .L21-.L161
-	.long .L22-.L161
-	.long .L23-.L161
-	.long .L24-.L161
-	.long .L25-.L161
-	.long .L26-.L161
-	.long .L27-.L161
-	.long .L28-.L161
-	.long .L29-.L161
-	.long .L30-.L161
-	.long .L31-.L161
-	.long .L32-.L161
-	.long .L33-.L161
-	.long .L34-.L161
-	.long .L35-.L161
-	.long .L36-.L161
-	.long .L37-.L161
-	.long .L38-.L161
-	.long .L39-.L161
-	.long .L40-.L161
-	.long .L41-.L161
-	.long .L42-.L161
-	.long .L43-.L161
-	.long .L44-.L161
-	.long .L45-.L161
-	.long .L46-.L161
-	.long .L47-.L161
-	.long .L48-.L161
-	.long .L49-.L161
-	.long .L50-.L161
-	.long .L51-.L161
-	.long .L52-.L161
-	.long .L53-.L161
-	.long .L54-.L161
-	.long .L55-.L161
-	.long .L56-.L161
-	.long .L57-.L161
-	.long .L58-.L161
-	.long .L59-.L161
-	.long .L60-.L161
-	.long .L61-.L161
-	.long .L62-.L161
-	.long .L63-.L161
-	.long .L64-.L161
-	.long .L65-.L161
-	.long .L66-.L161
-	.long .L67-.L161
-	.long .L68-.L161
-	.long .L69-.L161
-	.long .L70-.L161
-	.long .L71-.L161
-	.long .L72-.L161
-	.long .L73-.L161
-	.long .L74-.L161
-	.long .L75-.L161
-	.long .L76-.L161
-	.long .L77-.L161
-	.long .L78-.L161
-	.long .L79-.L161
-	.long .L80-.L161
-	.long .L81-.L161
-	.long .L82-.L161
-	.long .L83-.L161
-	.long .L84-.L161
-	.long .L85-.L161
-	.long .L86-.L161
-	.long .L87-.L161
-	.long .L88-.L161
-	.long .L89-.L161
-	.long .L90-.L161
-	.long .L91-.L161
-	.long .L92-.L161
-	.long .L93-.L161
-	.long .L94-.L161
-	.long .L95-.L161
-	.long .L96-.L161
-	.long .L97-.L161
-	.long .L98-.L161
-	.long .L99-.L161
-	.long .L100-.L161
-	.long .L101-.L161
-	.long .L102-.L161
-	.long .L103-.L161
-	.long .L104-.L161
-	.long .L105-.L161
-	.long .L106-.L161
-	.long .L107-.L161
-	.long .L108-.L161
-	.long .L109-.L161
-	.long .L110-.L161
-	.long .L111-.L161
-	.long .L112-.L161
-	.long .L113-.L161
-	.long .L114-.L161
-	.long .L115-.L161
-	.long .L116-.L161
-	.long .L117-.L161
-	.long .L118-.L161
-	.long .L119-.L161
-	.long .L120-.L161
-	.long .L121-.L161
-	.long .L122-.L161
-	.long .L123-.L161
-	.long .L124-.L161
-	.long .L125-.L161
-	.long .L126-.L161
-	.long .L127-.L161
-	.long .L128-.L161
-	.long .L129-.L161
-	.long .L130-.L161
-	.long .L131-.L161
-	.long .L132-.L161
-	.long .L133-.L161
-	.long .L134-.L161
-	.long .L135-.L161
-	.long .L136-.L161
-	.long .L137-.L161
-	.long .L138-.L161
-	.long .L139-.L161
-	.long .L140-.L161
-	.long .L141-.L161
-	.long .L142-.L161
-	.long .L143-.L161
-	.long .L144-.L161
-	.long .L145-.L161
-	.long .L146-.L161
-	.long .L147-.L161
-	.long .L148-.L161
-	.long .L149-.L161
-	.long .L150-.L161
-	.long .L151-.L161
-	.long .L152-.L161
-	.long .L153-.L161
-	.long .L154-.L161
-	.long .L155-.L161
-	.long .L2-.L161
-	.long .L2-.L161
-	.long .L156-.L161
-	.long .L157-.L161
-	.long .L2-.L161
-	.long .L2-.L161
-	.long .L2-.L161
-	.long .L158-.L161
-	.long .L159-.L161
-	.long .L160-.L161
+.L180:
+	.long .L4-.L180
+	.long .L5-.L180
+	.long .L6-.L180
+	.long .L7-.L180
+	.long .L8-.L180
+	.long .L9-.L180
+	.long .L10-.L180
+	.long .L11-.L180
+	.long .L12-.L180
+	.long .L13-.L180
+	.long .L14-.L180
+	.long .L15-.L180
+	.long .L16-.L180
+	.long .L17-.L180
+	.long .L18-.L180
+	.long .L19-.L180
+	.long .L20-.L180
+	.long .L21-.L180
+	.long .L22-.L180
+	.long .L23-.L180
+	.long .L24-.L180
+	.long .L25-.L180
+	.long .L26-.L180
+	.long .L27-.L180
+	.long .L28-.L180
+	.long .L29-.L180
+	.long .L30-.L180
+	.long .L31-.L180
+	.long .L32-.L180
+	.long .L33-.L180
+	.long .L34-.L180
+	.long .L35-.L180
+	.long .L36-.L180
+	.long .L37-.L180
+	.long .L38-.L180
+	.long .L39-.L180
+	.long .L40-.L180
+	.long .L41-.L180
+	.long .L42-.L180
+	.long .L43-.L180
+	.long .L44-.L180
+	.long .L45-.L180
+	.long .L46-.L180
+	.long .L47-.L180
+	.long .L48-.L180
+	.long .L49-.L180
+	.long .L50-.L180
+	.long .L51-.L180
+	.long .L52-.L180
+	.long .L53-.L180
+	.long .L54-.L180
+	.long .L55-.L180
+	.long .L56-.L180
+	.long .L57-.L180
+	.long .L58-.L180
+	.long .L59-.L180
+	.long .L60-.L180
+	.long .L61-.L180
+	.long .L62-.L180
+	.long .L63-.L180
+	.long .L64-.L180
+	.long .L65-.L180
+	.long .L66-.L180
+	.long .L67-.L180
+	.long .L68-.L180
+	.long .L69-.L180
+	.long .L70-.L180
+	.long .L71-.L180
+	.long .L72-.L180
+	.long .L73-.L180
+	.long .L74-.L180
+	.long .L75-.L180
+	.long .L76-.L180
+	.long .L77-.L180
+	.long .L78-.L180
+	.long .L79-.L180
+	.long .L80-.L180
+	.long .L81-.L180
+	.long .L82-.L180
+	.long .L83-.L180
+	.long .L84-.L180
+	.long .L85-.L180
+	.long .L86-.L180
+	.long .L87-.L180
+	.long .L88-.L180
+	.long .L89-.L180
+	.long .L90-.L180
+	.long .L91-.L180
+	.long .L92-.L180
+	.long .L93-.L180
+	.long .L94-.L180
+	.long .L95-.L180
+	.long .L96-.L180
+	.long .L97-.L180
+	.long .L98-.L180
+	.long .L99-.L180
+	.long .L100-.L180
+	.long .L101-.L180
+	.long .L102-.L180
+	.long .L103-.L180
+	.long .L104-.L180
+	.long .L105-.L180
+	.long .L106-.L180
+	.long .L107-.L180
+	.long .L108-.L180
+	.long .L109-.L180
+	.long .L110-.L180
+	.long .L111-.L180
+	.long .L112-.L180
+	.long .L113-.L180
+	.long .L114-.L180
+	.long .L115-.L180
+	.long .L116-.L180
+	.long .L117-.L180
+	.long .L118-.L180
+	.long .L119-.L180
+	.long .L120-.L180
+	.long .L121-.L180
+	.long .L122-.L180
+	.long .L123-.L180
+	.long .L124-.L180
+	.long .L125-.L180
+	.long .L126-.L180
+	.long .L127-.L180
+	.long .L128-.L180
+	.long .L129-.L180
+	.long .L130-.L180
+	.long .L131-.L180
+	.long .L132-.L180
+	.long .L133-.L180
+	.long .L134-.L180
+	.long .L135-.L180
+	.long .L136-.L180
+	.long .L137-.L180
+	.long .L138-.L180
+	.long .L139-.L180
+	.long .L140-.L180
+	.long .L141-.L180
+	.long .L142-.L180
+	.long .L143-.L180
+	.long .L144-.L180
+	.long .L145-.L180
+	.long .L146-.L180
+	.long .L147-.L180
+	.long .L148-.L180
+	.long .L149-.L180
+	.long .L150-.L180
+	.long .L151-.L180
+	.long .L152-.L180
+	.long .L153-.L180
+	.long .L154-.L180
+	.long .L155-.L180
+	.long .L156-.L180
+	.long .L157-.L180
+	.long .L158-.L180
+	.long .L159-.L180
+	.long .L160-.L180
+	.long .L2-.L180
+	.long .L2-.L180
+	.long .L2-.L180
+	.long .L2-.L180
+	.long .L161-.L180
+	.long .L162-.L180
+	.long .L163-.L180
+	.long .L164-.L180
+	.long .L165-.L180
+	.long .L166-.L180
+	.long .L167-.L180
+	.long .L168-.L180
+	.long .L169-.L180
+	.long .L2-.L180
+	.long .L170-.L180
+	.long .L171-.L180
+	.long .L172-.L180
+	.long .L173-.L180
+	.long .L174-.L180
+	.long .L175-.L180
+	.long .L176-.L180
+	.long .L177-.L180
+	.long .L178-.L180
+	.long .L179-.L180
 	.section	".text"
-.L169:
-	stw %r24,84(%r31)
-.L16:
-	lwz %r11,88(%r31)
-	lwz %r0,96(%r31)
-	cmplw %cr7,%r11,%r0
-	ble- %cr7,.L170
-	lwz %r9,-4(%r11)
-	addi %r11,%r11,-4
-	stw %r11,88(%r31)
-	stw %r9,80(%r31)
-	b .L2
 .L15:
 	lbz %r0,0(%r9)
 	slwi %r11,%r11,8
@@ -266,16 +275,22 @@ _ZN3GVM11Interpreter7executeEv:
 	or %r0,%r11,%r0
 	stw %r9,80(%r31)
 	cmplw %cr7,%r10,%r0
-	ble- %cr7,.L273
+	ble- %cr7,.L293
 	lwz %r9,116(%r31)
 	slwi %r0,%r0,2
 	lwzx %r0,%r9,%r0
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L169
-	mr %r3,%r31
-	mtctr %r0
-	bctrl
-	lwz %r9,80(%r31)
+	bne+ %cr7,.L294
+	stw %r24,84(%r31)
+.L16:
+	lwz %r11,88(%r31)
+	lwz %r0,96(%r31)
+	cmplw %cr7,%r11,%r0
+	ble- %cr7,.L190
+	lwz %r9,-4(%r11)
+	addi %r11,%r11,-4
+	stw %r11,88(%r31)
+	stw %r9,80(%r31)
 	b .L2
 .L14:
 	lbz %r0,0(%r9)
@@ -285,11 +300,11 @@ _ZN3GVM11Interpreter7executeEv:
 	or %r0,%r11,%r0
 	stw %r9,80(%r31)
 	cmplw %cr7,%r10,%r0
-	ble- %cr7,.L274
+	ble- %cr7,.L295
 	lwz %r11,88(%r31)
 	lwz %r10,100(%r31)
 	cmplw %cr7,%r11,%r10
-	bge- %cr7,.L167
+	bge- %cr7,.L187
 	stw %r9,0(%r11)
 	slwi %r0,%r0,2
 	addi %r11,%r11,4
@@ -305,7 +320,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lbz %r9,0(%r9)
 	cmplw %cr7,%r10,%r8
 	stw %r0,80(%r31)
-	bge- %cr7,.L167
+	bge- %cr7,.L187
 	stw %r0,0(%r10)
 	slwi %r11,%r11,8
 	addi %r10,%r10,4
@@ -396,18 +411,69 @@ _ZN3GVM11Interpreter7executeEv:
 	addi %r9,%r9,-1
 	stw %r9,80(%r31)
 	b .L2
-.L158:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
+.L175:
+	addi %r0,%r9,1
+	lbz %r21,0(%r9)
 	slwi %r22,%r22,2
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r10
-	add %r9,%r11,%r0
-	lfsx %f0,%r11,%r0
-	lfs %f13,4(%r9)
-	lfs %f1,8(%r9)
+	stw %r0,80(%r31)
+	slwi %r21,%r21,2
+	lwzx %r20,%r31,%r22
+	add %r22,%r20,%r21
+	lfsx %f0,%r20,%r21
+	lfs %f13,4(%r22)
+	lfs %f1,8(%r22)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lfs %f13,0(%r29)
+	lfsx %f0,%r20,%r21
+	lwz %r9,80(%r31)
+	fdivs %f13,%f13,%f1
+	fmuls %f0,%f0,%f13
+	stfsx %f0,%r20,%r21
+	lfs %f0,4(%r22)
+	lfs %f12,8(%r22)
+	fmuls %f0,%f0,%f13
+	fmuls %f13,%f12,%f13
+	stfs %f0,4(%r22)
+	stfs %f13,8(%r22)
+	b .L2
+.L174:
+	lfs %f13,68(%r31)
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lwz %r9,80(%r31)
+	stfs %f1,76(%r31)
+	addi %r9,%r9,-1
+	stw %r9,80(%r31)
+	b .L2
+.L173:
+	lfs %f13,68(%r31)
+	addi %r11,%r9,1
+	slwi %r22,%r22,2
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	lbz %r0,0(%r9)
+	stw %r11,80(%r31)
+	fmadds %f0,%f0,%f0,%f13
+	lwzx %r21,%r31,%r22
+	slwi %r22,%r0,2
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lwz %r9,80(%r31)
+	stfsx %f1,%r21,%r22
+	b .L2
+.L172:
+	lfs %f13,68(%r31)
+	slwi %r22,%r22,2
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
 	fmuls %f13,%f13,%f13
 	fmadds %f0,%f0,%f0,%f13
 	fmadds %f1,%f1,%f1,%f0
@@ -415,7 +481,7 @@ _ZN3GVM11Interpreter7executeEv:
 	stfsx %f1,%r31,%r22
 	lwz %r9,80(%r31)
 	b .L2
-.L159:
+.L171:
 	addi %r11,%r9,1
 	lbz %r0,0(%r9)
 	slwi %r10,%r10,2
@@ -439,7 +505,163 @@ _ZN3GVM11Interpreter7executeEv:
 	lwz %r9,80(%r31)
 	stfsx %f1,%r21,%r22
 	b .L2
-.L157:
+.L170:
+	addi %r11,%r9,1
+	lbz %r0,0(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r11,%r31,%r10
+	add %r9,%r11,%r0
+	lfsx %f0,%r11,%r0
+	lfs %f13,4(%r9)
+	lfs %f1,8(%r9)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	stfsx %f1,%r31,%r22
+	lwz %r9,80(%r31)
+	b .L2
+.L176:
+	addi %r11,%r9,1
+	lbz %r20,0(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r0,%r22,2
+	slwi %r20,%r20,2
+	lbz %r18,1(%r9)
+	stw %r11,80(%r31)
+	slwi %r18,%r18,2
+	lwzx %r22,%r31,%r10
+	lwzx %r17,%r31,%r0
+	add %r21,%r22,%r20
+	lfsx %f0,%r22,%r20
+	lfs %f13,4(%r21)
+	add %r19,%r17,%r18
+	lfs %f1,8(%r21)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lfs %f13,0(%r29)
+	lfsx %f0,%r22,%r20
+	lwz %r9,80(%r31)
+	fdivs %f13,%f13,%f1
+	fmuls %f0,%f0,%f13
+	stfsx %f0,%r17,%r18
+	lfs %f0,4(%r21)
+	fmuls %f0,%f0,%f13
+	stfs %f0,4(%r19)
+	lfs %f0,8(%r21)
+	fmuls %f13,%f0,%f13
+	stfs %f13,8(%r19)
+	b .L2
+.L169:
+	addi %r8,%r9,1
+	lbz %r11,0(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r0,%r8,1
+	slwi %r22,%r22,2
+	slwi %r11,%r11,2
+	lbz %r9,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f0,%r8,%r11
+	add %r11,%r8,%r11
+	lfsx %f13,%r10,%r9
+	add %r10,%r10,%r9
+	mr %r9,%r0
+	fsubs %f0,%f13,%f0
+	stfs %f0,64(%r31)
+	lfs %f13,4(%r10)
+	lfs %f0,4(%r11)
+	fsubs %f0,%f13,%f0
+	stfs %f0,68(%r31)
+	lfs %f13,8(%r10)
+	lfs %f0,8(%r11)
+	fsubs %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L2
+.L168:
+	addi %r8,%r9,1
+	lbz %r11,0(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r0,%r8,1
+	slwi %r22,%r22,2
+	slwi %r11,%r11,2
+	lbz %r9,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f0,%r8,%r11
+	add %r11,%r8,%r11
+	lfsx %f13,%r10,%r9
+	add %r10,%r10,%r9
+	mr %r9,%r0
+	fsubs %f0,%f13,%f0
+	stfs %f0,64(%r31)
+	lfs %f13,4(%r10)
+	lfs %f0,4(%r11)
+	fsubs %f0,%f13,%f0
+	stfs %f0,68(%r31)
+	lfs %f13,8(%r10)
+	lfs %f0,8(%r11)
+	fsubs %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L2
+.L167:
+	addi %r8,%r9,1
+	lbz %r0,0(%r9)
+	slwi %r22,%r22,2
+	stw %r8,80(%r31)
+	mr %r9,%r8
+	slwi %r0,%r0,2
+	lfs %f0,64(%r31)
+	lwzx %r10,%r31,%r22
+	lfsx %f13,%r10,%r0
+	add %r11,%r10,%r0
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r10,%r0
+	lfs %f0,68(%r31)
+	lfs %f12,4(%r11)
+	lfs %f13,8(%r11)
+	fsubs %f0,%f12,%f0
+	stfs %f0,4(%r11)
+	lfs %f0,72(%r31)
+	fsubs %f0,%f13,%f0
+	stfs %f0,8(%r11)
+	b .L2
+.L166:
+	addi %r0,%r9,1
+	lbz %r9,0(%r9)
+	slwi %r10,%r10,2
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lfs %f13,64(%r31)
+	lfs %f12,68(%r31)
+	lwzx %r11,%r31,%r10
+	lfsx %f0,%r11,%r9
+	add %r11,%r11,%r9
+	mr %r9,%r0
+	fsubs %f0,%f13,%f0
+	lfs %f13,72(%r31)
+	stfs %f0,64(%r31)
+	lfs %f0,4(%r11)
+	fsubs %f0,%f12,%f0
+	stfs %f0,68(%r31)
+	lfs %f0,8(%r11)
+	fsubs %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L2
+.L165:
 	addi %r7,%r9,1
 	lbz %r11,0(%r9)
 	slwi %r10,%r10,2
@@ -468,7 +690,80 @@ _ZN3GVM11Interpreter7executeEv:
 	fsubs %f0,%f13,%f0
 	stfs %f0,8(%r11)
 	b .L2
-.L156:
+.L164:
+	addi %r8,%r9,1
+	lbz %r11,0(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r0,%r8,1
+	slwi %r22,%r22,2
+	slwi %r11,%r11,2
+	lbz %r9,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f0,%r8,%r11
+	add %r11,%r8,%r11
+	lfsx %f13,%r10,%r9
+	add %r10,%r10,%r9
+	mr %r9,%r0
+	fadds %f0,%f13,%f0
+	stfs %f0,64(%r31)
+	lfs %f13,4(%r10)
+	lfs %f0,4(%r11)
+	fadds %f0,%f13,%f0
+	stfs %f0,68(%r31)
+	lfs %f13,8(%r10)
+	lfs %f0,8(%r11)
+	fadds %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L2
+.L163:
+	addi %r8,%r9,1
+	lbz %r0,0(%r9)
+	slwi %r22,%r22,2
+	stw %r8,80(%r31)
+	mr %r9,%r8
+	slwi %r0,%r0,2
+	lfs %f0,64(%r31)
+	lwzx %r10,%r31,%r22
+	lfsx %f13,%r10,%r0
+	add %r11,%r10,%r0
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r10,%r0
+	lfs %f0,68(%r31)
+	lfs %f12,4(%r11)
+	lfs %f13,8(%r11)
+	fadds %f0,%f12,%f0
+	stfs %f0,4(%r11)
+	lfs %f0,72(%r31)
+	fadds %f0,%f13,%f0
+	stfs %f0,8(%r11)
+	b .L2
+.L162:
+	addi %r0,%r9,1
+	lbz %r9,0(%r9)
+	slwi %r10,%r10,2
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lfs %f13,64(%r31)
+	lfs %f12,68(%r31)
+	lwzx %r11,%r31,%r10
+	lfsx %f0,%r11,%r9
+	add %r11,%r11,%r9
+	mr %r9,%r0
+	fadds %f0,%f13,%f0
+	lfs %f13,72(%r31)
+	stfs %f0,64(%r31)
+	lfs %f0,4(%r11)
+	fadds %f0,%f12,%f0
+	stfs %f0,68(%r31)
+	lfs %f0,8(%r11)
+	fadds %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L2
+.L161:
 	addi %r7,%r9,1
 	lbz %r11,0(%r9)
 	slwi %r10,%r10,2
@@ -497,42 +792,118 @@ _ZN3GVM11Interpreter7executeEv:
 	fadds %f0,%f13,%f0
 	stfs %f0,8(%r11)
 	b .L2
-.L160:
-	addi %r11,%r9,1
-	lbz %r20,0(%r9)
+.L177:
+	addi %r0,%r9,1
+	lbz %r21,0(%r9)
 	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r11,%r11,1
-	slwi %r0,%r22,2
-	slwi %r20,%r20,2
-	lbz %r18,1(%r9)
-	stw %r11,80(%r31)
-	slwi %r18,%r18,2
-	lwzx %r22,%r31,%r10
-	lwzx %r17,%r31,%r0
-	add %r21,%r22,%r20
-	lfsx %f0,%r22,%r20
-	lfs %f13,4(%r21)
-	add %r19,%r17,%r18
-	lfs %f1,8(%r21)
+	stw %r0,80(%r31)
+	slwi %r21,%r21,2
+	lwzx %r20,%r31,%r10
+	add %r22,%r20,%r21
+	lfsx %f0,%r20,%r21
+	lfs %f13,4(%r22)
+	lfs %f1,8(%r22)
 	fmuls %f13,%f13,%f13
 	fmadds %f0,%f0,%f0,%f13
 	fmadds %f1,%f1,%f1,%f0
 	bl sqrtf
-	lfs %f13,0(%r25)
-	lfsx %f0,%r22,%r20
+	lfs %f13,0(%r29)
+	lfsx %f0,%r20,%r21
 	lwz %r9,80(%r31)
 	fdivs %f13,%f13,%f1
 	fmuls %f0,%f0,%f13
-	stfsx %f0,%r17,%r18
-	lfs %f0,4(%r21)
+	stfs %f0,64(%r31)
+	lfs %f0,4(%r22)
 	fmuls %f0,%f0,%f13
-	stfs %f0,4(%r19)
-	lfs %f0,8(%r21)
+	stfs %f0,68(%r31)
+	lfs %f0,8(%r22)
 	fmuls %f13,%f0,%f13
-	stfs %f13,8(%r19)
+	stfs %f13,72(%r31)
 	b .L2
-.L155:
+.L178:
+	lfs %f13,68(%r31)
+	addi %r0,%r9,1
+	slwi %r22,%r22,2
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	lbz %r21,0(%r9)
+	stw %r0,80(%r31)
+	slwi %r21,%r21,2
+	fmadds %f0,%f0,%f0,%f13
+	lwzx %r22,%r31,%r22
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lfs %f13,0(%r29)
+	add %r11,%r22,%r21
+	lfs %f0,64(%r31)
+	lwz %r9,80(%r31)
+	fdivs %f13,%f13,%f1
+	fmuls %f0,%f0,%f13
+	stfsx %f0,%r22,%r21
+	lfs %f0,68(%r31)
+	fmuls %f0,%f0,%f13
+	stfs %f0,4(%r11)
+	lfs %f0,72(%r31)
+	fmuls %f13,%f0,%f13
+	stfs %f13,8(%r11)
+	b .L2
+.L179:
+	lfs %f13,68(%r31)
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lfs %f13,0(%r29)
+	lfs %f0,64(%r31)
+	lfs %f11,68(%r31)
+	fdivs %f13,%f13,%f1
+	lfs %f12,72(%r31)
+	lwz %r9,80(%r31)
+	addi %r9,%r9,-1
+	stw %r9,80(%r31)
+	fmuls %f12,%f12,%f13
+	fmuls %f0,%f0,%f13
+	fmuls %f13,%f11,%f13
+	stfs %f12,72(%r31)
+	stfs %f0,64(%r31)
+	stfs %f13,68(%r31)
+	b .L2
+.L160:
+	addi %r0,%r9,1
+	lbz %r9,0(%r9)
+	slwi %r22,%r22,2
+	stw %r0,80(%r31)
+	lwz %r10,64(%r31)
+	slwi %r9,%r9,2
+	lwzx %r11,%r31,%r22
+	stwx %r10,%r11,%r9
+	add %r11,%r11,%r9
+	mr %r9,%r0
+	lwz %r0,68(%r31)
+	stw %r0,4(%r11)
+	lwz %r0,72(%r31)
+	stw %r0,8(%r11)
+	b .L2
+.L159:
+	addi %r8,%r9,1
+	lbz %r0,0(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	mr %r9,%r8
+	slwi %r0,%r0,2
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r11,%r0
+	add %r11,%r11,%r0
+	stw %r10,64(%r31)
+	lwz %r0,4(%r11)
+	stw %r0,68(%r31)
+	lwz %r0,8(%r11)
+	stw %r0,72(%r31)
+	b .L2
+.L158:
 	addi %r11,%r9,1
 	lbz %r8,0(%r9)
 	slwi %r10,%r10,2
@@ -554,6 +925,41 @@ _ZN3GVM11Interpreter7executeEv:
 	stw %r8,4(%r11)
 	lwz %r0,8(%r10)
 	stw %r0,8(%r11)
+	b .L2
+.L157:
+	addi %r0,%r9,1
+	lbz %r11,0(%r9)
+	slwi %r10,%r10,2
+	stw %r0,80(%r31)
+	mr %r9,%r0
+	slwi %r11,%r11,2
+	lwzx %r10,%r31,%r10
+	lwzx %r0,%r10,%r11
+	stw %r0,72(%r31)
+	stw %r0,64(%r31)
+	stw %r0,68(%r31)
+	b .L2
+.L156:
+	slwi %r10,%r10,2
+	lwz %r9,80(%r31)
+	lwzx %r0,%r31,%r10
+	stw %r0,64(%r31)
+	lwzx %r0,%r31,%r10
+	stw %r0,68(%r31)
+	lwzx %r0,%r31,%r10
+	stw %r0,72(%r31)
+	b .L2
+.L155:
+	stw %r10,20(%r1)
+	stw %r27,16(%r1)
+	lfs %f0,0(%r26)
+	lfd %f13,16(%r1)
+	lwz %r9,80(%r31)
+	fsub %f0,%f13,%f0
+	frsp %f0,%f0
+	stfs %f0,72(%r31)
+	stfs %f0,64(%r31)
+	stfs %f0,68(%r31)
 	b .L2
 .L154:
 	addi %r11,%r9,1
@@ -769,7 +1175,7 @@ _ZN3GVM11Interpreter7executeEv:
 .L139:
 	slwi %r22,%r22,2
 	slwi %r21,%r10,2
-.L162:
+.L181:
 	addi %r11,%r9,1
 	lbz %r0,0(%r9)
 	stw %r11,80(%r31)
@@ -797,7 +1203,7 @@ _ZN3GVM11Interpreter7executeEv:
 	bl sqrtf
 	stfsx %f1,%r31,%r22
 	lwz %r9,80(%r31)
-	b .L162
+	b .L181
 .L137:
 	addi %r11,%r9,1
 	lbz %r0,0(%r9)
@@ -835,7 +1241,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f13,%r6,%r7
 	lfsx %f0,%r10,%r0
 	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L270
+	bng- %cr7,.L290
 	addi %r0,%r8,1
 	lbz %r11,1(%r11)
 	stw %r0,80(%r31)
@@ -857,7 +1263,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f0,%r31,%r22
 	lfsx %f13,%r10,%r0
 	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L269
+	bng- %cr7,.L289
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -879,7 +1285,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f13,%r31,%r10
 	lfsx %f0,%r8,%r0
 	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L268
+	bng- %cr7,.L288
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -896,7 +1302,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f13,%r31,%r10
 	lfsx %f0,%r31,%r22
 	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L267
+	bng- %cr7,.L287
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -924,7 +1330,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f0,%r10,%r0
 	fcmpu %cr7,%f13,%f0
 	cror 30,29,30
-	bne- %cr7,.L266
+	bne- %cr7,.L286
 	addi %r0,%r8,1
 	lbz %r11,1(%r11)
 	stw %r0,80(%r31)
@@ -947,7 +1353,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f13,%r10,%r0
 	fcmpu %cr7,%f13,%f0
 	cror 30,29,30
-	bne- %cr7,.L265
+	bne- %cr7,.L285
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -970,7 +1376,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f0,%r8,%r0
 	fcmpu %cr7,%f13,%f0
 	cror 30,29,30
-	bne- %cr7,.L264
+	bne- %cr7,.L284
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -988,7 +1394,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lfsx %f0,%r31,%r22
 	fcmpu %cr7,%f13,%f0
 	cror 30,29,30
-	bne- %cr7,.L263
+	bne- %cr7,.L283
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -1000,16 +1406,16 @@ _ZN3GVM11Interpreter7executeEv:
 	stw %r9,80(%r31)
 	b .L2
 .L127:
-	addi %r11,%r9,1
+	addi %r8,%r9,1
 	lbz %r7,0(%r9)
 	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r8,%r11,1
+	stw %r8,80(%r31)
+	addi %r11,%r8,1
 	slwi %r22,%r22,2
 	slwi %r7,%r7,2
-	lfs %f13,0(%r29)
+	lfs %f13,0(%r28)
 	lbz %r0,1(%r9)
-	stw %r8,80(%r31)
+	stw %r11,80(%r31)
 	slwi %r0,%r0,2
 	lwzx %r10,%r31,%r10
 	lwzx %r9,%r31,%r22
@@ -1018,17 +1424,17 @@ _ZN3GVM11Interpreter7executeEv:
 	fsubs %f0,%f12,%f0
 	fcmpu %cr7,%f0,%f13
 	cror 30,29,30
-	bne- %cr7,.L216
-	lfs %f13,0(%r28)
+	bne- %cr7,.L236
+	lfs %f13,0(%r25)
 	fcmpu %cr7,%f0,%f13
 	cror 30,28,30
-	bne- %cr7,.L216
-	addi %r0,%r8,1
-	lbz %r11,1(%r11)
+	bne- %cr7,.L236
+	addi %r0,%r11,1
+	lbz %r10,1(%r8)
 	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r8)
-	or %r9,%r11,%r9
+	slwi %r10,%r10,8
+	lbz %r9,1(%r11)
+	or %r9,%r10,%r9
 	extsh %r9,%r9
 	add %r9,%r0,%r9
 	stw %r9,80(%r31)
@@ -1040,18 +1446,18 @@ _ZN3GVM11Interpreter7executeEv:
 	stw %r11,80(%r31)
 	slwi %r22,%r22,2
 	slwi %r0,%r0,2
-	lfs %f13,0(%r29)
+	lfs %f13,0(%r28)
 	lwzx %r9,%r31,%r10
 	lfsx %f0,%r31,%r22
 	lfsx %f12,%r9,%r0
 	fsubs %f0,%f12,%f0
 	fcmpu %cr7,%f0,%f13
 	cror 30,29,30
-	bne- %cr7,.L213
-	lfs %f13,0(%r28)
+	bne- %cr7,.L233
+	lfs %f13,0(%r25)
 	fcmpu %cr7,%f0,%f13
 	cror 30,28,30
-	bne- %cr7,.L213
+	bne- %cr7,.L233
 	addi %r0,%r11,1
 	lbz %r10,0(%r11)
 	stw %r0,80(%r31)
@@ -1069,18 +1475,18 @@ _ZN3GVM11Interpreter7executeEv:
 	stw %r11,80(%r31)
 	slwi %r10,%r10,2
 	slwi %r0,%r0,2
-	lfs %f13,0(%r29)
+	lfs %f13,0(%r28)
 	lwzx %r9,%r31,%r22
 	lfsx %f12,%r31,%r10
 	lfsx %f0,%r9,%r0
 	fsubs %f0,%f12,%f0
 	fcmpu %cr7,%f0,%f13
 	cror 30,29,30
-	bne- %cr7,.L210
-	lfs %f13,0(%r28)
+	bne- %cr7,.L230
+	lfs %f13,0(%r25)
 	fcmpu %cr7,%f0,%f13
 	cror 30,28,30
-	bne- %cr7,.L210
+	bne- %cr7,.L230
 	addi %r0,%r11,1
 	lbz %r10,0(%r11)
 	stw %r0,80(%r31)
@@ -1094,17 +1500,17 @@ _ZN3GVM11Interpreter7executeEv:
 .L124:
 	slwi %r10,%r10,2
 	slwi %r22,%r22,2
-	lfs %f13,0(%r29)
+	lfs %f13,0(%r28)
 	lfsx %f12,%r31,%r10
 	lfsx %f0,%r31,%r22
 	fsubs %f0,%f12,%f0
 	fcmpu %cr7,%f0,%f13
 	cror 30,29,30
-	bne- %cr7,.L207
-	lfs %f13,0(%r28)
+	bne- %cr7,.L227
+	lfs %f13,0(%r25)
 	fcmpu %cr7,%f0,%f13
 	cror 30,28,30
-	bne- %cr7,.L207
+	bne- %cr7,.L227
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -1115,20 +1521,10 @@ _ZN3GVM11Interpreter7executeEv:
 	add %r9,%r0,%r9
 	stw %r9,80(%r31)
 	b .L2
-.L122:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r21,%r10,2
-	stw %r11,80(%r31)
+.L123:
 	slwi %r22,%r22,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r21
-	lfsx %f1,%r31,%r22
-	lfsx %f2,%r9,%r0
-	bl fmodf
-	stfsx %f1,%r31,%r22
-	lwz %r9,80(%r31)
-.L163:
+	slwi %r21,%r10,2
+.L182:
 	addi %r11,%r9,1
 	lbz %r0,0(%r9)
 	stw %r11,80(%r31)
@@ -1145,10 +1541,20 @@ _ZN3GVM11Interpreter7executeEv:
 	lwz %r9,80(%r31)
 	stfsx %f1,%r22,%r20
 	b .L2
-.L123:
-	slwi %r22,%r22,2
+.L122:
+	addi %r11,%r9,1
+	lbz %r0,0(%r9)
 	slwi %r21,%r10,2
-	b .L163
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r21
+	lfsx %f1,%r31,%r22
+	lfsx %f2,%r9,%r0
+	bl fmodf
+	stfsx %f1,%r31,%r22
+	lwz %r9,80(%r31)
+	b .L182
 .L121:
 	addi %r0,%r9,1
 	lbz %r21,0(%r9)
@@ -1834,7 +2240,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r11,%r31,%r10
 	lwzx %r10,%r11,%r9
 	cmpwi %cr7,%r10,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lwzx %r11,%r31,%r22
@@ -1852,7 +2258,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r9,%r31,%r10
 	lwzx %r0,%r9,%r0
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	lwzx %r9,%r31,%r22
 	divw %r11,%r9,%r0
@@ -1868,7 +2274,7 @@ _ZN3GVM11Interpreter7executeEv:
 	stw %r7,80(%r31)
 	lwzx %r0,%r31,%r10
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	slwi %r11,%r11,2
 	lwzx %r10,%r31,%r22
@@ -1883,7 +2289,7 @@ _ZN3GVM11Interpreter7executeEv:
 	slwi %r10,%r10,2
 	lwzx %r0,%r31,%r10
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	lwzx %r9,%r31,%r22
 	divw %r11,%r9,%r0
@@ -1929,7 +2335,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r11,%r31,%r10
 	lwzx %r10,%r11,%r9
 	cmpwi %cr7,%r10,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lwzx %r11,%r31,%r22
@@ -1947,7 +2353,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r9,%r31,%r10
 	lwzx %r0,%r9,%r0
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	lwzx %r9,%r31,%r22
 	divw %r0,%r9,%r0
@@ -1961,7 +2367,7 @@ _ZN3GVM11Interpreter7executeEv:
 	stw %r8,80(%r31)
 	lwzx %r10,%r31,%r10
 	cmpwi %cr7,%r10,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lwzx %r11,%r31,%r22
@@ -1974,7 +2380,7 @@ _ZN3GVM11Interpreter7executeEv:
 	slwi %r10,%r10,2
 	lwzx %r0,%r31,%r10
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L206
+	beq- %cr7,.L226
 	slwi %r22,%r22,2
 	lwzx %r9,%r31,%r22
 	divw %r0,%r9,%r0
@@ -2301,7 +2707,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r10,%r6
 	lwzx %r0,%r7,%r0
 	cmpw %cr7,%r10,%r0
-	ble- %cr7,.L198
+	ble- %cr7,.L218
 	addi %r0,%r8,1
 	lbz %r11,1(%r11)
 	stw %r0,80(%r31)
@@ -2323,7 +2729,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r10,%r0
 	lwzx %r0,%r31,%r22
 	cmpw %cr7,%r10,%r0
-	ble- %cr7,.L197
+	ble- %cr7,.L217
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2345,7 +2751,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r31,%r10
 	lwzx %r0,%r8,%r0
 	cmpw %cr7,%r10,%r0
-	ble- %cr7,.L196
+	ble- %cr7,.L216
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2362,7 +2768,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r11,%r31,%r10
 	lwzx %r0,%r31,%r22
 	cmpw %cr7,%r11,%r0
-	ble- %cr7,.L195
+	ble- %cr7,.L215
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -2389,7 +2795,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r10,%r6
 	lwzx %r0,%r7,%r0
 	cmpw %cr7,%r10,%r0
-	blt- %cr7,.L194
+	blt- %cr7,.L214
 	addi %r0,%r8,1
 	lbz %r11,1(%r11)
 	stw %r0,80(%r31)
@@ -2411,7 +2817,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r10,%r0
 	lwzx %r0,%r31,%r22
 	cmpw %cr7,%r10,%r0
-	blt- %cr7,.L193
+	blt- %cr7,.L213
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2433,7 +2839,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r31,%r10
 	lwzx %r0,%r8,%r0
 	cmpw %cr7,%r10,%r0
-	blt- %cr7,.L192
+	blt- %cr7,.L212
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2450,7 +2856,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r11,%r31,%r10
 	lwzx %r0,%r31,%r22
 	cmpw %cr7,%r11,%r0
-	blt- %cr7,.L191
+	blt- %cr7,.L211
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -2477,7 +2883,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r10,%r6
 	lwzx %r0,%r7,%r0
 	cmpw %cr7,%r10,%r0
-	beq- %cr7,.L275
+	beq- %cr7,.L296
 	addi %r9,%r9,4
 	stw %r9,80(%r31)
 	b .L2
@@ -2492,7 +2898,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r31,%r10
 	lwzx %r0,%r8,%r0
 	cmpw %cr7,%r10,%r0
-	beq- %cr7,.L276
+	beq- %cr7,.L297
 	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
@@ -2502,7 +2908,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r11,%r31,%r10
 	lwzx %r0,%r31,%r22
 	cmpw %cr7,%r11,%r0
-	beq- %cr7,.L277
+	beq- %cr7,.L298
 	addi %r9,%r9,2
 	stw %r9,80(%r31)
 	b .L2
@@ -2515,7 +2921,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r31,%r22
 	lwzx %r0,%r10,%r0
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L187
+	beq- %cr7,.L207
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2530,7 +2936,7 @@ _ZN3GVM11Interpreter7executeEv:
 	slwi %r22,%r22,2
 	lwzx %r0,%r31,%r22
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L186
+	beq- %cr7,.L206
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -2550,7 +2956,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r10,%r31,%r22
 	lwzx %r0,%r10,%r0
 	cmpwi %cr7,%r0,0
-	bne- %cr7,.L185
+	bne- %cr7,.L205
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2565,7 +2971,7 @@ _ZN3GVM11Interpreter7executeEv:
 	slwi %r22,%r22,2
 	lwzx %r0,%r31,%r22
 	cmpwi %cr7,%r0,0
-	bne- %cr7,.L184
+	bne- %cr7,.L204
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -2587,7 +2993,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwzx %r0,%r10,%r0
 	cmpwi %cr7,%r0,0
 	stwx %r0,%r31,%r22
-	beq- %cr7,.L183
+	beq- %cr7,.L203
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2604,7 +3010,7 @@ _ZN3GVM11Interpreter7executeEv:
 	addi %r0,%r11,-1
 	cmpwi %cr7,%r0,0
 	stwx %r0,%r31,%r22
-	beq- %cr7,.L182
+	beq- %cr7,.L202
 	addi %r0,%r9,1
 	lbz %r11,0(%r9)
 	stw %r0,80(%r31)
@@ -2620,10 +3026,10 @@ _ZN3GVM11Interpreter7executeEv:
 	lwz %r9,104(%r31)
 	lwzx %r0,%r31,%r22
 	cmplw %cr7,%r0,%r9
-	blt- %cr7,.L278
+	blt- %cr7,.L299
 	lwz %r9,108(%r31)
 	cmplw %cr7,%r0,%r9
-	bge- %cr7,.L175
+	bge- %cr7,.L195
 	stw %r0,92(%r31)
 	lwz %r9,80(%r31)
 	b .L2
@@ -2634,7 +3040,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwz %r10,108(%r31)
 	add %r11,%r9,%r0
 	cmplw %cr7,%r10,%r11
-	ble- %cr7,.L175
+	ble- %cr7,.L195
 	slwi %r22,%r22,2
 	stwx %r9,%r31,%r22
 	lwz %r11,92(%r31)
@@ -2652,14 +3058,14 @@ _ZN3GVM11Interpreter7executeEv:
 	lwz %r9,92(%r31)
 	lwz %r11,104(%r31)
 	cmplw %cr7,%r11,%r9
-	bge- %cr7,.L175
+	bge- %cr7,.L195
 	mr %r10,%r23
-.L176:
+.L196:
 	rlwinm %r11,%r0,17,31,31
 	cmpwi %cr7,%r11,0
-	bne- %cr7,.L279
-	bne- %cr0,.L262
-.L280:
+	bne- %cr7,.L300
+	bne- %cr0,.L282
+.L301:
 	lwz %r9,80(%r31)
 	b .L2
 .L17:
@@ -2672,160 +3078,136 @@ _ZN3GVM11Interpreter7executeEv:
 	lwz %r9,92(%r31)
 	lwz %r8,108(%r31)
 	cmplw %cr7,%r8,%r9
-	ble- %cr7,.L175
+	ble- %cr7,.L195
 	mr %r11,%r31
-.L172:
+.L192:
 	rlwinm %r10,%r0,0,31,31
 	cmpwi %cr7,%r10,0
-	beq- %cr7,.L174
+	beq- %cr7,.L194
 	lwz %r10,0(%r11)
 	srwi. %r0,%r0,1
 	stw %r10,0(%r9)
 	addi %r9,%r9,4
 	stw %r9,92(%r31)
-.L174:
-	bne- %cr0,.L260
+.L194:
+	bne- %cr0,.L280
 	lwz %r9,80(%r31)
 	b .L2
-.L210:
+.L195:
+	li %r0,6
+	stw %r0,84(%r31)
+	b .L255
+.L294:
+	mr %r3,%r31
+	mtctr %r0
+	bctrl
+	lwz %r9,80(%r31)
+	b .L2
+.L227:
+	addi %r9,%r9,2
+	stw %r9,80(%r31)
+	b .L2
+.L230:
 	addi %r9,%r11,2
 	stw %r9,80(%r31)
 	b .L2
-.L207:
+.L233:
+	addi %r9,%r11,2
+	stw %r9,80(%r31)
+	b .L2
+.L236:
+	addi %r9,%r11,2
+	stw %r9,80(%r31)
+	b .L2
+.L218:
+	addi %r9,%r9,4
+	stw %r9,80(%r31)
+	b .L2
+.L283:
+	addi %r9,%r9,2
+	stw %r9,80(%r31)
+	b .L2
+.L284:
+	addi %r9,%r9,3
+	stw %r9,80(%r31)
+	b .L2
+.L285:
+	addi %r9,%r9,3
+	stw %r9,80(%r31)
+	b .L2
+.L211:
+	addi %r9,%r9,2
+	stw %r9,80(%r31)
+	b .L2
+.L212:
+	addi %r9,%r9,3
+	stw %r9,80(%r31)
+	b .L2
+.L213:
+	addi %r9,%r9,3
+	stw %r9,80(%r31)
+	b .L2
+.L214:
+	addi %r9,%r9,4
+	stw %r9,80(%r31)
+	b .L2
+.L215:
 	addi %r9,%r9,2
 	stw %r9,80(%r31)
 	b .L2
 .L216:
-	addi %r9,%r8,2
-	stw %r9,80(%r31)
-	b .L2
-.L213:
-	addi %r9,%r11,2
-	stw %r9,80(%r31)
-	b .L2
-.L175:
-	li %r0,6
-	stw %r0,84(%r31)
-	b .L235
-.L279:
-	rlwinm. %r0,%r0,1,16,30
-	lwz %r11,-4(%r9)
-	addi %r9,%r9,-4
-	stw %r9,92(%r31)
-	stw %r11,0(%r10)
-	beq- %cr0,.L280
-.L262:
-	lwz %r9,92(%r31)
-	lwz %r11,104(%r31)
-	cmplw %cr7,%r9,%r11
-	ble- %cr7,.L175
-	addi %r10,%r10,-4
-	b .L176
-.L182:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L183:
 	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
-.L184:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L185:
+.L217:
 	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
-.L186:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L187:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L191:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L192:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L193:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L194:
+.L290:
 	addi %r9,%r9,4
 	stw %r9,80(%r31)
 	b .L2
-.L195:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L196:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L197:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L198:
+.L286:
 	addi %r9,%r9,4
 	stw %r9,80(%r31)
 	b .L2
-.L263:
+.L287:
 	addi %r9,%r9,2
 	stw %r9,80(%r31)
 	b .L2
-.L264:
+.L288:
 	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
-.L265:
+.L289:
 	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
-.L266:
-	addi %r9,%r9,4
-	stw %r9,80(%r31)
-	b .L2
-.L267:
+.L202:
 	addi %r9,%r9,2
 	stw %r9,80(%r31)
 	b .L2
-.L268:
+.L203:
 	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
-.L269:
+.L204:
+	addi %r9,%r9,2
+	stw %r9,80(%r31)
+	b .L2
+.L205:
 	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
-.L270:
-	addi %r9,%r9,4
+.L206:
+	addi %r9,%r9,2
 	stw %r9,80(%r31)
 	b .L2
-.L260:
-	cmplw %cr7,%r8,%r9
-	ble- %cr7,.L175
-	addi %r11,%r11,4
-	b .L172
-.L277:
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
+.L207:
+	addi %r9,%r9,3
 	stw %r9,80(%r31)
 	b .L2
-.L276:
+.L297:
 	addi %r0,%r11,1
 	lbz %r10,1(%r9)
 	stw %r0,80(%r31)
@@ -2836,7 +3218,18 @@ _ZN3GVM11Interpreter7executeEv:
 	add %r9,%r0,%r9
 	stw %r9,80(%r31)
 	b .L2
-.L275:
+.L298:
+	addi %r0,%r9,1
+	lbz %r11,0(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r9)
+	or %r9,%r11,%r9
+	extsh %r9,%r9
+	add %r9,%r0,%r9
+	stw %r9,80(%r31)
+	b .L2
+.L296:
 	addi %r0,%r8,1
 	lbz %r11,1(%r11)
 	stw %r0,80(%r31)
@@ -2847,30 +3240,49 @@ _ZN3GVM11Interpreter7executeEv:
 	add %r9,%r0,%r9
 	stw %r9,80(%r31)
 	b .L2
-.L206:
+.L300:
+	rlwinm. %r0,%r0,1,16,30
+	lwz %r11,-4(%r9)
+	addi %r9,%r9,-4
+	stw %r9,92(%r31)
+	stw %r11,0(%r10)
+	beq- %cr0,.L301
+.L282:
+	lwz %r9,92(%r31)
+	lwz %r11,104(%r31)
+	cmplw %cr7,%r9,%r11
+	ble- %cr7,.L195
+	addi %r10,%r10,-4
+	b .L196
+.L280:
+	cmplw %cr7,%r8,%r9
+	ble- %cr7,.L195
+	addi %r11,%r11,4
+	b .L192
+.L226:
 	li %r0,5
 	stw %r0,84(%r31)
-	b .L235
-.L170:
-	li %r0,2
-	stw %r0,84(%r31)
-	b .L235
-.L167:
+	b .L255
+.L187:
 	li %r0,8
 	stw %r0,84(%r31)
-	b .L235
-.L278:
-	li %r0,7
-	stw %r0,84(%r31)
-	b .L235
-.L273:
+	b .L255
+.L293:
 	li %r0,13
 	stw %r0,84(%r31)
-	b .L235
-.L274:
+	b .L255
+.L190:
+	li %r0,2
+	stw %r0,84(%r31)
+	b .L255
+.L295:
 	li %r0,11
 	stw %r0,84(%r31)
-	b .L235
+	b .L255
+.L299:
+	li %r0,7
+	stw %r0,84(%r31)
+	b .L255
 	.size	_ZN3GVM11Interpreter7executeEv, .-_ZN3GVM11Interpreter7executeEv
 	.section	.rodata.cst4,"aM",@progbits,4
 	.align 2
