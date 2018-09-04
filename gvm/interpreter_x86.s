@@ -1,9 +1,9 @@
 	.file	"interpreter.cpp"
 	.section	.text.unlikely,"ax",@progbits
 	.align 2
-.LCOLDB3:
+.LCOLDB5:
 	.text
-.LHOTB3:
+.LHOTB5:
 	.align 2
 	.p2align 4,,15
 	.globl	_ZN3GVM11Interpreter7executeEv
@@ -44,9 +44,9 @@ _ZN3GVM11Interpreter7executeEv:
 	movb	%cl, 4(%esp)
 	movl	%esi, %ecx
 	sarl	$4, %ecx
-	movl	%ecx, 8(%esp)
 	cmpb	$-95, %al
-	ja	.L1
+	movl	%ecx, 8(%esp)
+	ja	.L301
 	jmp	*.L6(,%eax,4)
 	.section	.rodata
 	.align 4
@@ -172,18 +172,6 @@ _ZN3GVM11Interpreter7executeEv:
 	.long	.L123
 	.long	.L124
 	.long	.L125
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
-	.long	.L202
 	.long	.L126
 	.long	.L127
 	.long	.L128
@@ -204,17 +192,40 @@ _ZN3GVM11Interpreter7executeEv:
 	.long	.L143
 	.long	.L144
 	.long	.L145
-	.long	.L202
-	.long	.L202
 	.long	.L146
 	.long	.L147
-	.long	.L202
-	.long	.L202
-	.long	.L202
 	.long	.L148
 	.long	.L149
 	.long	.L150
+	.long	.L151
+	.long	.L152
+	.long	.L153
+	.long	.L154
+	.long	.L155
+	.long	.L156
+	.long	.L157
+	.long	.L242
+	.long	.L242
+	.long	.L158
+	.long	.L159
+	.long	.L242
+	.long	.L242
+	.long	.L242
+	.long	.L160
+	.long	.L161
+	.long	.L162
 	.text
+.L169:
+	movl	$10, 84(%edi)
+.L18:
+	movl	88(%edi), %eax
+	cmpl	96(%edi), %eax
+	jbe	.L170
+	leal	-4(%eax), %edx
+	movl	%edx, 88(%edi)
+	movl	-4(%eax), %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
 .L17:
 	leal	3(%ebp), %eax
 	movl	%eax, 80(%edi)
@@ -223,36 +234,35 @@ _ZN3GVM11Interpreter7executeEv:
 	sall	$8, %eax
 	orl	%edx, %eax
 	cmpw	124(%edi), %ax
-	jnb	.L239
+	jnb	.L304
 	movl	116(%edi), %edx
 	movzwl	%ax, %eax
 	movl	(%edx,%eax,4), %eax
 	testl	%eax, %eax
-	jne	.L240
-	movl	$10, 84(%edi)
-.L18:
-	movl	88(%edi), %eax
-	cmpl	96(%edi), %eax
-	jbe	.L158
-	leal	-4(%eax), %edx
-	movl	%edx, 88(%edi)
-	movl	-4(%eax), %ebp
-	movl	%ebp, 80(%edi)
+	je	.L169
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	pushl	%edi
+	.cfi_def_cfa_offset 64
+	call	*%eax
+	movl	80(%edi), %ebp
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
 	jmp	.L3
 .L16:
 	leal	3(%ebp), %ecx
 	movl	%esi, %eax
+	sall	$8, %eax
 	movl	%ecx, 80(%edi)
 	movzbl	2(%ebp), %edx
-	sall	$8, %eax
 	orl	%edx, %eax
 	cmpw	124(%edi), %ax
-	jnb	.L241
+	jnb	.L305
 	movl	88(%edi), %edx
 	cmpl	100(%edi), %edx
-	jnb	.L154
-	movzwl	%ax, %eax
+	jnb	.L166
 	leal	4(%edx), %ebx
+	movzwl	%ax, %eax
 	movl	%ebx, 88(%edi)
 	movl	%ecx, (%edx)
 	movl	112(%edi), %edx
@@ -262,15 +272,15 @@ _ZN3GVM11Interpreter7executeEv:
 .L15:
 	leal	3(%ebp), %edx
 	movl	%esi, %eax
+	sall	$8, %eax
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %ebp
-	sall	$8, %eax
 	orl	%eax, %ebp
 	movl	88(%edi), %eax
 	cmpl	100(%edi), %eax
-	jnb	.L154
-	movswl	%bp, %ebp
+	jnb	.L166
 	leal	4(%eax), %ecx
+	movswl	%bp, %ebp
 	movl	%ecx, 88(%edi)
 	movl	%edx, (%eax)
 	addl	80(%edi), %ebp
@@ -291,8 +301,8 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	%ebp, 80(%edi)
 	jmp	.L3
 .L12:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -306,8 +316,8 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	%ebx, (%eax,%ecx,4)
 	jmp	.L3
 .L11:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
@@ -317,9 +327,9 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	%ecx, (%edi,%edx,4)
 	jmp	.L3
 .L10:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
 	movzbl	4(%esp), %edx
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
@@ -337,8 +347,8 @@ _ZN3GVM11Interpreter7executeEv:
 .L8:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
 	movl	(%edi,%edx,4), %edx
@@ -346,8 +356,8 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L7:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	%esi, (%edi,%eax,4)
 	jmp	.L3
 .L5:
@@ -355,465 +365,104 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	%eax, 80(%edi)
 	movl	%eax, %ebp
 	jmp	.L3
-.L139:
-	leal	3(%ebp), %ebx
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %eax
-	movl	%ebx, 80(%edi)
-	pushl	(%edi,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	tanf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	movzbl	2(%ebp), %edx
-	fstps	8(%esp)
-	movl	%ebx, %ebp
-	movss	8(%esp), %xmm0
-	movl	(%edi,%eax,4), %eax
-	movss	%xmm0, (%eax,%edx,4)
-	jmp	.L3
-.L138:
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	%ebx, %ebp
-	movl	20(%esp), %eax
-	pushl	(%edi,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	tanf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	fstps	8(%esp)
-	movss	8(%esp), %xmm0
-	movss	%xmm0, (%edi,%eax,4)
-	jmp	.L3
-.L137:
+.L160:
 	leal	3(%ebp), %eax
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %esi
-	leal	4(%ebp), %ebx
 	movl	%eax, 80(%edi)
-	movzbl	2(%ebp), %eax
-	movl	%ebx, 80(%edi)
-	movl	(%edi,%esi,4), %edx
-	pushl	(%edx,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	cosf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	movzbl	3(%ebp), %edx
-	fstps	8(%esp)
-	movl	%ebx, %ebp
-	movss	8(%esp), %xmm0
-	movl	(%edi,%eax,4), %eax
-	movss	%xmm0, (%eax,%edx,4)
-	jmp	.L3
-.L136:
-	leal	3(%ebp), %ebx
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %eax
-	movl	%ebx, 80(%edi)
+	movl	8(%esp), %eax
 	movzbl	2(%ebp), %edx
-	movl	%ebx, %ebp
 	movl	(%edi,%eax,4), %eax
-	pushl	(%eax,%edx,4)
-	.cfi_def_cfa_offset 64
-	call	cosf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
+	leal	(%eax,%edx,4), %eax
+	vmovss	4(%eax), %xmm2
+	vmulss	%xmm2, %xmm2, %xmm2
+	vmovss	(%eax), %xmm1
+	vmovss	8(%eax), %xmm0
+	vfmadd132ss	%xmm1, %xmm2, %xmm1
+	vfmadd132ss	%xmm0, %xmm1, %xmm0
+	vsqrtss	%xmm0, %xmm1, %xmm1
+	vucomiss	%xmm1, %xmm1
+	jp	.L306
+.L236:
 	movzbl	4(%esp), %eax
-	fstps	8(%esp)
-	movss	8(%esp), %xmm0
-	movss	%xmm0, (%edi,%eax,4)
+	vmovss	%xmm1, (%edi,%eax,4)
+	movl	80(%edi), %ebp
 	jmp	.L3
-.L135:
-	leal	3(%ebp), %ebx
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %eax
-	movl	%ebx, 80(%edi)
-	pushl	(%edi,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	cosf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	movzbl	2(%ebp), %edx
-	fstps	8(%esp)
-	movl	%ebx, %ebp
-	movss	8(%esp), %xmm0
-	movl	(%edi,%eax,4), %eax
-	movss	%xmm0, (%eax,%edx,4)
-	jmp	.L3
-.L134:
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	%ebx, %ebp
-	movl	20(%esp), %eax
-	pushl	(%edi,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	cosf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	fstps	8(%esp)
-	movss	8(%esp), %xmm0
-	movss	%xmm0, (%edi,%eax,4)
-	jmp	.L3
-.L133:
+.L161:
 	leal	3(%ebp), %eax
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %esi
-	leal	4(%ebp), %ebx
-	movl	%eax, 80(%edi)
-	movzbl	2(%ebp), %eax
-	movl	%ebx, 80(%edi)
-	movl	(%edi,%esi,4), %edx
-	pushl	(%edx,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	sinf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	movzbl	3(%ebp), %edx
-	fstps	8(%esp)
-	movl	%ebx, %ebp
-	movss	8(%esp), %xmm0
-	movl	(%edi,%eax,4), %eax
-	movss	%xmm0, (%eax,%edx,4)
-	jmp	.L3
-.L132:
-	leal	3(%ebp), %ebx
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %eax
-	movl	%ebx, 80(%edi)
-	movzbl	2(%ebp), %edx
-	movl	%ebx, %ebp
-	movl	(%edi,%eax,4), %eax
-	pushl	(%eax,%edx,4)
-	.cfi_def_cfa_offset 64
-	call	sinf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	fstps	8(%esp)
-	movss	8(%esp), %xmm0
-	movss	%xmm0, (%edi,%eax,4)
-	jmp	.L3
-.L131:
-	leal	3(%ebp), %ebx
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %eax
-	movl	%ebx, 80(%edi)
-	pushl	(%edi,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	sinf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	movzbl	2(%ebp), %edx
-	fstps	8(%esp)
-	movl	%ebx, %ebp
-	movss	8(%esp), %xmm0
-	movl	(%edi,%eax,4), %eax
-	movss	%xmm0, (%eax,%edx,4)
-	jmp	.L3
-.L130:
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	%ebx, %ebp
-	movl	20(%esp), %eax
-	pushl	(%edi,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	sinf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	fstps	8(%esp)
-	movss	8(%esp), %xmm0
-	movss	%xmm0, (%edi,%eax,4)
-	jmp	.L3
-.L129:
-	movzbl	4(%esp), %ecx
-.L151:
-	leal	1(%ebx), %eax
 	movl	8(%esp), %esi
-	leal	2(%ebx), %edx
+	leal	4(%ebp), %edx
 	movl	%eax, 80(%edi)
-	movzbl	(%ebx), %eax
+	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
-	movl	(%edi,%ecx,4), %edx
-	movzbl	1(%ebx), %ebx
-	leal	(%edx,%ebx,4), %ebx
 	movl	(%edi,%esi,4), %edx
-	sqrtss	(%edx,%eax,4), %xmm0
-	ucomiss	%xmm0, %xmm0
-	jp	.L242
-.L194:
-	movss	%xmm0, (%ebx)
+	movzbl	3(%ebp), %ecx
+	leal	(%edx,%eax,4), %eax
+	movzbl	4(%esp), %edx
+	vmovss	4(%eax), %xmm2
+	vmulss	%xmm2, %xmm2, %xmm2
+	vmovss	(%eax), %xmm1
+	vmovss	8(%eax), %xmm0
+	movl	(%edi,%edx,4), %edx
+	vfmadd132ss	%xmm1, %xmm2, %xmm1
+	vfmadd132ss	%xmm0, %xmm1, %xmm0
+	vsqrtss	%xmm0, %xmm1, %xmm1
+	vucomiss	%xmm1, %xmm1
+	leal	(%edx,%ecx,4), %ebx
+	jp	.L307
+.L238:
+	vmovss	%xmm1, (%ebx)
 	movl	80(%edi), %ebp
 	jmp	.L3
-.L128:
+.L159:
+	leal	3(%ebp), %eax
 	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
-	movzbl	2(%ebp), %eax
-	movzbl	4(%esp), %ecx
-	movl	(%edi,%esi,4), %edx
-	sqrtss	(%edx,%eax,4), %xmm0
-	ucomiss	%xmm0, %xmm0
-	jp	.L243
-.L192:
-	movss	%xmm0, (%edi,%ecx,4)
-	movl	80(%edi), %ebx
-	jmp	.L151
-.L127:
-	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
-	movzbl	4(%esp), %eax
-	movzbl	2(%ebp), %edx
-	movl	(%edi,%eax,4), %eax
-	leal	(%eax,%edx,4), %ebx
-	movl	8(%esp), %eax
-	sqrtss	(%edi,%eax,4), %xmm0
-	ucomiss	%xmm0, %xmm0
-	jp	.L244
-.L190:
-	movss	%xmm0, (%ebx)
-	movl	80(%edi), %ebp
-	jmp	.L3
-.L126:
-	movl	8(%esp), %eax
-	sqrtss	(%edi,%eax,4), %xmm0
-	ucomiss	%xmm0, %xmm0
-	jp	.L245
-.L188:
-	movzbl	4(%esp), %eax
-	movss	%xmm0, (%edi,%eax,4)
-	movl	80(%edi), %ebp
-	jmp	.L3
-.L145:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
 	leal	4(%ebp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%ecx, 80(%edi)
+	movl	(%edi,%esi,4), %edx
 	movzbl	3(%ebp), %ebx
 	movl	%ecx, %ebp
-	movl	(%edi,%esi,4), %edx
 	leal	(%edx,%eax,4), %edx
 	movzbl	4(%esp), %eax
-	movss	(%edx), %xmm0
 	movl	(%edi,%eax,4), %eax
 	leal	(%eax,%ebx,4), %eax
-	movss	%xmm0, (%eax)
-	movss	4(%edx), %xmm0
-	movss	%xmm0, 4(%eax)
-	movss	8(%edx), %xmm0
-	movss	%xmm0, 8(%eax)
+	vmovss	(%eax), %xmm0
+	vsubss	(%edx), %xmm0, %xmm0
+	vmovss	%xmm0, (%eax)
+	vmovss	4(%eax), %xmm0
+	vsubss	4(%edx), %xmm0, %xmm0
+	vmovss	%xmm0, 4(%eax)
+	vmovss	8(%eax), %xmm0
+	vsubss	8(%edx), %xmm0, %xmm0
+	vmovss	%xmm0, 8(%eax)
 	jmp	.L3
-.L144:
-	movl	8(%esp), %esi
+.L158:
 	leal	3(%ebp), %eax
-	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
+	leal	4(%ebp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
-	movl	%edx, 80(%edi)
-	movl	(%edi,%esi,4), %ecx
-	movss	(%ecx,%eax,4), %xmm0
-	movzbl	4(%esp), %eax
-	movzbl	3(%ebp), %ecx
-	movl	%edx, %ebp
-	movl	(%edi,%eax,4), %eax
-	leal	(%eax,%ecx,4), %eax
-	movss	%xmm0, (%eax)
-	movss	%xmm0, 4(%eax)
-	movss	%xmm0, 8(%eax)
-	jmp	.L3
-.L143:
-	movzbl	4(%esp), %eax
-	leal	3(%ebp), %ecx
 	movl	%ecx, 80(%edi)
-	movl	8(%esp), %esi
-	movzbl	2(%ebp), %edx
+	movl	(%edi,%esi,4), %edx
+	movzbl	3(%ebp), %ebx
 	movl	%ecx, %ebp
-	movl	(%edi,%eax,4), %eax
-	leal	(%eax,%edx,4), %eax
-	leal	(%edi,%esi,4), %edx
-	movss	(%edx), %xmm0
-	movss	%xmm0, (%eax)
-	movss	(%edx), %xmm0
-	movss	%xmm0, 4(%eax)
-	movss	(%edx), %xmm0
-	movss	%xmm0, 8(%eax)
-	jmp	.L3
-.L146:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
-	leal	4(%ebp), %edx
-	movl	%eax, 80(%edi)
-	movzbl	2(%ebp), %eax
-	movl	%edx, 80(%edi)
-	movzbl	3(%ebp), %ebx
-	movl	%edx, %ebp
-	movl	(%edi,%esi,4), %ecx
-	leal	(%ecx,%eax,4), %ecx
+	leal	(%edx,%eax,4), %edx
 	movzbl	4(%esp), %eax
 	movl	(%edi,%eax,4), %eax
 	leal	(%eax,%ebx,4), %eax
-	movss	(%eax), %xmm0
-	addss	(%ecx), %xmm0
-	movss	%xmm0, (%eax)
-	movss	4(%eax), %xmm0
-	addss	4(%ecx), %xmm0
-	movss	%xmm0, 4(%eax)
-	movss	8(%eax), %xmm0
-	addss	8(%ecx), %xmm0
-	movss	%xmm0, 8(%eax)
+	vmovss	(%eax), %xmm0
+	vaddss	(%edx), %xmm0, %xmm0
+	vmovss	%xmm0, (%eax)
+	vmovss	4(%eax), %xmm0
+	vaddss	4(%edx), %xmm0, %xmm0
+	vmovss	%xmm0, 4(%eax)
+	vmovss	8(%eax), %xmm0
+	vaddss	8(%edx), %xmm0, %xmm0
+	vmovss	%xmm0, 8(%eax)
 	jmp	.L3
-.L147:
+.L162:
+	leal	3(%ebp), %eax
 	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
-	leal	4(%ebp), %edx
-	movl	%eax, 80(%edi)
-	movzbl	2(%ebp), %eax
-	movl	%edx, 80(%edi)
-	movzbl	3(%ebp), %ebx
-	movl	%edx, %ebp
-	movl	(%edi,%esi,4), %ecx
-	leal	(%ecx,%eax,4), %ecx
-	movzbl	4(%esp), %eax
-	movl	(%edi,%eax,4), %eax
-	leal	(%eax,%ebx,4), %eax
-	movss	(%eax), %xmm0
-	subss	(%ecx), %xmm0
-	movss	%xmm0, (%eax)
-	movss	4(%eax), %xmm0
-	subss	4(%ecx), %xmm0
-	movss	%xmm0, 4(%eax)
-	movss	8(%eax), %xmm0
-	subss	8(%ecx), %xmm0
-	movss	%xmm0, 8(%eax)
-	jmp	.L3
-.L142:
-	movzbl	4(%esp), %eax
-	leal	3(%ebp), %edx
-	pxor	%xmm0, %xmm0
-	cvtsi2ss	8(%esp), %xmm0
-	movl	%edx, 80(%edi)
-	movzbl	2(%ebp), %ecx
-	movl	%edx, %ebp
-	movl	(%edi,%eax,4), %eax
-	leal	(%eax,%ecx,4), %eax
-	movss	%xmm0, (%eax)
-	movss	%xmm0, 4(%eax)
-	movss	%xmm0, 8(%eax)
-	jmp	.L3
-.L141:
-	leal	3(%ebp), %eax
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %esi
-	leal	4(%ebp), %ebx
-	movl	%eax, 80(%edi)
-	movzbl	2(%ebp), %eax
-	movl	%ebx, 80(%edi)
-	movl	(%edi,%esi,4), %edx
-	pushl	(%edx,%eax,4)
-	.cfi_def_cfa_offset 64
-	call	tanf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	movzbl	3(%ebp), %edx
-	fstps	8(%esp)
-	movl	%ebx, %ebp
-	movss	8(%esp), %xmm0
-	movl	(%edi,%eax,4), %eax
-	movss	%xmm0, (%eax,%edx,4)
-	jmp	.L3
-.L140:
-	leal	3(%ebp), %ebx
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %eax
-	movl	%ebx, 80(%edi)
-	movzbl	2(%ebp), %edx
-	movl	%ebx, %ebp
-	movl	(%edi,%eax,4), %eax
-	pushl	(%eax,%edx,4)
-	.cfi_def_cfa_offset 64
-	call	tanf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	movzbl	4(%esp), %eax
-	fstps	8(%esp)
-	movss	8(%esp), %xmm0
-	movss	%xmm0, (%edi,%eax,4)
-	jmp	.L3
-.L148:
-	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
-	movl	8(%esp), %eax
-	movzbl	2(%ebp), %edx
-	movl	(%edi,%eax,4), %eax
-	leal	(%eax,%edx,4), %eax
-	movss	(%eax), %xmm2
-	movss	4(%eax), %xmm1
-	mulss	%xmm2, %xmm2
-	movss	8(%eax), %xmm0
-	mulss	%xmm1, %xmm1
-	mulss	%xmm0, %xmm0
-	addss	%xmm2, %xmm1
-	addss	%xmm1, %xmm0
-	sqrtss	%xmm0, %xmm1
-	ucomiss	%xmm1, %xmm1
-	jp	.L246
-.L196:
-	movzbl	4(%esp), %eax
-	movss	%xmm1, (%edi,%eax,4)
-	movl	80(%edi), %ebp
-	jmp	.L3
-.L149:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
-	leal	4(%ebp), %edx
-	movl	%eax, 80(%edi)
-	movzbl	2(%ebp), %eax
-	movl	%edx, 80(%edi)
-	movzbl	3(%ebp), %ecx
-	movl	(%edi,%esi,4), %edx
-	leal	(%edx,%eax,4), %eax
-	movzbl	4(%esp), %edx
-	movss	(%eax), %xmm2
-	movss	4(%eax), %xmm1
-	mulss	%xmm2, %xmm2
-	movss	8(%eax), %xmm0
-	mulss	%xmm1, %xmm1
-	movl	(%edi,%edx,4), %edx
-	mulss	%xmm0, %xmm0
-	addss	%xmm2, %xmm1
-	leal	(%edx,%ecx,4), %ebx
-	addss	%xmm1, %xmm0
-	sqrtss	%xmm0, %xmm1
-	ucomiss	%xmm1, %xmm1
-	jp	.L247
-.L198:
-	movss	%xmm1, (%ebx)
-	movl	80(%edi), %ebp
-	jmp	.L3
-.L150:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
 	leal	4(%ebp), %edx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -821,62 +470,644 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%esi,4), %edx
 	leal	(%edx,%eax,4), %ebx
 	movzbl	4(%esp), %eax
-	movss	(%ebx), %xmm3
-	movss	4(%ebx), %xmm1
-	movaps	%xmm3, %xmm2
-	movss	8(%ebx), %xmm0
-	mulss	%xmm3, %xmm2
 	movzbl	3(%ebp), %edx
-	mulss	%xmm1, %xmm1
+	vmovss	4(%ebx), %xmm1
+	vmulss	%xmm1, %xmm1, %xmm1
+	vmovss	8(%ebx), %xmm0
+	vmovss	(%ebx), %xmm2
 	movl	(%edi,%eax,4), %eax
-	mulss	%xmm0, %xmm0
-	addss	%xmm2, %xmm1
+	vfmadd231ss	%xmm2, %xmm2, %xmm1
+	vfmadd231ss	%xmm0, %xmm0, %xmm1
+	vsqrtss	%xmm1, %xmm0, %xmm0
+	vucomiss	%xmm0, %xmm0
 	leal	(%eax,%edx,4), %esi
-	addss	%xmm1, %xmm0
-	sqrtss	%xmm0, %xmm1
-	ucomiss	%xmm1, %xmm1
-	jp	.L248
-.L200:
-	movss	.LC1, %xmm0
+	jp	.L308
+.L240:
+	vmovss	.LC3, %xmm1
 	movl	80(%edi), %ebp
-	divss	%xmm1, %xmm0
-	mulss	%xmm0, %xmm3
-	movss	%xmm3, (%esi)
-	movss	4(%ebx), %xmm1
-	mulss	%xmm0, %xmm1
-	movss	%xmm1, 4(%esi)
-	mulss	8(%ebx), %xmm0
-	movss	%xmm0, 8(%esi)
+	vdivss	%xmm0, %xmm1, %xmm0
+	vmulss	%xmm0, %xmm2, %xmm2
+	vmovss	%xmm2, (%esi)
+	vmulss	4(%ebx), %xmm0, %xmm1
+	vmovss	%xmm1, 4(%esi)
+	vmulss	8(%ebx), %xmm0, %xmm0
+	vmovss	%xmm0, 8(%esi)
 	jmp	.L3
-.L202:
+.L242:
 	movl	%ebx, %ebp
 	jmp	.L3
-.L125:
-	movzbl	4(%esp), %edx
-.L152:
-	leal	1(%ebx), %eax
-	subl	$8, %esp
-	.cfi_def_cfa_offset 56
-	leal	2(%ebx), %ecx
+.L157:
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
+	leal	4(%ebp), %ecx
 	movl	%eax, 80(%edi)
-	movl	16(%esp), %esi
-	movzbl	(%ebx), %eax
+	movzbl	2(%ebp), %eax
 	movl	%ecx, 80(%edi)
-	movl	(%edi,%edx,4), %edx
-	movzbl	1(%ebx), %ecx
-	leal	(%edx,%ecx,4), %ebx
+	movl	(%edi,%esi,4), %edx
+	movzbl	3(%ebp), %ebx
+	movl	%ecx, %ebp
+	leal	(%edx,%eax,4), %edx
+	movzbl	4(%esp), %eax
+	vmovss	(%edx), %xmm0
+	movl	(%edi,%eax,4), %eax
+	leal	(%eax,%ebx,4), %eax
+	vmovss	%xmm0, (%eax)
+	vmovss	4(%edx), %xmm0
+	vmovss	%xmm0, 4(%eax)
+	vmovss	8(%edx), %xmm0
+	vmovss	%xmm0, 8(%eax)
+	jmp	.L3
+.L156:
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
+	leal	4(%ebp), %edx
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	%edx, 80(%edi)
+	movl	(%edi,%esi,4), %ecx
+	vmovss	(%ecx,%eax,4), %xmm0
+	movzbl	4(%esp), %eax
+	movzbl	3(%ebp), %ecx
+	movl	%edx, %ebp
+	movl	(%edi,%eax,4), %eax
+	leal	(%eax,%ecx,4), %eax
+	vmovss	%xmm0, (%eax)
+	vmovss	%xmm0, 4(%eax)
+	vmovss	%xmm0, 8(%eax)
+	jmp	.L3
+.L155:
+	movzbl	4(%esp), %eax
+	leal	3(%ebp), %ecx
+	movl	8(%esp), %esi
+	movl	%ecx, 80(%edi)
+	movzbl	2(%ebp), %edx
+	movl	%ecx, %ebp
+	movl	(%edi,%eax,4), %eax
+	leal	(%eax,%edx,4), %eax
+	leal	(%edi,%esi,4), %edx
+	vmovss	(%edx), %xmm0
+	vmovss	%xmm0, (%eax)
+	vmovss	(%edx), %xmm0
+	vmovss	%xmm0, 4(%eax)
+	vmovss	(%edx), %xmm0
+	vmovss	%xmm0, 8(%eax)
+	jmp	.L3
+.L154:
+	movzbl	4(%esp), %eax
+	leal	3(%ebp), %edx
+	vxorps	%xmm0, %xmm0, %xmm0
+	movl	%edx, 80(%edi)
+	movzbl	2(%ebp), %ecx
+	movl	%edx, %ebp
+	movl	(%edi,%eax,4), %eax
+	vcvtsi2ss	8(%esp), %xmm0, %xmm0
+	leal	(%eax,%ecx,4), %eax
+	vmovss	%xmm0, (%eax)
+	vmovss	%xmm0, 4(%eax)
+	vmovss	%xmm0, 8(%eax)
+	jmp	.L3
+.L153:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %eax
+	leal	4(%ebp), %ebx
+	movl	20(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	%ebx, 80(%edi)
 	movl	(%edi,%esi,4), %edx
 	pushl	(%edx,%eax,4)
-	.cfi_def_cfa_offset 60
-	pushl	(%ebx)
 	.cfi_def_cfa_offset 64
-	call	fmodf
-	movl	80(%edi), %ebp
-	fstps	20(%esp)
-	movss	20(%esp), %xmm0
+	call	tanf
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
-	movss	%xmm0, (%ebx)
+	movzbl	4(%esp), %eax
+	movzbl	3(%ebp), %edx
+	fstps	8(%esp)
+	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	movl	%ecx, (%eax,%edx,4)
+	jmp	.L3
+.L152:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %ebx
+	movl	20(%esp), %eax
+	movl	%ebx, 80(%edi)
+	movzbl	2(%ebp), %edx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	pushl	(%eax,%edx,4)
+	.cfi_def_cfa_offset 64
+	call	tanf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	fstps	8(%esp)
+	movl	8(%esp), %edx
+	movl	%edx, (%edi,%eax,4)
+	jmp	.L3
+.L151:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %ebx
+	movl	20(%esp), %eax
+	movl	%ebx, 80(%edi)
+	pushl	(%edi,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	tanf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	movzbl	2(%ebp), %edx
+	fstps	8(%esp)
+	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	movl	%ecx, (%eax,%edx,4)
+	jmp	.L3
+.L150:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	movl	%ebx, %ebp
+	movl	20(%esp), %eax
+	pushl	(%edi,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	tanf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	fstps	8(%esp)
+	movl	8(%esp), %edx
+	movl	%edx, (%edi,%eax,4)
+	jmp	.L3
+.L149:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %eax
+	leal	4(%ebp), %ebx
+	movl	20(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	%ebx, 80(%edi)
+	movl	(%edi,%esi,4), %edx
+	pushl	(%edx,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	cosf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	movzbl	3(%ebp), %edx
+	fstps	8(%esp)
+	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	movl	%ecx, (%eax,%edx,4)
+	jmp	.L3
+.L148:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %ebx
+	movl	20(%esp), %eax
+	movl	%ebx, 80(%edi)
+	movzbl	2(%ebp), %edx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	pushl	(%eax,%edx,4)
+	.cfi_def_cfa_offset 64
+	call	cosf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	fstps	8(%esp)
+	movl	8(%esp), %edx
+	movl	%edx, (%edi,%eax,4)
+	jmp	.L3
+.L147:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %ebx
+	movl	20(%esp), %eax
+	movl	%ebx, 80(%edi)
+	pushl	(%edi,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	cosf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	movzbl	2(%ebp), %edx
+	fstps	8(%esp)
+	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	movl	%ecx, (%eax,%edx,4)
+	jmp	.L3
+.L146:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	movl	%ebx, %ebp
+	movl	20(%esp), %eax
+	pushl	(%edi,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	cosf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	fstps	8(%esp)
+	movl	8(%esp), %edx
+	movl	%edx, (%edi,%eax,4)
+	jmp	.L3
+.L145:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %eax
+	leal	4(%ebp), %ebx
+	movl	20(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	%ebx, 80(%edi)
+	movl	(%edi,%esi,4), %edx
+	pushl	(%edx,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	sinf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	movzbl	3(%ebp), %edx
+	fstps	8(%esp)
+	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	movl	%ecx, (%eax,%edx,4)
+	jmp	.L3
+.L144:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %ebx
+	movl	20(%esp), %eax
+	movl	%ebx, 80(%edi)
+	movzbl	2(%ebp), %edx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	pushl	(%eax,%edx,4)
+	.cfi_def_cfa_offset 64
+	call	sinf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	fstps	8(%esp)
+	movl	8(%esp), %edx
+	movl	%edx, (%edi,%eax,4)
+	jmp	.L3
+.L143:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	leal	3(%ebp), %ebx
+	movl	20(%esp), %eax
+	movl	%ebx, 80(%edi)
+	pushl	(%edi,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	sinf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	movzbl	2(%ebp), %edx
+	fstps	8(%esp)
+	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
+	movl	(%edi,%eax,4), %eax
+	movl	%ecx, (%eax,%edx,4)
+	jmp	.L3
+.L142:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	movl	%ebx, %ebp
+	movl	20(%esp), %eax
+	pushl	(%edi,%eax,4)
+	.cfi_def_cfa_offset 64
+	call	sinf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movzbl	4(%esp), %eax
+	fstps	8(%esp)
+	movl	8(%esp), %edx
+	movl	%edx, (%edi,%eax,4)
+	jmp	.L3
+.L141:
+	movzbl	4(%esp), %ecx
+.L163:
+	leal	1(%ebx), %eax
+	leal	2(%ebx), %edx
+	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	(%ebx), %eax
+	movl	%edx, 80(%edi)
+	movzbl	1(%ebx), %ebx
+	movl	(%edi,%ecx,4), %edx
+	leal	(%edx,%ebx,4), %ebx
+	movl	(%edi,%esi,4), %edx
+	vsqrtss	(%edx,%eax,4), %xmm0, %xmm0
+	vucomiss	%xmm0, %xmm0
+	jp	.L309
+.L234:
+	vmovss	%xmm0, (%ebx)
+	movl	80(%edi), %ebp
+	jmp	.L3
+.L140:
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
+	movzbl	4(%esp), %ecx
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	(%edi,%esi,4), %edx
+	vsqrtss	(%edx,%eax,4), %xmm0, %xmm0
+	vucomiss	%xmm0, %xmm0
+	jp	.L310
+.L232:
+	vmovss	%xmm0, (%edi,%ecx,4)
+	movl	80(%edi), %ebx
+	jmp	.L163
+.L139:
+	leal	3(%ebp), %eax
+	movl	%eax, 80(%edi)
+	movzbl	4(%esp), %eax
+	movzbl	2(%ebp), %edx
+	movl	(%edi,%eax,4), %eax
+	leal	(%eax,%edx,4), %ebx
+	movl	8(%esp), %eax
+	vsqrtss	(%edi,%eax,4), %xmm0, %xmm0
+	vucomiss	%xmm0, %xmm0
+	jp	.L311
+.L230:
+	vmovss	%xmm0, (%ebx)
+	movl	80(%edi), %ebp
+	jmp	.L3
+.L138:
+	movl	8(%esp), %eax
+	vsqrtss	(%edi,%eax,4), %xmm0, %xmm0
+	vucomiss	%xmm0, %xmm0
+	jp	.L312
+.L228:
+	movzbl	4(%esp), %eax
+	vmovss	%xmm0, (%edi,%eax,4)
+	movl	80(%edi), %ebp
+	jmp	.L3
+.L137:
+	leal	3(%ebp), %eax
+	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	%edx, 80(%edi)
+	movzbl	4(%esp), %edx
+	movl	(%edi,%esi,4), %ebx
+	movzbl	3(%ebp), %ecx
+	movl	(%edi,%edx,4), %edx
+	vmovss	(%ebx,%eax,4), %xmm0
+	vucomiss	(%edx,%ecx,4), %xmm0
+	jbe	.L294
+	leal	5(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	4(%ebp), %eax
+	movzbl	5(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L136:
+	leal	3(%ebp), %eax
+	movl	%eax, 80(%edi)
+	movl	8(%esp), %eax
+	movzbl	2(%ebp), %ecx
+	movl	(%edi,%eax,4), %edx
+	movzbl	4(%esp), %eax
+	vmovss	(%edx,%ecx,4), %xmm0
+	vucomiss	(%edi,%eax,4), %xmm0
+	jbe	.L293
+	leal	4(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	3(%ebp), %eax
+	movzbl	4(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L135:
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	4(%esp), %eax
+	movzbl	2(%ebp), %edx
+	vmovss	(%edi,%esi,4), %xmm0
+	movl	(%edi,%eax,4), %eax
+	vucomiss	(%eax,%edx,4), %xmm0
+	jbe	.L292
+	leal	4(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	3(%ebp), %eax
+	movzbl	4(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L134:
+	movzbl	4(%esp), %eax
+	movl	8(%esp), %esi
+	vmovss	(%edi,%esi,4), %xmm0
+	vucomiss	(%edi,%eax,4), %xmm0
+	jbe	.L291
+	leal	3(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movzbl	3(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L133:
+	leal	3(%ebp), %eax
+	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	%edx, 80(%edi)
+	movzbl	4(%esp), %edx
+	movl	(%edi,%esi,4), %ebx
+	movzbl	3(%ebp), %ecx
+	movl	(%edi,%edx,4), %edx
+	vmovss	(%ebx,%eax,4), %xmm0
+	vucomiss	(%edx,%ecx,4), %xmm0
+	jb	.L290
+	leal	5(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	4(%ebp), %eax
+	movzbl	5(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L132:
+	leal	3(%ebp), %eax
+	movl	%eax, 80(%edi)
+	movl	8(%esp), %eax
+	movzbl	2(%ebp), %ecx
+	movl	(%edi,%eax,4), %edx
+	movzbl	4(%esp), %eax
+	vmovss	(%edx,%ecx,4), %xmm0
+	vucomiss	(%edi,%eax,4), %xmm0
+	jb	.L289
+	leal	4(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	3(%ebp), %eax
+	movzbl	4(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L131:
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	4(%esp), %eax
+	movzbl	2(%ebp), %edx
+	vmovss	(%edi,%esi,4), %xmm0
+	movl	(%edi,%eax,4), %eax
+	vucomiss	(%eax,%edx,4), %xmm0
+	jb	.L288
+	leal	4(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	3(%ebp), %eax
+	movzbl	4(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L130:
+	movzbl	4(%esp), %eax
+	movl	8(%esp), %esi
+	vmovss	(%edi,%esi,4), %xmm0
+	vucomiss	(%edi,%eax,4), %xmm0
+	jb	.L287
+	leal	3(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movzbl	3(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L129:
+	leal	3(%ebp), %eax
+	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movl	%edx, 80(%edi)
+	movzbl	4(%esp), %edx
+	movl	(%edi,%esi,4), %ebx
+	movzbl	3(%ebp), %ecx
+	movl	(%edi,%edx,4), %edx
+	vmovss	(%ebx,%eax,4), %xmm0
+	vsubss	(%edx,%ecx,4), %xmm0, %xmm0
+	vucomiss	.LC1, %xmm0
+	jb	.L209
+	vmovss	.LC2, %xmm1
+	vucomiss	%xmm0, %xmm1
+	jb	.L209
+	leal	5(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	4(%ebp), %eax
+	movzbl	5(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L128:
+	leal	3(%ebp), %eax
+	movl	%eax, 80(%edi)
+	movl	8(%esp), %eax
+	movzbl	2(%ebp), %ecx
+	movl	(%edi,%eax,4), %edx
+	movzbl	4(%esp), %eax
+	vmovss	(%edx,%ecx,4), %xmm0
+	vsubss	(%edi,%eax,4), %xmm0, %xmm0
+	vucomiss	.LC1, %xmm0
+	jb	.L206
+	vmovss	.LC2, %xmm1
+	vucomiss	%xmm0, %xmm1
+	jb	.L206
+	leal	4(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	3(%ebp), %eax
+	movzbl	4(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L127:
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	4(%esp), %eax
+	movzbl	2(%ebp), %edx
+	vmovss	(%edi,%esi,4), %xmm0
+	movl	(%edi,%eax,4), %eax
+	vsubss	(%eax,%edx,4), %xmm0, %xmm0
+	vucomiss	.LC1, %xmm0
+	jb	.L203
+	vmovss	.LC2, %xmm1
+	vucomiss	%xmm0, %xmm1
+	jb	.L203
+	leal	4(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	3(%ebp), %eax
+	movzbl	4(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L126:
+	movzbl	4(%esp), %eax
+	movl	8(%esp), %esi
+	vmovss	(%edi,%esi,4), %xmm0
+	vsubss	(%edi,%eax,4), %xmm0, %xmm0
+	vucomiss	.LC1, %xmm0
+	jb	.L200
+	vmovss	.LC2, %xmm1
+	vucomiss	%xmm0, %xmm1
+	jb	.L200
+	leal	3(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	2(%ebp), %eax
+	movzbl	3(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
 	jmp	.L3
 .L124:
 	movzbl	4(%esp), %edx
@@ -895,13 +1126,40 @@ _ZN3GVM11Interpreter7executeEv:
 	.cfi_def_cfa_offset 64
 	call	fmodf
 	fstps	20(%esp)
-	movss	20(%esp), %xmm0
+	movl	20(%esp), %eax
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
 	movl	12(%esp), %edx
-	movss	%xmm0, (%ebx)
+	movl	%eax, (%ebx)
 	movl	80(%edi), %ebx
-	jmp	.L152
+.L164:
+	leal	1(%ebx), %eax
+	leal	2(%ebx), %ecx
+	subl	$8, %esp
+	.cfi_def_cfa_offset 56
+	movl	16(%esp), %esi
+	movl	%eax, 80(%edi)
+	movzbl	(%ebx), %eax
+	movl	%ecx, 80(%edi)
+	movzbl	1(%ebx), %ecx
+	movl	(%edi,%edx,4), %edx
+	leal	(%edx,%ecx,4), %ebx
+	movl	(%edi,%esi,4), %edx
+	pushl	(%edx,%eax,4)
+	.cfi_def_cfa_offset 60
+	pushl	(%ebx)
+	.cfi_def_cfa_offset 64
+	call	fmodf
+	fstps	20(%esp)
+	movl	20(%esp), %eax
+	movl	80(%edi), %ebp
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
+	movl	%eax, (%ebx)
+	jmp	.L3
+.L125:
+	movzbl	4(%esp), %edx
+	jmp	.L164
 .L123:
 	leal	3(%ebp), %eax
 	subl	$8, %esp
@@ -917,12 +1175,12 @@ _ZN3GVM11Interpreter7executeEv:
 	pushl	(%ebx)
 	.cfi_def_cfa_offset 64
 	call	fmodf
-	movl	80(%edi), %ebp
 	fstps	20(%esp)
-	movss	20(%esp), %xmm0
+	movl	20(%esp), %eax
+	movl	80(%edi), %ebp
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
-	movss	%xmm0, (%ebx)
+	movl	%eax, (%ebx)
 	jmp	.L3
 .L122:
 	movzbl	4(%esp), %eax
@@ -936,18 +1194,18 @@ _ZN3GVM11Interpreter7executeEv:
 	.cfi_def_cfa_offset 64
 	call	fmodf
 	fstps	20(%esp)
-	movss	20(%esp), %xmm0
+	movl	20(%esp), %eax
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
-	movss	%xmm0, (%ebx)
+	movl	%eax, (%ebx)
 	movl	80(%edi), %ebp
 	jmp	.L3
 .L121:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
 	leal	4(%ebp), %edx
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
@@ -955,51 +1213,51 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%ecx,4), %ecx
 	leal	(%ecx,%ebx,4), %ecx
 	movl	(%edi,%esi,4), %ebx
-	movss	(%ecx), %xmm0
-	divss	(%ebx,%eax,4), %xmm0
-	movss	%xmm0, (%ecx)
+	vmovss	(%ecx), %xmm0
+	vdivss	(%ebx,%eax,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%ecx)
 	jmp	.L3
 .L120:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
 	movzbl	4(%esp), %edx
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
 	leal	(%edi,%edx,4), %edx
-	movss	(%edx), %xmm0
-	divss	(%ecx,%ebx,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vdivss	(%ecx,%ebx,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L119:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	8(%esp), %esi
 	movl	(%edi,%edx,4), %edx
 	leal	(%edx,%ecx,4), %edx
-	movss	(%edx), %xmm0
-	divss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vdivss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L118:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	leal	(%edi,%eax,4), %eax
-	movss	(%eax), %xmm0
-	divss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%eax)
+	vmovss	(%eax), %xmm0
+	vdivss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%eax)
 	jmp	.L3
 .L117:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
 	leal	4(%ebp), %edx
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
@@ -1007,51 +1265,51 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%ecx,4), %ecx
 	leal	(%ecx,%ebx,4), %ecx
 	movl	(%edi,%esi,4), %ebx
-	movss	(%ecx), %xmm0
-	mulss	(%ebx,%eax,4), %xmm0
-	movss	%xmm0, (%ecx)
+	vmovss	(%ecx), %xmm0
+	vmulss	(%ebx,%eax,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%ecx)
 	jmp	.L3
 .L116:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
 	movzbl	4(%esp), %edx
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
 	leal	(%edi,%edx,4), %edx
-	movss	(%edx), %xmm0
-	mulss	(%ecx,%ebx,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vmulss	(%ecx,%ebx,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L115:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	8(%esp), %esi
 	movl	(%edi,%edx,4), %edx
 	leal	(%edx,%ecx,4), %edx
-	movss	(%edx), %xmm0
-	mulss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vmulss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L114:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	leal	(%edi,%eax,4), %eax
-	movss	(%eax), %xmm0
-	mulss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%eax)
+	vmovss	(%eax), %xmm0
+	vmulss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%eax)
 	jmp	.L3
 .L113:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
 	leal	4(%ebp), %edx
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
@@ -1059,51 +1317,51 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%ecx,4), %ecx
 	leal	(%ecx,%ebx,4), %ecx
 	movl	(%edi,%esi,4), %ebx
-	movss	(%ecx), %xmm0
-	subss	(%ebx,%eax,4), %xmm0
-	movss	%xmm0, (%ecx)
+	vmovss	(%ecx), %xmm0
+	vsubss	(%ebx,%eax,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%ecx)
 	jmp	.L3
 .L112:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
 	movzbl	4(%esp), %edx
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
 	leal	(%edi,%edx,4), %edx
-	movss	(%edx), %xmm0
-	subss	(%ecx,%ebx,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vsubss	(%ecx,%ebx,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L111:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	8(%esp), %esi
 	movl	(%edi,%edx,4), %edx
 	leal	(%edx,%ecx,4), %edx
-	movss	(%edx), %xmm0
-	subss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vsubss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L110:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	leal	(%edi,%eax,4), %eax
-	movss	(%eax), %xmm0
-	subss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%eax)
+	vmovss	(%eax), %xmm0
+	vsubss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%eax)
 	jmp	.L3
 .L109:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
 	leal	4(%ebp), %edx
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
@@ -1111,113 +1369,114 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%ecx,4), %ecx
 	leal	(%ecx,%ebx,4), %ecx
 	movl	(%edi,%esi,4), %ebx
-	movss	(%ecx), %xmm0
-	addss	(%ebx,%eax,4), %xmm0
-	movss	%xmm0, (%ecx)
+	vmovss	(%ecx), %xmm0
+	vaddss	(%ebx,%eax,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%ecx)
 	jmp	.L3
 .L108:
-	movl	8(%esp), %esi
-	leal	3(%ebp), %eax
 	movzbl	4(%esp), %edx
+	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
 	leal	(%edi,%edx,4), %edx
-	movss	(%edx), %xmm0
-	addss	(%ecx,%ebx,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vaddss	(%ecx,%ebx,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L107:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	8(%esp), %esi
 	movl	(%edi,%edx,4), %edx
 	leal	(%edx,%ecx,4), %edx
-	movss	(%edx), %xmm0
-	addss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%edx)
+	vmovss	(%edx), %xmm0
+	vaddss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%edx)
 	jmp	.L3
 .L106:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	leal	(%edi,%eax,4), %eax
-	movss	(%eax), %xmm0
-	addss	(%edi,%esi,4), %xmm0
-	movss	%xmm0, (%eax)
+	vmovss	(%eax), %xmm0
+	vaddss	(%edi,%esi,4), %xmm0, %xmm0
+	vmovss	%xmm0, (%eax)
 	jmp	.L3
 .L105:
-	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
 	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movzbl	4(%esp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
+	movl	(%edi,%esi,4), %esi
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
 	movl	(%edi,%ecx,4), %ecx
-	movl	(%edi,%esi,4), %esi
-	movss	(%esi,%eax,4), %xmm0
-	xorps	.LC0, %xmm0
-	movss	%xmm0, (%ecx,%ebx,4)
+	vmovss	(%esi,%eax,4), %xmm0
+	vxorps	.LC0, %xmm0, %xmm0
+	vmovss	%xmm0, (%ecx,%ebx,4)
 	jmp	.L3
 .L104:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
-	movss	(%ecx,%ebx,4), %xmm0
-	xorps	.LC0, %xmm0
-	movss	%xmm0, (%edi,%edx,4)
+	vmovss	(%ecx,%ebx,4), %xmm0
+	vxorps	.LC0, %xmm0, %xmm0
+	vmovss	%xmm0, (%edi,%edx,4)
 	jmp	.L3
 .L103:
-	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
+	vmovss	(%edi,%esi,4), %xmm0
+	vxorps	.LC0, %xmm0, %xmm0
 	movl	(%edi,%edx,4), %edx
-	movss	(%edi,%esi,4), %xmm0
-	xorps	.LC0, %xmm0
-	movss	%xmm0, (%edx,%ecx,4)
+	vmovss	%xmm0, (%edx,%ecx,4)
 	jmp	.L3
 .L102:
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %eax
 	movl	%ebx, %ebp
-	movl	8(%esp), %esi
-	movss	(%edi,%esi,4), %xmm0
-	xorps	.LC0, %xmm0
-	movss	%xmm0, (%edi,%eax,4)
+	vmovss	(%edi,%esi,4), %xmm0
+	vxorps	.LC0, %xmm0, %xmm0
+	vmovss	%xmm0, (%edi,%eax,4)
 	jmp	.L3
 .L101:
-	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
 	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movzbl	4(%esp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
-	movzbl	3(%ebp), %ebp
-	movl	(%edi,%ecx,4), %ebx
-	movl	(%edi,%esi,4), %ecx
-	movl	(%ecx,%eax,4), %ecx
-	shrl	%cl, (%ebx,%ebp,4)
+	movl	(%edi,%esi,4), %esi
+	movzbl	3(%ebp), %ebx
+	movl	(%edi,%ecx,4), %ebp
+	movl	(%esi,%eax,4), %eax
+	movl	%eax, %ecx
+	shrl	%cl, 0(%ebp,%ebx,4)
 	movl	%edx, %ebp
 	jmp	.L3
 .L100:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
@@ -1227,59 +1486,62 @@ _ZN3GVM11Interpreter7executeEv:
 .L99:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
-	movzbl	2(%ebp), %ebx
-	movl	%eax, %ebp
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %ebp
+	movl	(%edi,%esi,4), %ebx
 	movl	(%edi,%edx,4), %edx
-	movl	(%edi,%esi,4), %ecx
-	shrl	%cl, (%edx,%ebx,4)
+	movl	%ebx, %ecx
+	shrl	%cl, (%edx,%ebp,4)
+	movl	%eax, %ebp
 	jmp	.L3
 .L98:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	(%edi,%esi,4), %ecx
 	shrl	%cl, (%edi,%eax,4)
 	jmp	.L3
 .L97:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
-	movl	8(%esp), %ecx
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
+	addl	$1, %esi
 	movl	(%edi,%edx,4), %edx
-	addl	$1, %ecx
+	movl	%esi, %ecx
 	shrl	%cl, (%edx,%ebx,4)
 	jmp	.L3
 .L96:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
 	addl	$1, %ecx
 	shrl	%cl, (%edi,%eax,4)
 	jmp	.L3
 .L95:
-	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
 	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movzbl	4(%esp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
-	movzbl	3(%ebp), %ebp
-	movl	(%edi,%ecx,4), %ebx
-	movl	(%edi,%esi,4), %ecx
-	movl	(%ecx,%eax,4), %ecx
-	sall	%cl, (%ebx,%ebp,4)
+	movl	(%edi,%esi,4), %esi
+	movzbl	3(%ebp), %ebx
+	movl	(%edi,%ecx,4), %ebp
+	movl	(%esi,%eax,4), %eax
+	movl	%eax, %ecx
+	sall	%cl, 0(%ebp,%ebx,4)
 	movl	%edx, %ebp
 	jmp	.L3
 .L94:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
@@ -1289,62 +1551,64 @@ _ZN3GVM11Interpreter7executeEv:
 .L93:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
-	movzbl	2(%ebp), %ebx
-	movl	%eax, %ebp
+	movl	%eax, 80(%edi)
+	movzbl	2(%ebp), %ebp
+	movl	(%edi,%esi,4), %ebx
 	movl	(%edi,%edx,4), %edx
-	movl	(%edi,%esi,4), %ecx
-	sall	%cl, (%edx,%ebx,4)
+	movl	%ebx, %ecx
+	sall	%cl, (%edx,%ebp,4)
+	movl	%eax, %ebp
 	jmp	.L3
 .L92:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	(%edi,%esi,4), %ecx
 	sall	%cl, (%edi,%eax,4)
 	jmp	.L3
 .L91:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
-	movl	8(%esp), %ecx
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
+	addl	$1, %esi
 	movl	(%edi,%edx,4), %edx
-	addl	$1, %ecx
+	movl	%esi, %ecx
 	sall	%cl, (%edx,%ebx,4)
 	jmp	.L3
 .L90:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %ecx
+	movl	%ebx, %ebp
 	addl	$1, %ecx
 	sall	%cl, (%edi,%eax,4)
 	jmp	.L3
 .L89:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movzbl	4(%esp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
-	movzbl	4(%esp), %ecx
+	movl	(%edi,%esi,4), %esi
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
-	movl	(%edi,%esi,4), %esi
 	movl	(%edi,%ecx,4), %ecx
 	movl	(%esi,%eax,4), %eax
 	notl	%eax
 	movl	%eax, (%ecx,%ebx,4)
 	jmp	.L3
 .L88:
-	movl	8(%esp), %eax
 	leal	3(%ebp), %edx
+	movl	8(%esp), %eax
+	movzbl	4(%esp), %ecx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%edx, %ebp
-	movzbl	4(%esp), %ecx
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%ebx,4), %eax
 	notl	%eax
@@ -1364,8 +1628,8 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L86:
 	movl	8(%esp), %eax
-	movl	%ebx, %ebp
 	movzbl	4(%esp), %edx
+	movl	%ebx, %ebp
 	movl	(%edi,%eax,4), %eax
 	notl	%eax
 	movl	%eax, (%edi,%edx,4)
@@ -1373,23 +1637,23 @@ _ZN3GVM11Interpreter7executeEv:
 .L85:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
-	movl	(%edi,%ecx,4), %ecx
 	movl	(%edi,%esi,4), %esi
+	movl	(%edi,%ecx,4), %ecx
 	movl	(%esi,%eax,4), %eax
 	xorl	%eax, (%ecx,%ebx,4)
 	jmp	.L3
 .L84:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
@@ -1399,41 +1663,41 @@ _ZN3GVM11Interpreter7executeEv:
 .L83:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	(%edi,%edx,4), %edx
 	movl	(%edi,%esi,4), %ebx
+	movl	(%edi,%edx,4), %edx
 	xorl	%ebx, (%edx,%ecx,4)
 	jmp	.L3
 .L82:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	(%edi,%esi,4), %edx
 	xorl	%edx, (%edi,%eax,4)
 	jmp	.L3
 .L81:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
-	movl	(%edi,%ecx,4), %ecx
 	movl	(%edi,%esi,4), %esi
+	movl	(%edi,%ecx,4), %ecx
 	movl	(%esi,%eax,4), %eax
 	orl	%eax, (%ecx,%ebx,4)
 	jmp	.L3
 .L80:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
@@ -1443,41 +1707,41 @@ _ZN3GVM11Interpreter7executeEv:
 .L79:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	(%edi,%edx,4), %edx
 	movl	(%edi,%esi,4), %ebx
+	movl	(%edi,%edx,4), %edx
 	orl	%ebx, (%edx,%ecx,4)
 	jmp	.L3
 .L78:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	(%edi,%esi,4), %edx
 	orl	%edx, (%edi,%eax,4)
 	jmp	.L3
 .L77:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
-	movl	(%edi,%ecx,4), %ecx
 	movl	(%edi,%esi,4), %esi
+	movl	(%edi,%ecx,4), %ecx
 	movl	(%esi,%eax,4), %eax
 	andl	%eax, (%ecx,%ebx,4)
 	jmp	.L3
 .L76:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
@@ -1487,47 +1751,47 @@ _ZN3GVM11Interpreter7executeEv:
 .L75:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	(%edi,%edx,4), %edx
 	movl	(%edi,%esi,4), %ebx
+	movl	(%edi,%edx,4), %edx
 	andl	%ebx, (%edx,%ecx,4)
 	jmp	.L3
 .L74:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	(%edi,%esi,4), %edx
 	andl	%edx, (%edi,%eax,4)
 	jmp	.L3
 .L73:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%edx, 80(%edi)
-	movzbl	3(%ebp), %eax
 	movl	(%edi,%esi,4), %ebx
+	movzbl	3(%ebp), %eax
 	movl	(%ebx,%ecx,4), %ebx
 	testl	%ebx, %ebx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %ecx
 	movl	%edx, %ebp
 	movl	(%edi,%ecx,4), %ecx
 	andl	%ebx, (%ecx,%eax,4)
 	jmp	.L3
 .L72:
-	movl	8(%esp), %eax
 	leal	3(%ebp), %ecx
+	movl	8(%esp), %eax
 	movl	%ecx, 80(%edi)
 	movzbl	2(%ebp), %edx
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %ebx
 	testl	%ebx, %ebx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %eax
 	movl	%ecx, %ebp
 	leal	(%edi,%eax,4), %esi
@@ -1543,7 +1807,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	2(%ebp), %eax
 	movl	(%edi,%esi,4), %ebx
 	testl	%ebx, %ebx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %edx
 	movl	%ecx, %ebp
 	movl	(%edi,%edx,4), %edx
@@ -1557,7 +1821,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	8(%esp), %eax
 	movl	(%edi,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %eax
 	movl	%ebx, %ebp
 	leal	(%edi,%eax,4), %esi
@@ -1569,12 +1833,12 @@ _ZN3GVM11Interpreter7executeEv:
 .L69:
 	movzbl	4(%esp), %eax
 	leal	3(%ebp), %ecx
+	movl	8(%esp), %esi
 	movl	%ecx, 80(%edi)
 	movzbl	2(%ebp), %edx
 	movl	%ecx, %ebp
-	movl	8(%esp), %esi
-	movl	(%edi,%eax,4), %eax
 	addl	$2, %esi
+	movl	(%edi,%eax,4), %eax
 	leal	(%eax,%edx,4), %ebx
 	movl	(%ebx), %eax
 	cltd
@@ -1583,27 +1847,27 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L68:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
+	addl	$2, %esi
 	leal	(%edi,%eax,4), %ecx
 	movl	(%ecx), %eax
-	addl	$2, %esi
 	cltd
 	idivl	%esi
 	movl	%edx, (%ecx)
 	jmp	.L3
 .L67:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	leal	4(%ebp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %edx
 	movl	%ecx, 80(%edi)
-	movzbl	3(%ebp), %eax
 	movl	(%edi,%esi,4), %ebx
+	movzbl	3(%ebp), %eax
 	movl	(%ebx,%edx,4), %ebx
 	testl	%ebx, %ebx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %edx
 	movl	%ecx, %ebp
 	movl	(%edi,%edx,4), %edx
@@ -1614,14 +1878,14 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	%eax, (%esi)
 	jmp	.L3
 .L66:
-	movl	8(%esp), %eax
 	leal	3(%ebp), %ecx
+	movl	8(%esp), %eax
 	movl	%ecx, 80(%edi)
 	movzbl	2(%ebp), %edx
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %ebx
 	testl	%ebx, %ebx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %eax
 	movl	%ecx, %ebp
 	leal	(%edi,%eax,4), %esi
@@ -1637,7 +1901,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	2(%ebp), %eax
 	movl	(%edi,%esi,4), %ebx
 	testl	%ebx, %ebx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %edx
 	movl	%ecx, %ebp
 	movl	(%edi,%edx,4), %edx
@@ -1651,7 +1915,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	8(%esp), %eax
 	movl	(%edi,%eax,4), %ecx
 	testl	%ecx, %ecx
-	je	.L187
+	je	.L199
 	movzbl	4(%esp), %eax
 	movl	%ebx, %ebp
 	leal	(%edi,%eax,4), %esi
@@ -1663,12 +1927,12 @@ _ZN3GVM11Interpreter7executeEv:
 .L63:
 	movzbl	4(%esp), %eax
 	leal	3(%ebp), %ecx
+	movl	8(%esp), %esi
 	movl	%ecx, 80(%edi)
 	movzbl	2(%ebp), %edx
 	movl	%ecx, %ebp
-	movl	8(%esp), %esi
-	movl	(%edi,%eax,4), %eax
 	addl	$2, %esi
+	movl	(%edi,%eax,4), %eax
 	leal	(%eax,%edx,4), %ebx
 	movl	(%ebx), %eax
 	cltd
@@ -1677,20 +1941,20 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L62:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
+	addl	$2, %esi
 	leal	(%edi,%eax,4), %ecx
 	movl	(%ecx), %eax
-	addl	$2, %esi
 	cltd
 	idivl	%esi
 	movl	%eax, (%ecx)
 	jmp	.L3
 .L61:
 	leal	3(%ebp), %eax
+	leal	4(%ebp), %edx
 	movl	%eax, 80(%edi)
 	movzbl	4(%esp), %eax
-	leal	4(%ebp), %edx
 	movzbl	2(%ebp), %ecx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
@@ -1719,10 +1983,10 @@ _ZN3GVM11Interpreter7executeEv:
 .L59:
 	movzbl	4(%esp), %eax
 	leal	3(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%edx, %ebp
-	movl	8(%esp), %esi
 	movl	(%edi,%eax,4), %eax
 	leal	(%eax,%ecx,4), %ecx
 	movl	(%ecx), %eax
@@ -1731,8 +1995,8 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L58:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	leal	(%edi,%eax,4), %edx
 	movl	(%edx), %eax
 	imull	(%edi,%esi,4), %eax
@@ -1741,45 +2005,45 @@ _ZN3GVM11Interpreter7executeEv:
 .L57:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	8(%esp), %esi
-	movl	(%edi,%edx,4), %edx
 	addl	$2, %esi
+	movl	(%edi,%edx,4), %edx
 	leal	(%edx,%ecx,4), %edx
 	imull	(%edx), %esi
 	movl	%esi, (%edx)
 	jmp	.L3
 .L56:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
-	leal	(%edi,%eax,4), %eax
+	movl	%ebx, %ebp
 	addl	$2, %esi
+	leal	(%edi,%eax,4), %eax
 	imull	(%eax), %esi
 	movl	%esi, (%eax)
 	jmp	.L3
 .L55:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
-	movl	(%edi,%ecx,4), %ecx
 	movl	(%edi,%esi,4), %esi
+	movl	(%edi,%ecx,4), %ecx
 	movl	(%esi,%eax,4), %eax
 	subl	%eax, (%ecx,%ebx,4)
 	jmp	.L3
 .L54:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
@@ -1789,59 +2053,59 @@ _ZN3GVM11Interpreter7executeEv:
 .L53:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	(%edi,%edx,4), %edx
 	movl	(%edi,%esi,4), %ebx
+	movl	(%edi,%edx,4), %edx
 	subl	%ebx, (%edx,%ecx,4)
 	jmp	.L3
 .L52:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	(%edi,%esi,4), %edx
 	subl	%edx, (%edi,%eax,4)
 	jmp	.L3
 .L51:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	(%edi,%edx,4), %edx
 	addl	$1, %esi
+	movl	(%edi,%edx,4), %edx
 	subl	%esi, (%edx,%ecx,4)
 	jmp	.L3
 .L50:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	addl	$1, %esi
 	subl	%esi, (%edi,%eax,4)
 	jmp	.L3
 .L49:
 	movzbl	4(%esp), %ecx
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
-	movl	(%edi,%ecx,4), %ecx
 	movl	(%edi,%esi,4), %esi
+	movl	(%edi,%ecx,4), %ecx
 	movl	(%esi,%eax,4), %eax
 	addl	%eax, (%ecx,%ebx,4)
 	jmp	.L3
 .L48:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
+	movl	8(%esp), %esi
 	movzbl	4(%esp), %edx
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%eax, %ebp
 	movl	(%edi,%esi,4), %ecx
@@ -1851,62 +2115,62 @@ _ZN3GVM11Interpreter7executeEv:
 .L47:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	(%edi,%edx,4), %edx
 	movl	(%edi,%esi,4), %ebx
+	movl	(%edi,%edx,4), %edx
 	addl	%ebx, (%edx,%ecx,4)
 	jmp	.L3
 .L46:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	movl	(%edi,%esi,4), %edx
 	addl	%edx, (%edi,%eax,4)
 	jmp	.L3
 .L45:
 	movzbl	4(%esp), %edx
 	leal	3(%ebp), %eax
-	movl	%eax, 80(%edi)
 	movl	8(%esp), %esi
+	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %ecx
 	movl	%eax, %ebp
-	movl	(%edi,%edx,4), %edx
 	addl	$1, %esi
+	movl	(%edi,%edx,4), %edx
 	addl	%esi, (%edx,%ecx,4)
 	jmp	.L3
 .L44:
 	movzbl	4(%esp), %eax
-	movl	%ebx, %ebp
 	movl	8(%esp), %esi
+	movl	%ebx, %ebp
 	addl	$1, %esi
 	addl	%esi, (%edi,%eax,4)
 	jmp	.L3
 .L43:
-	movl	8(%esp), %esi
 	leal	3(%ebp), %eax
+	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movzbl	4(%esp), %ecx
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
-	movzbl	4(%esp), %ecx
+	movl	(%edi,%esi,4), %esi
 	movzbl	3(%ebp), %ebx
 	movl	%edx, %ebp
-	movl	(%edi,%esi,4), %esi
 	movl	(%edi,%ecx,4), %ecx
 	movl	(%esi,%eax,4), %eax
 	negl	%eax
 	movl	%eax, (%ecx,%ebx,4)
 	jmp	.L3
 .L42:
-	movl	8(%esp), %eax
 	leal	3(%ebp), %edx
+	movl	8(%esp), %eax
+	movzbl	4(%esp), %ecx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %ebx
 	movl	%edx, %ebp
-	movzbl	4(%esp), %ecx
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%ebx,4), %eax
 	negl	%eax
@@ -1926,16 +2190,16 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L40:
 	movl	8(%esp), %eax
-	movl	%ebx, %ebp
 	movzbl	4(%esp), %edx
+	movl	%ebx, %ebp
 	movl	(%edi,%eax,4), %eax
 	negl	%eax
 	movl	%eax, (%edi,%edx,4)
 	jmp	.L3
 .L39:
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
@@ -1945,7 +2209,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%edx,4), %edx
 	movl	(%edx,%ecx,4), %esi
 	cmpl	%esi, (%ebx,%eax,4)
-	jle	.L186
+	jle	.L198
 	leal	5(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	4(%ebp), %eax
@@ -1965,7 +2229,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	4(%esp), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edx,%ecx,4)
-	jle	.L185
+	jle	.L197
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -1985,7 +2249,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %eax
 	cmpl	%eax, (%edi,%esi,4)
-	jle	.L184
+	jle	.L196
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -2001,7 +2265,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	8(%esp), %esi
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edi,%esi,4)
-	jle	.L183
+	jle	.L195
 	leal	3(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -2014,8 +2278,8 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L35:
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
@@ -2025,7 +2289,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%edx,4), %edx
 	movl	(%edx,%ecx,4), %esi
 	cmpl	%esi, (%ebx,%eax,4)
-	jl	.L182
+	jl	.L194
 	leal	5(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	4(%ebp), %eax
@@ -2045,7 +2309,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	4(%esp), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edx,%ecx,4)
-	jl	.L181
+	jl	.L193
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -2065,7 +2329,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %eax
 	cmpl	%eax, (%edi,%esi,4)
-	jl	.L180
+	jl	.L192
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -2081,7 +2345,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	8(%esp), %esi
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edi,%esi,4)
-	jl	.L179
+	jl	.L191
 	leal	3(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -2094,8 +2358,8 @@ _ZN3GVM11Interpreter7executeEv:
 	jmp	.L3
 .L31:
 	leal	3(%ebp), %eax
-	movl	8(%esp), %esi
 	leal	4(%ebp), %edx
+	movl	8(%esp), %esi
 	movl	%eax, 80(%edi)
 	movzbl	2(%ebp), %eax
 	movl	%edx, 80(%edi)
@@ -2105,7 +2369,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%edx,4), %edx
 	movl	(%edx,%ecx,4), %esi
 	cmpl	%esi, (%ebx,%eax,4)
-	je	.L249
+	je	.L313
 	addl	$6, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
@@ -2118,7 +2382,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %eax
 	cmpl	%eax, (%edi,%esi,4)
-	je	.L250
+	je	.L314
 	addl	$5, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
@@ -2127,7 +2391,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	8(%esp), %esi
 	movl	(%edi,%eax,4), %eax
 	cmpl	%eax, (%edi,%esi,4)
-	je	.L251
+	je	.L315
 	addl	$4, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
@@ -2139,7 +2403,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %eax
 	testl	%eax, %eax
-	je	.L175
+	je	.L187
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -2154,7 +2418,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	4(%esp), %eax
 	movl	(%edi,%eax,4), %edx
 	testl	%edx, %edx
-	je	.L174
+	je	.L186
 	leal	3(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -2173,7 +2437,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %ecx
 	testl	%ecx, %ecx
-	jne	.L173
+	jne	.L185
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -2188,7 +2452,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	4(%esp), %eax
 	movl	(%edi,%eax,4), %ebx
 	testl	%ebx, %ebx
-	jne	.L172
+	jne	.L184
 	leal	3(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -2207,9 +2471,9 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	(%edi,%eax,4), %eax
 	movl	(%eax,%edx,4), %eax
 	movzbl	4(%esp), %edx
-	movl	%eax, (%edi,%edx,4)
 	testl	%eax, %eax
-	je	.L171
+	movl	%eax, (%edi,%edx,4)
+	je	.L183
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -2224,7 +2488,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	4(%esp), %eax
 	leal	(%edi,%eax,4), %edx
 	subl	$1, (%edx)
-	je	.L170
+	je	.L182
 	leal	3(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -2239,9 +2503,9 @@ _ZN3GVM11Interpreter7executeEv:
 	movzbl	4(%esp), %eax
 	movl	(%edi,%eax,4), %eax
 	cmpl	104(%edi), %eax
-	jb	.L252
+	jb	.L316
 	cmpl	108(%edi), %eax
-	jnb	.L168
+	jnb	.L180
 	movl	%eax, 92(%edi)
 	movl	%ebx, %ebp
 	jmp	.L3
@@ -2249,7 +2513,7 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	92(%edi), %ecx
 	leal	4(%ecx,%esi,4), %eax
 	cmpl	108(%edi), %eax
-	jnb	.L168
+	jnb	.L180
 	movzbl	4(%esp), %edx
 	movl	%ebx, %ebp
 	movl	%ecx, (%edi,%edx,4)
@@ -2258,39 +2522,39 @@ _ZN3GVM11Interpreter7executeEv:
 .L20:
 	leal	3(%ebp), %ecx
 	movl	%esi, %eax
-	movl	%ecx, 80(%edi)
-	movzbl	2(%ebp), %edx
 	leal	60(%edi), %ebx
 	sall	$8, %eax
+	movl	%ecx, 80(%edi)
+	movzbl	2(%ebp), %edx
 	orw	%dx, %ax
-	je	.L205
+	je	.L245
 	movl	92(%edi), %edx
 	movl	104(%edi), %esi
 	cmpl	%esi, %edx
-	ja	.L165
-	jmp	.L168
+	ja	.L177
+	jmp	.L180
 	.p2align 4,,10
 	.p2align 3
-.L166:
+.L178:
 	subl	$4, %ebx
 	cmpl	%esi, %edx
-	jbe	.L168
-.L165:
+	jbe	.L180
+.L177:
 	testw	%ax, %ax
-	jns	.L166
+	jns	.L178
 	leal	-4(%edx), %ebp
 	movl	-4(%edx), %edx
 	subl	$4, %ebx
 	movl	%ebp, 92(%edi)
 	movl	%edx, 4(%ebx)
 	addw	%ax, %ax
-	je	.L206
+	je	.L246
 	movl	%ebp, %edx
 	cmpl	%esi, %edx
-	ja	.L165
-.L168:
+	ja	.L177
+.L180:
 	movl	$6, 84(%edi)
-.L1:
+.L301:
 	addl	$28, %esp
 	.cfi_remember_state
 	.cfi_def_cfa_offset 20
@@ -2312,20 +2576,20 @@ _ZN3GVM11Interpreter7executeEv:
 	leal	3(%ebp), %ecx
 	movl	%esi, %eax
 	movl	%edi, %ebx
+	sall	$8, %eax
 	movl	%ecx, 80(%edi)
 	movzbl	2(%ebp), %edx
-	sall	$8, %eax
 	orw	%dx, %ax
-	je	.L203
+	je	.L243
 	movl	92(%edi), %edx
 	movl	108(%edi), %esi
 	cmpl	%esi, %edx
-	jnb	.L168
+	jnb	.L180
 	movl	%edx, %ebp
-	jmp	.L161
+	jmp	.L173
 	.p2align 4,,10
 	.p2align 3
-.L253:
+.L317:
 	leal	4(%ebp), %edx
 	addl	$4, %ebx
 	movl	%edx, 92(%edi)
@@ -2333,75 +2597,45 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	%edx, 0(%ebp)
 	movzwl	%ax, %edx
 	sarl	%edx
-	movl	%edx, %eax
 	testw	%dx, %dx
-	je	.L204
+	movl	%edx, %eax
+	je	.L244
 	movl	92(%edi), %ebp
-.L163:
+.L175:
 	cmpl	%esi, %ebp
-	jnb	.L168
-.L161:
+	jnb	.L180
+.L173:
 	testb	$1, %al
-	jne	.L253
+	jne	.L317
 .L4:
 	addl	$4, %ebx
-	jmp	.L163
-.L240:
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	pushl	%edi
-	.cfi_def_cfa_offset 64
-	call	*%eax
-	movl	80(%edi), %ebp
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	jmp	.L3
-.L170:
+	jmp	.L175
+.L200:
 	addl	$4, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
-.L171:
+.L209:
+	addl	$6, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L206:
 	addl	$5, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
-.L172:
-	addl	$4, %ebp
-	movl	%ebp, 80(%edi)
-	jmp	.L3
-.L173:
-	addl	$5, %ebp
-	movl	%ebp, 80(%edi)
-	jmp	.L3
-.L174:
-	addl	$4, %ebp
-	movl	%ebp, 80(%edi)
-	jmp	.L3
-.L175:
-	addl	$5, %ebp
-	movl	%ebp, 80(%edi)
-	jmp	.L3
-.L179:
-	addl	$4, %ebp
-	movl	%ebp, 80(%edi)
-	jmp	.L3
-.L180:
-	addl	$5, %ebp
-	movl	%ebp, 80(%edi)
-	jmp	.L3
-.L181:
+.L203:
 	addl	$5, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
 .L182:
-	addl	$6, %ebp
-	movl	%ebp, 80(%edi)
-	jmp	.L3
-.L183:
 	addl	$4, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
-.L184:
+.L183:
 	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L184:
+	addl	$4, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
 .L185:
@@ -2409,27 +2643,84 @@ _ZN3GVM11Interpreter7executeEv:
 	movl	%ebp, 80(%edi)
 	jmp	.L3
 .L186:
+	addl	$4, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L187:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L191:
+	addl	$4, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L192:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L193:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L194:
 	addl	$6, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
-.L204:
-	movl	%ecx, %ebp
-	jmp	.L3
-.L206:
-	movl	%ecx, %ebp
-	jmp	.L3
-.L249:
-	leal	5(%ebp), %edx
-	movl	%edx, 80(%edi)
-	movzbl	4(%ebp), %eax
-	movzbl	5(%ebp), %ebp
-	sall	$8, %eax
-	orl	%eax, %ebp
-	movswl	%bp, %ebp
-	addl	%edx, %ebp
+.L195:
+	addl	$4, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
-.L251:
+.L196:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L197:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L198:
+	addl	$6, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L287:
+	addl	$4, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L288:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L289:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L290:
+	addl	$6, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L291:
+	addl	$4, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L292:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L293:
+	addl	$5, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L294:
+	addl	$6, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L244:
+	movl	%ecx, %ebp
+	jmp	.L3
+.L246:
+	movl	%ecx, %ebp
+	jmp	.L3
+.L315:
 	leal	3(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	2(%ebp), %eax
@@ -2440,7 +2731,7 @@ _ZN3GVM11Interpreter7executeEv:
 	addl	%edx, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
-.L250:
+.L314:
 	leal	4(%ebp), %edx
 	movl	%edx, 80(%edi)
 	movzbl	3(%ebp), %eax
@@ -2451,33 +2742,78 @@ _ZN3GVM11Interpreter7executeEv:
 	addl	%edx, %ebp
 	movl	%ebp, 80(%edi)
 	jmp	.L3
-.L187:
+.L313:
+	leal	5(%ebp), %edx
+	movl	%edx, 80(%edi)
+	movzbl	4(%ebp), %eax
+	movzbl	5(%ebp), %ebp
+	sall	$8, %eax
+	orl	%eax, %ebp
+	movswl	%bp, %ebp
+	addl	%edx, %ebp
+	movl	%ebp, 80(%edi)
+	jmp	.L3
+.L199:
 	movl	$5, 84(%edi)
-	jmp	.L1
-.L203:
+	addl	$28, %esp
+	.cfi_remember_state
+	.cfi_def_cfa_offset 20
+	popl	%ebx
+	.cfi_restore 3
+	.cfi_def_cfa_offset 16
+	popl	%esi
+	.cfi_restore 6
+	.cfi_def_cfa_offset 12
+	popl	%edi
+	.cfi_restore 7
+	.cfi_def_cfa_offset 8
+	popl	%ebp
+	.cfi_restore 5
+	.cfi_def_cfa_offset 4
+	ret
+.L243:
+	.cfi_restore_state
 	movl	%ecx, %ebp
 	jmp	.L3
-.L205:
+.L245:
 	movl	%ecx, %ebp
 	jmp	.L3
-.L154:
+.L166:
 	movl	$8, 84(%edi)
-	jmp	.L1
-.L158:
+	jmp	.L301
+.L170:
 	movl	$2, 84(%edi)
-	jmp	.L1
-.L248:
-	subl	$16, %esp
+	jmp	.L301
+.L304:
+	movl	$13, 84(%edi)
+	jmp	.L301
+.L312:
+	subl	$12, %esp
+	.cfi_def_cfa_offset 60
+	movl	20(%esp), %eax
+	pushl	(%edi,%eax,4)
 	.cfi_def_cfa_offset 64
-	movss	%xmm0, (%esp)
 	call	sqrtf
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
-	movss	(%ebx), %xmm3
+	fstps	8(%esp)
+	vmovss	8(%esp), %xmm0
+	jmp	.L228
+.L316:
+	movl	$7, 84(%edi)
+	jmp	.L301
+.L308:
+	subl	$16, %esp
+	.cfi_def_cfa_offset 64
+	vmovss	%xmm1, (%esp)
+	call	sqrtf
+	addl	$16, %esp
+	.cfi_def_cfa_offset 48
 	fstps	4(%esp)
-	movss	4(%esp), %xmm1
-	jmp	.L200
-.L243:
+	vmovss	(%ebx), %xmm2
+	vmovss	4(%esp), %xmm0
+	jmp	.L240
+.L310:
 	movl	%ecx, 12(%esp)
 	subl	$12, %esp
 	.cfi_def_cfa_offset 60
@@ -2486,24 +2822,11 @@ _ZN3GVM11Interpreter7executeEv:
 	call	sqrtf
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
+	fstps	4(%esp)
 	movl	12(%esp), %ecx
-	fstps	4(%esp)
-	movss	4(%esp), %xmm0
-	jmp	.L192
-.L247:
-	subl	$16, %esp
-	.cfi_def_cfa_offset 64
-	movss	%xmm0, (%esp)
-	call	sqrtf
-	addl	$16, %esp
-	.cfi_def_cfa_offset 48
-	fstps	4(%esp)
-	movss	4(%esp), %xmm1
-	jmp	.L198
-.L252:
-	movl	$7, 84(%edi)
-	jmp	.L1
-.L242:
+	vmovss	4(%esp), %xmm0
+	jmp	.L232
+.L309:
 	subl	$12, %esp
 	.cfi_def_cfa_offset 60
 	pushl	(%edx,%eax,4)
@@ -2512,37 +2835,32 @@ _ZN3GVM11Interpreter7executeEv:
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
 	fstps	4(%esp)
-	movss	4(%esp), %xmm0
-	jmp	.L194
-.L239:
-	movl	$13, 84(%edi)
-	jmp	.L1
-.L241:
+	vmovss	4(%esp), %xmm0
+	jmp	.L234
+.L305:
 	movl	$11, 84(%edi)
-	jmp	.L1
-.L246:
+	jmp	.L301
+.L307:
 	subl	$16, %esp
 	.cfi_def_cfa_offset 64
-	movss	%xmm0, (%esp)
+	vmovss	%xmm0, (%esp)
 	call	sqrtf
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
-	fstps	8(%esp)
-	movss	8(%esp), %xmm1
-	jmp	.L196
-.L245:
-	subl	$12, %esp
-	.cfi_def_cfa_offset 60
-	movl	20(%esp), %eax
-	pushl	(%edi,%eax,4)
+	fstps	4(%esp)
+	vmovss	4(%esp), %xmm1
+	jmp	.L238
+.L306:
+	subl	$16, %esp
 	.cfi_def_cfa_offset 64
+	vmovss	%xmm0, (%esp)
 	call	sqrtf
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
 	fstps	8(%esp)
-	movss	8(%esp), %xmm0
-	jmp	.L188
-.L244:
+	vmovss	8(%esp), %xmm1
+	jmp	.L236
+.L311:
 	subl	$12, %esp
 	.cfi_def_cfa_offset 60
 	movl	20(%esp), %eax
@@ -2552,15 +2870,15 @@ _ZN3GVM11Interpreter7executeEv:
 	addl	$16, %esp
 	.cfi_def_cfa_offset 48
 	fstps	4(%esp)
-	movss	4(%esp), %xmm0
-	jmp	.L190
+	vmovss	4(%esp), %xmm0
+	jmp	.L230
 	.cfi_endproc
 .LFE119:
 	.size	_ZN3GVM11Interpreter7executeEv, .-_ZN3GVM11Interpreter7executeEv
 	.section	.text.unlikely
-.LCOLDE3:
+.LCOLDE5:
 	.text
-.LHOTE3:
+.LHOTE5:
 	.section	.rodata.cst16,"aM",@progbits,16
 	.align 16
 .LC0:
@@ -2571,6 +2889,12 @@ _ZN3GVM11Interpreter7executeEv:
 	.section	.rodata.cst4,"aM",@progbits,4
 	.align 4
 .LC1:
+	.long	3019898880
+	.align 4
+.LC2:
+	.long	872415232
+	.align 4
+.LC3:
 	.long	1065353216
 	.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.10) 5.4.0 20160609"
 	.section	.note.GNU-stack,"",@progbits

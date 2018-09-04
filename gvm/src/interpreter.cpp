@@ -1,12 +1,16 @@
 #include <cstdio>
 #include <cmath>
+#include <cfloat>
 #include "include/stub_types.hpp"
 #include "include/opcode.hpp"
 #include "include/interpreter.hpp"
 
 using namespace GVM;
 
+//
+
 #define DISPATCH(o) switch(o)
+//#define IS(o)   case Opcode::_##o: asm("# Opcode::_" #o "\n" : :);
 #define IS(o)   case Opcode::_##o:
 #define NEXT    goto forever
 #define EXIT    goto bailout
@@ -20,7 +24,7 @@ forever:
   uint8 tmp1 = *pc++;
 
   // Speculatively decode the next byte as an operand pair as that is the most common case
-  uint8 tmp2 = *pc++;  
+  uint8 tmp2 = *pc++;
   uint8 dst  = tmp2 & 0x0F;
   uint8 src  = tmp2 >> 4;
 
@@ -35,8 +39,8 @@ forever:
 
     // Move 4-bit literal to register
     IS(MOVE_LR) {
-      // [opcode:8] [L:4 | dst:4] 
-      reg[dst].i = src;
+      // [opcode:8] [L:4 | dst:4]
+      reg[dst].w = src;
       NEXT;
     }
 
@@ -44,7 +48,7 @@ forever:
     IS(MOVE_LI) {
       // [opcode:8] [L:4 | dst:4] [dst_index:8]
       tmp2 = *pc++;
-      reg[dst].pi[tmp2] = src;
+      reg[dst].pw[tmp2] = src;
       NEXT;
     }
 
@@ -114,7 +118,7 @@ forever:
       // [opcode:8] [symbol_id_msb:8] [symbol_id_lsb:8]
       uint16 symbol = ((uint16)tmp2) << 8 | *pc++;
       if (symbol >= codeSymbolCount) {
-        status = UNKNOWN_CODE_SYMBOL;        
+        status = UNKNOWN_CODE_SYMBOL;
         EXIT;
       }
 
@@ -133,7 +137,7 @@ forever:
       // [opcode:8] [symbol_id_msb:8] [symbol_id_lsb:8]
       uint16 symbol = ((uint16)tmp2) << 8 | *pc++;
       if (symbol >= codeSymbolCount) {
-        status = UNKNOWN_HOST_CODE_SYMBOL;        
+        status = UNKNOWN_HOST_CODE_SYMBOL;
         EXIT;
       }
 
@@ -264,7 +268,7 @@ forever:
       }
       NEXT;
     }
-   
+
     // Branch if indirect equal to zero
     IS(BEZ_I) {
       // [opcode:8] [0:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
@@ -494,7 +498,7 @@ forever:
 
     // Add 4-bit integer literal to register. The literal is 1-16, encoded as 0-15.
     IS(ADD_LR) {
-      // [opcode:8] [(L-1):4 | dst:4] 
+      // [opcode:8] [(L-1):4 | dst:4]
       reg[dst].i += (src + 1);
       NEXT;
     }
@@ -541,7 +545,7 @@ forever:
 
     // Subtract 4-bit integer literal from register. The literal is 1-16 encoded as 0-15.
     IS(SUB_LR) {
-      // [opcode:8] [(L-1):4 | dst:4] 
+      // [opcode:8] [(L-1):4 | dst:4]
       reg[dst].i -= (src + 1);
       NEXT;
     }
@@ -588,7 +592,7 @@ forever:
 
     // Multiply integer register by 4-bit literal. The literal is 2-17, encoded as 0-15.
     IS(MUL_LR) {
-      // [opcode:8] [(L-2):4 | dst:4] 
+      // [opcode:8] [(L-2):4 | dst:4]
       reg[dst].i *= (src + 2);
       NEXT;
     }
@@ -1190,51 +1194,171 @@ forever:
       NEXT;
     }
 
+    // Branch on floating point register to register equality within epsilon
     IS(FBEQ_RR) {
+      // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      float32 diff = reg[src].f - reg[dst].f;
+      if (diff >= -FLT_EPSILON && diff <= FLT_EPSILON) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
+    // Branch on floating point register to indirect equality within epsilon
     IS(FBEQ_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      float32 diff = reg[src].f - reg[dst].pf[tmp1];
+      if (diff >= -FLT_EPSILON && diff <= FLT_EPSILON) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
+    // Branch on floating point indirect to register equality within epsilon
     IS(FBEQ_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      float32 diff = reg[src].pf[tmp1] - reg[dst].f;
+      if (diff >= -FLT_EPSILON && diff <= FLT_EPSILON) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
+    // Branch on floating point indirect to indirect equality within epsilon
     IS(FBEQ_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32 diff = reg[src].pf[tmp1] - reg[dst].pf[tmp2];
+      if (diff >= -FLT_EPSILON && diff <= FLT_EPSILON) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
+    // Branch on floating point register greater than or equal to register
     IS(FBGE_RR) {
+      // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (reg[src].f >= reg[dst].f) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
+    // Branch on floating point register greater than or equal to indirect
     IS(FBGE_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      if (reg[src].f >= reg[dst].pf[tmp1]) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
+    // Branch on floating point indirect greater than or equal to register
     IS(FBGE_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      if (reg[src].pf[tmp1] >= reg[dst].f) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
+    // Branch on floating point indirect greater than or equal to indirect
     IS(FBGE_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      if (reg[src].pf[tmp1] >= reg[dst].pf[tmp2]) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
     IS(FBGT_RR) {
+      // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
+      if (reg[src].f > reg[dst].f) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
     IS(FBGT_RI) {
+      // [opcode:8] [src:4 dst:4] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      if (reg[src].f > reg[dst].pf[tmp1]) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
     IS(FBGT_IR) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      if (reg[src].pf[tmp1] > reg[dst].f) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
     IS(FBGT_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      if (reg[src].pf[tmp1] > reg[dst].pf[tmp2]) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
