@@ -1367,21 +1367,49 @@ forever:
 
     // Vector3 splat literal to vector
     IS(VSPL_LI) {
+      // [opcode:8] [L:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* f = &reg[dst].pf[tmp1];
+      f[0] = src;
+      f[1] = src;
+      f[2] = src;
       NEXT;
     }
 
     // Vector3 splat register to vector
     IS(VSPL_RI) {
+      // [opcode:8] [src:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      float32* f = &reg[dst].pf[tmp1];
+      f[0] = reg[src].f;
+      f[1] = reg[src].f;
+      f[2] = reg[src].f;
       NEXT;
     }
 
     // Vector3 splat register to vector
     IS(VSPL_II) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32  v = reg[src].pf[tmp1];
+      float32* f = &reg[dst].pf[tmp2];
+      f[0] = v;
+      f[1] = v;
+      f[2] = v;
       NEXT;
     }
 
     // Vector3 copy vector indirect to vector
     IS(VMVE_II) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] = vs[0];
+      vd[1] = vs[1];
+      vd[2] = vs[2];
       NEXT;
     }
 
@@ -1397,11 +1425,27 @@ forever:
 
     // Vector3 add
     IS(VADD_II) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] += vs[0];
+      vd[1] += vs[1];
+      vd[2] += vs[2];
       NEXT;
     }
 
     // Vector3 subract
     IS(VSUB_II) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] -= vs[0];
+      vd[1] -= vs[1];
+      vd[2] -= vs[2];
       NEXT;
     }
 
@@ -1422,16 +1466,34 @@ forever:
 
     // Vector3 magnitude to register
     IS(VMAG_IR) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8]
+      tmp1 = *pc++;
+      float32* f = &reg[src].pf[tmp1];
+      reg[dst].f = std::sqrt(f[0]*f[0] + f[1]*f[1] + f[2]*f[2]);
       NEXT;
     }
 
     // Vector3 magnitude to indirect
     IS(VMAG_II) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* f = &reg[src].pf[tmp1];
+      reg[dst].pf[tmp2] = std::sqrt(f[0]*f[0] + f[1]*f[1] + f[2]*f[2]);
       NEXT;
     }
 
     // Vector3 normalise
     IS(VNRM_II) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      float32  sf = 1.0f/std::sqrt(vs[0]*vs[0] + vs[1]*vs[1] + vs[2]*vs[2]);
+      vd[0] = sf*vs[0];
+      vd[1] = sf*vs[1];
+      vd[2] = sf*vs[2];
       NEXT;
     }
 
