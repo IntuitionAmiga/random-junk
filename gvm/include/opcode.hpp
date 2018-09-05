@@ -278,40 +278,43 @@ namespace GVM {
       _VBNE_IA,
 
       // Vec3 Add
-      _VADD_II,
-      _VADD_IA,
-      _VADD_AI,
-      _VADD_IIA,
+      _VADD_II,  // vd += vs
+      _VADD_IA,  // vd += vacc
+      _VADD_AI,  // vacc += vs
+      _VADD_IIA, // vacc = vs1 + vs2
+      _VADD_IAI, // vd = vacc + vs
 
       // Vec3 Sub
-      _VSUB_II,
-      _VSUB_IA,
-      _VSUB_AI,
-      _VSUB_IIA,
+      _VSUB_II,  // vd -= vs
+      _VSUB_IA,  // vacc -= vs
+      _VSUB_AI,  // vd -= vacc
+      _VSUB_IIA, // vacc = vs1 - vs2
+      _VSUB_IAI, // vd = vs - vacc
+      _VSUB_AII, // vd = vacc - vs
 
       // Vec3 Cross
-      _VMUL_IIA,
-      _VMUL_AII,
-      _VMUL_IAI,
+      _VMUL_IIA, // vacc = vs1 x vs2
+      _VMUL_AII, // vd = vacc x vs
+      _VMUL_IAI, // vd = vs x vacc
 
       // Vec3 Dot
-      _VDOT_IIA,
-      _VDOT_AIR,
-      _VDOT_AII,
+      _VDOT_IIA, // vacc.m = vs1 . vs2
+      _VDOT_AIR, // d   = vacc . vs
+      _VDOT_AII, // [d] = vacc . vs
 
       // Vec3 Mag
-      _VMAG_IR,
-      _VMAG_II,
-      _VMAG_AR,
-      _VMAG_AI,
-      _VMAG_A,
+      _VMAG_IR, // d = |vs|
+      _VMAG_II, // [d] = |vs|
+      _VMAG_AR, // d = |vacc|
+      _VMAG_AI, // [d] = |vacc|
+      _VMAG_A,  // vacc.m = |vacc|
 
       // Vec3 Normalize
-      _VNRM_I,
-      _VNRM_II,
-      _VNRM_IA,
-      _VNRM_AI,
-      _VNRM_A,
+      _VNRM_I,  // vd = vd / |vd|
+      _VNRM_II, // vd = vs / |vs|
+      _VNRM_IA, // vacc = vs / |vs|
+      _VNRM_AI, // vd = vacc / |vacc|
+      _VNRM_A,  // vacc = vacc / |vacc|
 
       _MAX
     } Enumeration;

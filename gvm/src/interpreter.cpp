@@ -1658,6 +1658,19 @@ forever:
       NEXT;
     }
 
+    // Vector3 add vector and accumulator into vector
+    IS(VADD_IAI) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] = vs[0] + vacc[0];
+      vd[1] = vs[1] + vacc[1];
+      vd[2] = vs[2] + vacc[2];
+      NEXT;
+    }
+
     // Vector3 subract
     IS(VSUB_II) {
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
@@ -1706,6 +1719,32 @@ forever:
       NEXT;
     }
 
+    // Vector3 subtract accumulator from vector into vector
+    IS(VSUB_IAI) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] = vs[0] - vacc[0];
+      vd[1] = vs[1] - vacc[1];
+      vd[2] = vs[2] - vacc[2];
+      NEXT;
+    }
+
+    // Vector3 subtract vector from accumulator into vector
+    IS(VSUB_AII) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] = vacc[0] - vs[0];
+      vd[1] = vacc[1] - vs[1];
+      vd[2] = vacc[2] - vs[2];
+      NEXT;
+    }
+
     // Vector3 cross product vectors into accumulator
     IS(VMUL_IIA) {
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
@@ -1737,7 +1776,6 @@ forever:
       vd[2] = vacc[0] * vs[1] - vacc[1] * vs[0];
       NEXT;
     }
-
 
     // Vector3 cross product vector with accumulator into vector
     IS(VMUL_IAI) {
