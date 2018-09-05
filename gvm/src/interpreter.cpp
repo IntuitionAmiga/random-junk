@@ -47,8 +47,8 @@ forever:
     // Move 4-bit literal to indirect
     IS(MOVE_LI) {
       // [opcode:8] [L:4 | dst:4] [dst_index:8]
-      tmp2 = *pc++;
-      reg[dst].pw[tmp2] = src;
+      tmp1 = *pc++;
+      reg[dst].pw[tmp1] = src;
       NEXT;
     }
 
@@ -62,16 +62,16 @@ forever:
     // Move register to indirect
     IS(MOVE_RI) {
       // [opcode:8] [src:4 | dst:4] [dst_index:8]
-      tmp2 = *pc++;
-      reg[dst].pi[tmp2] = reg[src].i;
+      tmp1 = *pc++;
+      reg[dst].pi[tmp1] = reg[src].i;
       NEXT;
     }
 
     // Move indirect to register
     IS(MOVE_IR) {
       // [opcode:8] [src:4 | dst:4] [src_index:8]
-      tmp2 = *pc++;
-      reg[dst].i = reg[src].pi[tmp2];
+      tmp1 = *pc++;
+      reg[dst].i = reg[src].pi[tmp1];
       NEXT;
     }
 
@@ -81,6 +81,21 @@ forever:
       tmp1 = *pc++;
       tmp2 = *pc++;
       reg[dst].pi[tmp2] = reg[src].pi[tmp1];
+      NEXT;
+    }
+
+    // Move magnitude to register
+    IS(MOVE_MR) {
+      // [opcode:8] [0:4 | dst:4]
+      reg[dst].f = vacc[3];
+      NEXT;
+    }
+
+    // Move magnitude to indirect
+    IS(MOVE_MI) {
+      // [opcode:8] [0:4 | dst:4] [dst_index:8]
+      tmp1 = *pc++;
+      reg[dst].pf[tmp1] = vacc[3];
       NEXT;
     }
 
@@ -234,8 +249,8 @@ forever:
     IS(DBNZ_R) {
       // [opcode:8] [0:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       if (--reg[dst].i) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -248,8 +263,8 @@ forever:
       // [opcode:8] [src:4 dst:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
       tmp1 = *pc++;
       if ( (reg[dst].w = reg[src].pw[tmp1]) ) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -261,8 +276,8 @@ forever:
     IS(BEZ_R) {
       // [opcode:8] [0:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       if (!reg[dst].w) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -288,8 +303,8 @@ forever:
     IS(BNZ_R) {
       // [opcode:8] [0:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       if (reg[dst].w) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -315,8 +330,8 @@ forever:
     IS(BEQ_RR) {
       // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       if (reg[src].w == reg[dst].w) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -357,8 +372,8 @@ forever:
     IS(BGE_RR) {
       // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       if (reg[src].i >= reg[dst].i) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -413,8 +428,8 @@ forever:
     IS(BGT_RR) {
       // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       if (reg[src].i > reg[dst].i) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -1200,8 +1215,8 @@ forever:
       // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       float32 diff = reg[src].f - reg[dst].f;
       if (diff >= -FLT_EPSILON && diff <= FLT_EPSILON) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -1259,8 +1274,8 @@ forever:
     IS(FBGE_RR) {
       // [opcode:8] [src:4 dst:4] [signed_offset_msb:8] [signed_offset_lsb:8]
       if (reg[src].f >= reg[dst].f) {
-        tmp2 = *pc++;
-        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        tmp1 = *pc++;
+        uint16 offset = ((uint16)tmp1) << 8 | *pc;
         pc += (int16)offset;
       } else {
         pc += 2;
@@ -1493,22 +1508,22 @@ forever:
     // Vector3 splat literal to vector
     IS(VSPL_LI) {
       // [opcode:8] [L:4 | dst:4] [dst_index:8]
-      tmp1 = *pc++;
-      float32* f = &reg[dst].pf[tmp1];
-      f[0] = src;
-      f[1] = src;
-      f[2] = src;
+      tmp1        = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      vd[0] = src;
+      vd[1] = src;
+      vd[2] = src;
       NEXT;
     }
 
     // Vector3 splat register to vector
     IS(VSPL_RI) {
       // [opcode:8] [src:4 | dst:4] [dst_index:8]
-      tmp1 = *pc++;
-      float32* f = &reg[dst].pf[tmp1];
-      f[0] = reg[src].f;
-      f[1] = reg[src].f;
-      f[2] = reg[src].f;
+      tmp1        = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      vd[0] = reg[src].f;
+      vd[1] = reg[src].f;
+      vd[2] = reg[src].f;
       NEXT;
     }
 
@@ -1517,11 +1532,11 @@ forever:
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      float32  v = reg[src].pf[tmp1];
-      float32* f = &reg[dst].pf[tmp2];
-      f[0] = v;
-      f[1] = v;
-      f[2] = v;
+      float32   s = reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] = s;
+      vd[1] = s;
+      vd[2] = s;
       NEXT;
     }
 
@@ -1546,19 +1561,19 @@ forever:
     // Vector3 splat indirect to vector accumulator
     IS(VSPL_IA) {
       // [opcode:8] [src:4 | dst:4] [src_index:8]
-      tmp1 = *pc++;
-      float32  v = reg[src].pf[tmp1];
-      vacc[0] = v;
-      vacc[1] = v;
-      vacc[2] = v;
+      tmp1       = *pc++;
+      float32  s = reg[src].pf[tmp1];
+      vacc[0] = s;
+      vacc[1] = s;
+      vacc[2] = s;
       NEXT;
     }
 
     // Vector3 copy vector indirect to vector
     IS(VMVE_II) {
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
-      tmp1 = *pc++;
-      tmp2 = *pc++;
+      tmp1        = *pc++;
+      tmp2        = *pc++;
       float32* vs = &reg[src].pf[tmp1];
       float32* vd = &reg[dst].pf[tmp2];
       vd[0] = vs[0];
@@ -1570,7 +1585,7 @@ forever:
     // Vector3 copy vector indirect to accumulator
     IS(VMVE_IA) {
       // [opcode:8] [src:4 | dst:4] [src_index:8]
-      tmp1 = *pc++;
+      tmp1        = *pc++;
       float32* vs = &reg[src].pf[tmp1];
       vacc[0] = vs[0];
       vacc[1] = vs[1];
@@ -1581,7 +1596,7 @@ forever:
     // Vector3 copy vector indirect to accumulator
     IS(VMVE_AI) {
       // [opcode:8] [src:4 | dst:4] [dst_index:8]
-      tmp1 = *pc++;
+      tmp1        = *pc++;
       float32* vd = &reg[dst].pf[tmp1];
       vd[0] = vacc[0];
       vd[1] = vacc[1];
@@ -1591,22 +1606,119 @@ forever:
 
     // Vector3 branch if vectors equal
     IS(VBEQ_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      if (
+        reg[src].pw[tmp1] == reg[dst].pw[tmp2] &&
+        reg[src].pw[tmp1 + 1] == reg[dst].pw[tmp2 + 1] &&
+        reg[src].pw[tmp1 + 2] == reg[dst].pw[tmp2 + 2]
+      ) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
     // Vector3 branch if vector and accumulator equal
     IS(VBEQ_IA) {
+      // todo
+      pc += 3;
       NEXT;
     }
 
 
     // Vector3 branch if vectors not equal
     IS(VBNE_II) {
+      // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      if (
+        reg[src].pw[tmp1] != reg[dst].pw[tmp2] ||
+        reg[src].pw[tmp1 + 1] != reg[dst].pw[tmp2 + 1] ||
+        reg[src].pw[tmp1 + 2] != reg[dst].pw[tmp2 + 2]
+      ) {
+        tmp2 = *pc++;
+        uint16 offset = ((uint16)tmp2) << 8 | *pc;
+        pc += (int16)offset;
+      } else {
+        pc += 2;
+      }
       NEXT;
     }
 
     // Vector3 branch if vector and accumulator not equal
     IS(VBNE_IA) {
+      // todo
+      pc += 3;
+      NEXT;
+    }
+
+    // Vector3 scale by float register
+    IS(VSCL_RI) {
+      // [opcode:8] [src:4 | dst:4] [dst_index:8]
+      tmp1        = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      vd[0] *= reg[src].f;
+      vd[1] *= reg[src].f;
+      vd[2] *= reg[src].f;
+      NEXT;
+    }
+
+    // Vector3 scale by float indirect
+    IS(VSCL_II) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32  s  = reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vd[0] *= s;
+      vd[1] *= s;
+      vd[2] *= s;
+      NEXT;
+    }
+
+    // Vector3 scale by float magnitude register
+    IS(VSCL_MI) {
+      // [opcode:8] [0:4 | dst:4] [dst_index:8]
+      tmp1        = *pc++;
+      float32* vd = &reg[dst].pf[tmp1];
+      vd[0] *= vacc[3];
+      vd[1] *= vacc[3];
+      vd[2] *= vacc[3];
+      NEXT;
+    }
+
+    // Vector3 accumulator scale by float register
+    IS(VSCL_RA) {
+      // [opcode:8] [src:4 | 0:4]
+      vacc[0] *= reg[src].f;
+      vacc[1] *= reg[src].f;
+      vacc[2] *= reg[src].f;
+      NEXT;
+    }
+
+    // Vector3 accumulator scale by float indirect
+    IS(VSCL_IA) {
+      // [opcode:8] [src:4 | 0:4] [src_index:8]
+      tmp1      = *pc++;
+      float32 s = reg[src].pf[tmp1];
+      vacc[0] *= s;
+      vacc[1] *= s;
+      vacc[2] *= s;
+      NEXT;
+    }
+
+    // Vector3 accumulator scale by float magnitude
+    IS(VSCL_MA) {
+      // [opcode:8]
+      vacc[0] *= vacc[3];
+      vacc[1] *= vacc[3];
+      vacc[2] *= vacc[3];
+      pc--;
       NEXT;
     }
 
@@ -1793,8 +1905,8 @@ forever:
       NEXT;
     }
 
-    // Vector3 dot product product of two vectors, into accumulator
-    IS(VDOT_IIA) {
+    // Vector3 dot product product of two vectors, into accumulator magnitude
+    IS(VDOT_IIM) {
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
@@ -1858,7 +1970,7 @@ forever:
     }
 
     // Vector3 accumulator magnitude to accumulator
-    IS(VMAG_A) {
+    IS(VMAG_M) {
       // [opcode:8]
       vacc[3] = std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
 

@@ -17,24 +17,44 @@ namespace GVM {
   }
 
   namespace Opcode {
+
+    // Legend
+    //
+    // I    scalar small immediate
+    //
+    // General registers
+    //
+    // rs   scalar source register direct
+    // (rs) scalar source register indirect
+    // rd   scalar destination register direct
+    // (rd) scalar destination register indirect
+    // (vs) vector source
+    // (vd) vector destination
+    //
+    // Special registers
+    // m    scalar magnitude (of vector)
+    // va   vector accumulator
+
     typedef enum {
       _NOP,
 
       // Move small literal (0-15)
-      _MOVE_LR,
-      _MOVE_LI,
+      _MOVE_LR, //  rd  = I
+      _MOVE_LI, // (rd) = I
 
       // Float/Integer Move
-      _MOVE_RR,
-      _MOVE_RI,
-      _MOVE_IR,
-      _MOVE_II,
+      _MOVE_RR, //  rd  =  rs
+      _MOVE_RI, // (rd) =  rs
+      _MOVE_IR, //  rd  = (rs)
+      _MOVE_II, // (rd) = (rs)
+      _MOVE_MR, //  rd  =  m
+      _MOVE_MI, // (rd) =  m
 
       // Short unconditional branch (8-bit offset)
-      _BRAS,
+      _BRAS, // pc += ofs8
 
       // Unconditional Branch (16-bit offset)
-      _BRA,
+      _BRA,  // pc += ofs16
 
       // Branch Call (16-bit offset)
       _BCALL,
@@ -66,7 +86,6 @@ namespace GVM {
       // Load Link and Branch if not Null  (16-bit offset)
       _LBNN_IR,
 
-
       // Float/Integer Branch if Zero  (16-bit offset)
       _BEZ_R,
       _BEZ_I,
@@ -93,18 +112,18 @@ namespace GVM {
       _BGT_II,
 
       // Integer Negate
-      _NEG_RR,
-      _NEG_RI,
-      _NEG_IR,
-      _NEG_II,
+      _NEG_RR, //  rd  = -rs
+      _NEG_RI, // (rd) = -rs
+      _NEG_IR, //  rd  = -(rs)
+      _NEG_II, // (rd) = -(rs)
 
       // Integer Add
-      _ADD_LR,
-      _ADD_LI,
-      _ADD_RR,
-      _ADD_RI,
-      _ADD_IR,
-      _ADD_II,
+      _ADD_LR, //  rd  +=  I
+      _ADD_LI, // (rd) +=  I
+      _ADD_RR, //  rd  +=  rs
+      _ADD_RI, // (rd) +=  rs
+      _ADD_IR, //  rd  += (rs)
+      _ADD_II, // (rd) += (rs)
 
       // Integer Sub
       _SUB_LR,
@@ -277,44 +296,52 @@ namespace GVM {
       _VBNE_II,
       _VBNE_IA,
 
-      // Vec3 Add
-      _VADD_II,  // vd += vs
-      _VADD_IA,  // vd += vacc
-      _VADD_AI,  // vacc += vs
-      _VADD_IIA, // vacc = vs1 + vs2
-      _VADD_IAI, // vd = vacc + vs
+      // Vec3 scale by float
+      _VSCL_RI,  // (vd) *=  rs
+      _VSCL_II,  // (vd) *= (rs)
+      _VSCL_MI,  // (vd) *=  m
+      _VSCL_RA,  //  va  *=  rs
+      _VSCL_IA,  //  va  *= (rs)
+      _VSCL_MA,  //  va  *=  m
 
-      // Vec3 Sub
-      _VSUB_II,  // vd -= vs
-      _VSUB_IA,  // vacc -= vs
-      _VSUB_AI,  // vd -= vacc
-      _VSUB_IIA, // vacc = vs1 - vs2
-      _VSUB_IAI, // vd = vs - vacc
-      _VSUB_AII, // vd = vacc - vs
+      // Vec3 Addition
+      _VADD_II,  // (vd) += (vs)
+      _VADD_IA,  // (vd) +=  va
+      _VADD_AI,  //  va  += (vs)
+      _VADD_IIA, //  va  =  (vs1) + (vs2)
+      _VADD_IAI, // (vd) =   va   + (vs)
+
+      // Vec3 Subtraction
+      _VSUB_II,  // (vd) -= (vs)
+      _VSUB_IA,  //  va  -=  va
+      _VSUB_AI,  // (vd) -=  va
+      _VSUB_IIA, //  va  =  (vs1) - (vs2)
+      _VSUB_IAI, // (vd) =  (vs)  - (va)
+      _VSUB_AII, // (vd) =   va   - (vs)
 
       // Vec3 Cross
-      _VMUL_IIA, // vacc = vs1 x vs2
-      _VMUL_AII, // vd = vacc x vs
-      _VMUL_IAI, // vd = vs x vacc
+      _VMUL_IIA, //  va  = (vs1) x (vs2)
+      _VMUL_AII, // (vd) =  va   x (vs)
+      _VMUL_IAI, // (vd) = (vs)  x  va
 
       // Vec3 Dot
-      _VDOT_IIA, // vacc.m = vs1 . vs2
-      _VDOT_AIR, // d   = vacc . vs
-      _VDOT_AII, // [d] = vacc . vs
+      _VDOT_IIM, //  m   = (vs1) . (vs2)
+      _VDOT_AIR, //  rd  =  va   . (vs)
+      _VDOT_AII, // (rd) =  va   . (vs)
 
-      // Vec3 Mag
-      _VMAG_IR, // d = |vs|
-      _VMAG_II, // [d] = |vs|
-      _VMAG_AR, // d = |vacc|
-      _VMAG_AI, // [d] = |vacc|
-      _VMAG_A,  // vacc.m = |vacc|
+      // Vec3 Magnitude
+      _VMAG_IR, //  rd   = |(vs)|
+      _VMAG_II, // (rd)  = |(vs)|
+      _VMAG_AR, //  rd   =  |va|
+      _VMAG_AI, // (rd]) =  |va|
+      _VMAG_M,  //  m    =  |va|
 
       // Vec3 Normalize
-      _VNRM_I,  // vd = vd / |vd|
-      _VNRM_II, // vd = vs / |vs|
-      _VNRM_IA, // vacc = vs / |vs|
-      _VNRM_AI, // vd = vacc / |vacc|
-      _VNRM_A,  // vacc = vacc / |vacc|
+      _VNRM_I,  // (vd) = (vd) / |(vd)|
+      _VNRM_II, // (vd) = (vs) / |(vs)|
+      _VNRM_IA, //  va  = (vs) / |(vs)|
+      _VNRM_AI, // (vd) =  va  /  |va|
+      _VNRM_A,  //  va  =  va  /  |va|
 
       _MAX
     } Enumeration;

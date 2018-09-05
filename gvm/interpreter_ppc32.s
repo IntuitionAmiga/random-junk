@@ -16,8 +16,8 @@ _ZN3GVM11Interpreter7executeEv:
 	stw %r20,32(%r1)
 	stw %r21,36(%r1)
 	stw %r22,40(%r1)
-	stw %r23,44(%r1)
 	stw %r0,84(%r3)
+	stw %r23,44(%r1)
 	stw %r25,52(%r1)
 	lis %r25,.LC1@ha
 	stw %r26,56(%r1)
@@ -30,30 +30,30 @@ _ZN3GVM11Interpreter7executeEv:
 	lis %r29,.LC4@ha
 	la %r28,.LC0@l(%r28)
 	stw %r30,72(%r1)
-	lis %r30,.L188@ha
+	lis %r30,.L199@ha
 	la %r29,.LC4@l(%r29)
-	lwz %r9,80(%r3)
-	la %r30,.L188@l(%r30)
+	lwz %r23,80(%r3)
+	la %r30,.L199@l(%r30)
 	stw %r24,48(%r1)
 	addi %r24,%r3,60
 	stw %r27,60(%r1)
 	lis %r27,0x4330
 	stw %r31,76(%r1)
 	mr %r31,%r3
-.L2:
-	lbz %r0,0(%r9)
-	addi %r11,%r9,1
-	stw %r11,80(%r31)
-	cmplwi %cr7,%r0,187
-	lbz %r11,1(%r9)
-	addi %r9,%r9,2
+.L298:
+	lbz %r0,0(%r23)
+	addi %r9,%r23,1
 	stw %r9,80(%r31)
-	rlwinm %r23,%r11,0,28,31
+	cmplwi %cr7,%r0,195
+	lbz %r11,1(%r23)
+	addi %r23,%r9,1
+	stw %r23,80(%r31)
+	rlwinm %r22,%r11,0,28,31
 	srwi %r10,%r11,4
-	ble- %cr7,.L300
+	ble- %cr7,.L308
 	li %r0,4
 	stw %r0,84(%r31)
-.L263:
+.L279:
 	lwz %r0,84(%r1)
 	lwz %r18,24(%r1)
 	mtlr %r0
@@ -72,7 +72,7 @@ _ZN3GVM11Interpreter7executeEv:
 	lwz %r31,76(%r1)
 	addi %r1,%r1,80
 	blr
-.L300:
+.L308:
 	slwi %r0,%r0,2
 	lwzx %r0,%r30,%r0
 	add %r0,%r0,%r30
@@ -81,296 +81,395 @@ _ZN3GVM11Interpreter7executeEv:
 	.section	.rodata
 	.align 2
 	.align 2
-.L188:
-	.long .L4-.L188
-	.long .L5-.L188
-	.long .L6-.L188
-	.long .L7-.L188
-	.long .L8-.L188
-	.long .L9-.L188
-	.long .L10-.L188
-	.long .L11-.L188
-	.long .L12-.L188
-	.long .L13-.L188
-	.long .L14-.L188
-	.long .L15-.L188
-	.long .L16-.L188
-	.long .L17-.L188
-	.long .L18-.L188
-	.long .L19-.L188
-	.long .L20-.L188
-	.long .L21-.L188
-	.long .L22-.L188
-	.long .L23-.L188
-	.long .L24-.L188
-	.long .L25-.L188
-	.long .L26-.L188
-	.long .L27-.L188
-	.long .L28-.L188
-	.long .L29-.L188
-	.long .L30-.L188
-	.long .L31-.L188
-	.long .L32-.L188
-	.long .L33-.L188
-	.long .L34-.L188
-	.long .L35-.L188
-	.long .L36-.L188
-	.long .L37-.L188
-	.long .L38-.L188
-	.long .L39-.L188
-	.long .L40-.L188
-	.long .L41-.L188
-	.long .L42-.L188
-	.long .L43-.L188
-	.long .L44-.L188
-	.long .L45-.L188
-	.long .L46-.L188
-	.long .L47-.L188
-	.long .L48-.L188
-	.long .L49-.L188
-	.long .L50-.L188
-	.long .L51-.L188
-	.long .L52-.L188
-	.long .L53-.L188
-	.long .L54-.L188
-	.long .L55-.L188
-	.long .L56-.L188
-	.long .L57-.L188
-	.long .L58-.L188
-	.long .L59-.L188
-	.long .L60-.L188
-	.long .L61-.L188
-	.long .L62-.L188
-	.long .L63-.L188
-	.long .L64-.L188
-	.long .L65-.L188
-	.long .L66-.L188
-	.long .L67-.L188
-	.long .L68-.L188
-	.long .L69-.L188
-	.long .L70-.L188
-	.long .L71-.L188
-	.long .L72-.L188
-	.long .L73-.L188
-	.long .L74-.L188
-	.long .L75-.L188
-	.long .L76-.L188
-	.long .L77-.L188
-	.long .L78-.L188
-	.long .L79-.L188
-	.long .L80-.L188
-	.long .L81-.L188
-	.long .L82-.L188
-	.long .L83-.L188
-	.long .L84-.L188
-	.long .L85-.L188
-	.long .L86-.L188
-	.long .L87-.L188
-	.long .L88-.L188
-	.long .L89-.L188
-	.long .L90-.L188
-	.long .L91-.L188
-	.long .L92-.L188
-	.long .L93-.L188
-	.long .L94-.L188
-	.long .L95-.L188
-	.long .L96-.L188
-	.long .L97-.L188
-	.long .L98-.L188
-	.long .L99-.L188
-	.long .L100-.L188
-	.long .L101-.L188
-	.long .L102-.L188
-	.long .L103-.L188
-	.long .L104-.L188
-	.long .L105-.L188
-	.long .L106-.L188
-	.long .L107-.L188
-	.long .L108-.L188
-	.long .L109-.L188
-	.long .L110-.L188
-	.long .L111-.L188
-	.long .L112-.L188
-	.long .L113-.L188
-	.long .L114-.L188
-	.long .L115-.L188
-	.long .L116-.L188
-	.long .L117-.L188
-	.long .L118-.L188
-	.long .L119-.L188
-	.long .L120-.L188
-	.long .L121-.L188
-	.long .L122-.L188
-	.long .L123-.L188
-	.long .L124-.L188
-	.long .L125-.L188
-	.long .L126-.L188
-	.long .L127-.L188
-	.long .L128-.L188
-	.long .L129-.L188
-	.long .L130-.L188
-	.long .L131-.L188
-	.long .L132-.L188
-	.long .L133-.L188
-	.long .L134-.L188
-	.long .L135-.L188
-	.long .L136-.L188
-	.long .L137-.L188
-	.long .L138-.L188
-	.long .L139-.L188
-	.long .L140-.L188
-	.long .L141-.L188
-	.long .L142-.L188
-	.long .L143-.L188
-	.long .L144-.L188
-	.long .L145-.L188
-	.long .L146-.L188
-	.long .L147-.L188
-	.long .L148-.L188
-	.long .L149-.L188
-	.long .L150-.L188
-	.long .L151-.L188
-	.long .L152-.L188
-	.long .L153-.L188
-	.long .L154-.L188
-	.long .L155-.L188
-	.long .L156-.L188
-	.long .L157-.L188
-	.long .L158-.L188
-	.long .L159-.L188
-	.long .L160-.L188
-	.long .L2-.L188
-	.long .L2-.L188
-	.long .L2-.L188
-	.long .L2-.L188
-	.long .L161-.L188
-	.long .L162-.L188
-	.long .L163-.L188
-	.long .L164-.L188
-	.long .L165-.L188
-	.long .L166-.L188
-	.long .L167-.L188
-	.long .L168-.L188
-	.long .L169-.L188
-	.long .L170-.L188
-	.long .L171-.L188
-	.long .L172-.L188
-	.long .L173-.L188
-	.long .L174-.L188
-	.long .L175-.L188
-	.long .L176-.L188
-	.long .L177-.L188
-	.long .L178-.L188
-	.long .L179-.L188
-	.long .L180-.L188
-	.long .L181-.L188
-	.long .L182-.L188
-	.long .L183-.L188
-	.long .L184-.L188
-	.long .L185-.L188
-	.long .L186-.L188
-	.long .L187-.L188
+.L199:
+	.long .L3-.L199
+	.long .L4-.L199
+	.long .L5-.L199
+	.long .L6-.L199
+	.long .L7-.L199
+	.long .L8-.L199
+	.long .L9-.L199
+	.long .L10-.L199
+	.long .L11-.L199
+	.long .L12-.L199
+	.long .L13-.L199
+	.long .L14-.L199
+	.long .L15-.L199
+	.long .L16-.L199
+	.long .L17-.L199
+	.long .L18-.L199
+	.long .L19-.L199
+	.long .L20-.L199
+	.long .L21-.L199
+	.long .L22-.L199
+	.long .L23-.L199
+	.long .L24-.L199
+	.long .L25-.L199
+	.long .L26-.L199
+	.long .L27-.L199
+	.long .L28-.L199
+	.long .L29-.L199
+	.long .L30-.L199
+	.long .L31-.L199
+	.long .L32-.L199
+	.long .L33-.L199
+	.long .L34-.L199
+	.long .L35-.L199
+	.long .L36-.L199
+	.long .L37-.L199
+	.long .L38-.L199
+	.long .L39-.L199
+	.long .L40-.L199
+	.long .L41-.L199
+	.long .L42-.L199
+	.long .L43-.L199
+	.long .L44-.L199
+	.long .L45-.L199
+	.long .L46-.L199
+	.long .L47-.L199
+	.long .L48-.L199
+	.long .L49-.L199
+	.long .L50-.L199
+	.long .L51-.L199
+	.long .L52-.L199
+	.long .L53-.L199
+	.long .L54-.L199
+	.long .L55-.L199
+	.long .L56-.L199
+	.long .L57-.L199
+	.long .L58-.L199
+	.long .L59-.L199
+	.long .L60-.L199
+	.long .L61-.L199
+	.long .L62-.L199
+	.long .L63-.L199
+	.long .L64-.L199
+	.long .L65-.L199
+	.long .L66-.L199
+	.long .L67-.L199
+	.long .L68-.L199
+	.long .L69-.L199
+	.long .L70-.L199
+	.long .L71-.L199
+	.long .L72-.L199
+	.long .L73-.L199
+	.long .L74-.L199
+	.long .L75-.L199
+	.long .L76-.L199
+	.long .L77-.L199
+	.long .L78-.L199
+	.long .L79-.L199
+	.long .L80-.L199
+	.long .L81-.L199
+	.long .L82-.L199
+	.long .L83-.L199
+	.long .L84-.L199
+	.long .L85-.L199
+	.long .L86-.L199
+	.long .L87-.L199
+	.long .L88-.L199
+	.long .L89-.L199
+	.long .L90-.L199
+	.long .L91-.L199
+	.long .L92-.L199
+	.long .L93-.L199
+	.long .L94-.L199
+	.long .L95-.L199
+	.long .L96-.L199
+	.long .L97-.L199
+	.long .L98-.L199
+	.long .L99-.L199
+	.long .L100-.L199
+	.long .L101-.L199
+	.long .L102-.L199
+	.long .L103-.L199
+	.long .L104-.L199
+	.long .L105-.L199
+	.long .L106-.L199
+	.long .L107-.L199
+	.long .L108-.L199
+	.long .L109-.L199
+	.long .L110-.L199
+	.long .L111-.L199
+	.long .L112-.L199
+	.long .L113-.L199
+	.long .L114-.L199
+	.long .L115-.L199
+	.long .L116-.L199
+	.long .L117-.L199
+	.long .L118-.L199
+	.long .L119-.L199
+	.long .L120-.L199
+	.long .L121-.L199
+	.long .L122-.L199
+	.long .L123-.L199
+	.long .L124-.L199
+	.long .L125-.L199
+	.long .L126-.L199
+	.long .L127-.L199
+	.long .L128-.L199
+	.long .L129-.L199
+	.long .L130-.L199
+	.long .L131-.L199
+	.long .L132-.L199
+	.long .L133-.L199
+	.long .L134-.L199
+	.long .L135-.L199
+	.long .L136-.L199
+	.long .L137-.L199
+	.long .L138-.L199
+	.long .L139-.L199
+	.long .L140-.L199
+	.long .L141-.L199
+	.long .L142-.L199
+	.long .L143-.L199
+	.long .L144-.L199
+	.long .L145-.L199
+	.long .L146-.L199
+	.long .L147-.L199
+	.long .L148-.L199
+	.long .L149-.L199
+	.long .L150-.L199
+	.long .L151-.L199
+	.long .L152-.L199
+	.long .L153-.L199
+	.long .L154-.L199
+	.long .L155-.L199
+	.long .L156-.L199
+	.long .L157-.L199
+	.long .L158-.L199
+	.long .L159-.L199
+	.long .L160-.L199
+	.long .L161-.L199
+	.long .L162-.L199
+	.long .L163-.L199
+	.long .L164-.L199
+	.long .L165-.L199
+	.long .L166-.L199
+	.long .L167-.L199
+	.long .L168-.L199
+	.long .L169-.L199
+	.long .L170-.L199
+	.long .L171-.L199
+	.long .L172-.L199
+	.long .L173-.L199
+	.long .L174-.L199
+	.long .L175-.L199
+	.long .L176-.L199
+	.long .L177-.L199
+	.long .L178-.L199
+	.long .L179-.L199
+	.long .L180-.L199
+	.long .L181-.L199
+	.long .L182-.L199
+	.long .L183-.L199
+	.long .L184-.L199
+	.long .L185-.L199
+	.long .L186-.L199
+	.long .L187-.L199
+	.long .L188-.L199
+	.long .L189-.L199
+	.long .L190-.L199
+	.long .L191-.L199
+	.long .L192-.L199
+	.long .L193-.L199
+	.long .L194-.L199
+	.long .L195-.L199
+	.long .L196-.L199
+	.long .L197-.L199
+	.long .L198-.L199
 	.section	".text"
-.L183:
-	addi %r0,%r9,1
-	lbz %r22,0(%r9)
-	slwi %r23,%r23,2
-	stw %r0,80(%r31)
+.L197:
+	lfs %f13,68(%r31)
+	addi %r23,%r23,1
 	slwi %r22,%r22,2
-	lwzx %r21,%r31,%r23
-	add %r23,%r21,%r22
-	lfsx %f0,%r21,%r22
-	lfs %f13,4(%r23)
-	lfs %f1,8(%r23)
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	lbz %r21,1(%r9)
+	stw %r23,80(%r31)
+	slwi %r21,%r21,2
+	fmadds %f0,%f0,%f0,%f13
+	lwzx %r22,%r31,%r22
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lfs %f13,0(%r29)
+	add %r9,%r22,%r21
+	lfs %f0,64(%r31)
+	lwz %r23,80(%r31)
+	fdivs %f13,%f13,%f1
+	fmuls %f0,%f0,%f13
+	stfsx %f0,%r22,%r21
+	lfs %f0,68(%r31)
+	fmuls %f0,%f0,%f13
+	stfs %f0,4(%r9)
+	lfs %f0,72(%r31)
+	fmuls %f13,%f0,%f13
+	stfs %f13,8(%r9)
+	b .L298
+.L196:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r23,%r0,2
+	lwzx %r21,%r31,%r10
+	add %r22,%r21,%r23
+	lfsx %f0,%r21,%r23
+	lfs %f13,4(%r22)
+	lfs %f1,8(%r22)
 	fmuls %f13,%f13,%f13
 	fmadds %f0,%f0,%f0,%f13
 	fmadds %f1,%f1,%f1,%f0
 	bl sqrtf
 	lfs %f13,0(%r29)
-	lfsx %f0,%r21,%r22
-	lwz %r9,80(%r31)
+	lfsx %f0,%r21,%r23
+	lwz %r23,80(%r31)
 	fdivs %f13,%f13,%f1
 	fmuls %f0,%f0,%f13
-	stfsx %f0,%r21,%r22
-	lfs %f0,4(%r23)
-	lfs %f12,8(%r23)
+	stfs %f0,64(%r31)
+	lfs %f0,4(%r22)
 	fmuls %f0,%f0,%f13
-	fmuls %f13,%f12,%f13
-	stfs %f0,4(%r23)
-	stfs %f13,8(%r23)
-	b .L2
-.L182:
-	lfs %f13,68(%r31)
-	lfs %f0,64(%r31)
-	lfs %f1,72(%r31)
-	fmuls %f13,%f13,%f13
-	fmadds %f0,%f0,%f0,%f13
-	fmadds %f1,%f1,%f1,%f0
-	bl sqrtf
-	lwz %r9,80(%r31)
-	stfs %f1,76(%r31)
-	addi %r9,%r9,-1
-	stw %r9,80(%r31)
-	b .L2
-.L181:
-	lfs %f13,68(%r31)
-	addi %r11,%r9,1
-	slwi %r23,%r23,2
-	lfs %f0,64(%r31)
-	lfs %f1,72(%r31)
-	fmuls %f13,%f13,%f13
-	lbz %r0,0(%r9)
-	stw %r11,80(%r31)
-	fmadds %f0,%f0,%f0,%f13
-	lwzx %r22,%r31,%r23
-	slwi %r23,%r0,2
-	fmadds %f1,%f1,%f1,%f0
-	bl sqrtf
-	lwz %r9,80(%r31)
-	stfsx %f1,%r22,%r23
-	b .L2
-.L180:
-	lfs %f13,68(%r31)
-	slwi %r23,%r23,2
-	lfs %f0,64(%r31)
-	lfs %f1,72(%r31)
-	fmuls %f13,%f13,%f13
-	fmadds %f0,%f0,%f0,%f13
-	fmadds %f1,%f1,%f1,%f0
-	bl sqrtf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L179:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
+	stfs %f0,68(%r31)
+	lfs %f0,8(%r22)
+	fmuls %f13,%f0,%f13
+	stfs %f13,72(%r31)
+	b .L298
+.L195:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
 	addi %r11,%r11,1
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lbz %r8,1(%r9)
+	slwi %r22,%r22,2
+	lbz %r19,1(%r23)
+	slwi %r23,%r0,2
 	stw %r11,80(%r31)
-	lwzx %r11,%r31,%r10
-	lwzx %r22,%r31,%r23
-	slwi %r23,%r8,2
-	add %r9,%r11,%r0
-	lfsx %f0,%r11,%r0
-	lfs %f13,4(%r9)
-	lfs %f1,8(%r9)
+	slwi %r19,%r19,2
+	lwzx %r20,%r31,%r10
+	lwzx %r18,%r31,%r22
+	add %r21,%r20,%r23
+	lfsx %f0,%r20,%r23
+	lfs %f13,4(%r21)
+	add %r22,%r18,%r19
+	lfs %f1,8(%r21)
 	fmuls %f13,%f13,%f13
 	fmadds %f0,%f0,%f0,%f13
 	fmadds %f1,%f1,%f1,%f0
 	bl sqrtf
-	lwz %r9,80(%r31)
+	lfs %f13,0(%r29)
+	lfsx %f0,%r20,%r23
+	lwz %r23,80(%r31)
+	fdivs %f13,%f13,%f1
+	fmuls %f0,%f0,%f13
+	stfsx %f0,%r18,%r19
+	lfs %f0,4(%r21)
+	fmuls %f0,%f0,%f13
+	stfs %f0,4(%r22)
+	lfs %f0,8(%r21)
+	fmuls %f13,%f0,%f13
+	stfs %f13,8(%r22)
+	b .L298
+.L194:
+	addi %r23,%r23,1
+	lbz %r21,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r21,%r21,2
+	lwzx %r20,%r31,%r22
+	add %r22,%r20,%r21
+	lfsx %f0,%r20,%r21
+	lfs %f13,4(%r22)
+	lfs %f1,8(%r22)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lfs %f13,0(%r29)
+	lfsx %f0,%r20,%r21
+	lwz %r23,80(%r31)
+	fdivs %f13,%f13,%f1
+	fmuls %f0,%f0,%f13
+	stfsx %f0,%r20,%r21
+	lfs %f0,4(%r22)
+	lfs %f12,8(%r22)
+	fmuls %f0,%f0,%f13
+	fmuls %f13,%f12,%f13
+	stfs %f0,4(%r22)
+	stfs %f13,8(%r22)
+	b .L298
+.L193:
+	lfs %f13,68(%r31)
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	lwz %r23,80(%r31)
+	stfs %f1,76(%r31)
+	addi %r23,%r23,-1
+	stw %r23,80(%r31)
+	b .L298
+.L192:
+	lfs %f13,68(%r31)
+	addi %r23,%r23,1
+	slwi %r22,%r22,2
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	lbz %r0,1(%r9)
+	stw %r23,80(%r31)
+	slwi %r23,%r0,2
+	fmadds %f0,%f0,%f0,%f13
+	lwzx %r22,%r31,%r22
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
 	stfsx %f1,%r22,%r23
-	b .L2
-.L178:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
+	lwz %r23,80(%r31)
+	b .L298
+.L191:
+	lfs %f13,68(%r31)
+	slwi %r22,%r22,2
+	lfs %f0,64(%r31)
+	lfs %f1,72(%r31)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	stfsx %f1,%r31,%r22
+	lwz %r23,80(%r31)
+	b .L298
+.L190:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lbz %r23,1(%r23)
+	stw %r11,80(%r31)
 	slwi %r23,%r23,2
+	lwzx %r11,%r31,%r10
+	lwzx %r22,%r31,%r22
+	add %r9,%r11,%r0
+	lfsx %f0,%r11,%r0
+	lfs %f13,4(%r9)
+	lfs %f1,8(%r9)
+	fmuls %f13,%f13,%f13
+	fmadds %f0,%f0,%f0,%f13
+	fmadds %f1,%f1,%f1,%f0
+	bl sqrtf
+	stfsx %f1,%r22,%r23
+	lwz %r23,80(%r31)
+	b .L298
+.L189:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lwzx %r11,%r31,%r10
 	add %r9,%r11,%r0
@@ -381,41 +480,41 @@ _ZN3GVM11Interpreter7executeEv:
 	fmadds %f0,%f0,%f0,%f13
 	fmadds %f1,%f1,%f1,%f0
 	bl sqrtf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L177:
-	addi %r8,%r9,1
-	lbz %r11,0(%r9)
+	stfsx %f1,%r31,%r22
+	lwz %r23,80(%r31)
+	b .L298
+.L188:
+	addi %r8,%r23,1
+	lbz %r11,1(%r9)
 	slwi %r10,%r10,2
 	stw %r8,80(%r31)
 	addi %r0,%r8,1
-	slwi %r23,%r23,2
+	slwi %r22,%r22,2
 	slwi %r11,%r11,2
 	lfs %f11,68(%r31)
 	lfs %f10,64(%r31)
-	lbz %r8,1(%r9)
+	lbz %r8,1(%r23)
+	mr %r23,%r0
 	stw %r0,80(%r31)
 	lfs %f12,72(%r31)
 	lwzx %r10,%r31,%r10
 	add %r9,%r10,%r11
 	lfsx %f13,%r10,%r11
-	slwi %r11,%r8,2
 	lfs %f0,4(%r9)
-	lwzx %r10,%r31,%r23
+	lwzx %r11,%r31,%r22
 	fmuls %f11,%f11,%f0
 	lfs %f0,8(%r9)
-	mr %r9,%r0
+	slwi %r9,%r8,2
 	fmadds %f13,%f10,%f13,%f11
 	fmadds %f0,%f12,%f0,%f13
-	stfsx %f0,%r10,%r11
-	b .L2
-.L176:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
+	stfsx %f0,%r11,%r9
+	b .L298
+.L187:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lfs %f12,68(%r31)
 	lfs %f11,64(%r31)
@@ -428,498 +527,2224 @@ _ZN3GVM11Interpreter7executeEv:
 	fmadds %f13,%f11,%f13,%f12
 	lfs %f12,72(%r31)
 	fmadds %f0,%f12,%f0,%f13
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L175:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
+	stfsx %f0,%r31,%r22
+	b .L298
+.L186:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lbz %r8,1(%r23)
+	addi %r23,%r11,1
+	stw %r23,80(%r31)
 	slwi %r8,%r8,2
-	lbz %r7,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r7,%r7,2
 	lwzx %r10,%r31,%r10
-	lwzx %r6,%r31,%r23
-	add %r9,%r10,%r8
-	add %r11,%r6,%r7
+	lwzx %r7,%r31,%r22
+	add %r9,%r10,%r0
+	add %r11,%r7,%r8
 	lfs %f0,4(%r9)
 	lfs %f13,4(%r11)
-	lfsx %f11,%r6,%r7
+	lfsx %f11,%r7,%r8
 	lfs %f12,8(%r11)
 	fmuls %f0,%f13,%f0
-	lfsx %f13,%r10,%r8
+	lfsx %f13,%r10,%r0
 	fmadds %f13,%f11,%f13,%f0
 	lfs %f0,8(%r9)
-	mr %r9,%r0
 	fmadds %f0,%f12,%f0,%f13
 	stfs %f0,76(%r31)
-	b .L2
-.L174:
-	addi %r7,%r9,1
-	lbz %r0,0(%r9)
+	b .L298
+.L185:
+	addi %r8,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
-	stw %r7,80(%r31)
-	addi %r7,%r7,1
-	slwi %r23,%r23,2
+	stw %r8,80(%r31)
+	addi %r8,%r8,1
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lfs %f13,68(%r31)
 	lfs %f0,72(%r31)
-	lbz %r9,1(%r9)
-	stw %r7,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r6,%r31,%r23
-	add %r11,%r10,%r0
-	lfs %f11,8(%r11)
-	add %r8,%r6,%r9
-	lfs %f12,4(%r11)
+	lbz %r7,1(%r23)
+	mr %r23,%r8
+	stw %r8,80(%r31)
+	slwi %r7,%r7,2
+	lwzx %r11,%r31,%r10
+	lwzx %r6,%r31,%r22
+	add %r9,%r11,%r0
+	lfs %f11,8(%r9)
+	add %r10,%r6,%r7
+	lfs %f12,4(%r9)
 	fmuls %f13,%f11,%f13
 	fmsubs %f0,%f12,%f0,%f13
-	stfsx %f0,%r6,%r9
-	mr %r9,%r7
+	stfsx %f0,%r6,%r7
 	lfs %f0,72(%r31)
-	lfsx %f13,%r10,%r0
-	lfs %f12,8(%r11)
+	lfsx %f13,%r11,%r0
+	lfs %f12,8(%r9)
 	fmuls %f13,%f13,%f0
 	lfs %f0,64(%r31)
 	fmsubs %f0,%f12,%f0,%f13
-	stfs %f0,4(%r8)
+	stfs %f0,4(%r10)
 	lfs %f0,64(%r31)
-	lfs %f13,4(%r11)
-	lfsx %f12,%r10,%r0
+	lfs %f13,4(%r9)
+	lfsx %f12,%r11,%r0
 	fmuls %f13,%f13,%f0
 	lfs %f0,68(%r31)
 	fmsubs %f0,%f12,%f0,%f13
-	stfs %f0,8(%r8)
-	b .L2
-.L173:
-	addi %r7,%r9,1
-	lbz %r0,0(%r9)
+	stfs %f0,8(%r10)
+	b .L298
+.L184:
+	addi %r8,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
-	stw %r7,80(%r31)
-	addi %r7,%r7,1
-	slwi %r23,%r23,2
+	stw %r8,80(%r31)
+	addi %r8,%r8,1
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lfs %f11,72(%r31)
 	lfs %f12,68(%r31)
-	lbz %r9,1(%r9)
-	stw %r7,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r6,%r31,%r23
-	add %r11,%r10,%r0
-	lfs %f13,4(%r11)
-	add %r8,%r6,%r9
-	lfs %f0,8(%r11)
+	lbz %r7,1(%r23)
+	mr %r23,%r8
+	stw %r8,80(%r31)
+	slwi %r7,%r7,2
+	lwzx %r11,%r31,%r10
+	lwzx %r6,%r31,%r22
+	add %r9,%r11,%r0
+	lfs %f13,4(%r9)
+	add %r10,%r6,%r7
+	lfs %f0,8(%r9)
 	fmuls %f13,%f11,%f13
 	fmsubs %f0,%f12,%f0,%f13
-	stfsx %f0,%r6,%r9
-	mr %r9,%r7
-	lfs %f0,8(%r11)
+	stfsx %f0,%r6,%r7
+	lfs %f0,8(%r9)
 	lfs %f13,64(%r31)
 	lfs %f12,72(%r31)
 	fmuls %f13,%f13,%f0
-	lfsx %f0,%r10,%r0
+	lfsx %f0,%r11,%r0
 	fmsubs %f0,%f12,%f0,%f13
-	stfs %f0,4(%r8)
+	stfs %f0,4(%r10)
 	lfs %f12,68(%r31)
-	lfsx %f13,%r10,%r0
-	lfs %f0,4(%r11)
+	lfsx %f13,%r11,%r0
+	lfs %f0,4(%r9)
 	fmuls %f13,%f12,%f13
 	lfs %f12,64(%r31)
 	fmsubs %f0,%f12,%f0,%f13
-	stfs %f0,8(%r8)
-	b .L2
-.L172:
-	addi %r5,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r5,80(%r31)
-	addi %r5,%r5,1
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lbz %r7,1(%r9)
-	mr %r9,%r5
-	stw %r5,80(%r31)
-	slwi %r7,%r7,2
-	lwzx %r8,%r31,%r10
-	lwzx %r6,%r31,%r23
-	add %r10,%r8,%r0
-	add %r11,%r6,%r7
-	lfs %f13,8(%r10)
-	lfs %f0,4(%r11)
-	lfs %f12,4(%r10)
-	fmuls %f13,%f13,%f0
-	lfs %f0,8(%r11)
-	fmsubs %f0,%f12,%f0,%f13
-	stfs %f0,64(%r31)
-	lfs %f0,8(%r11)
-	lfsx %f13,%r8,%r0
-	lfs %f12,8(%r10)
-	fmuls %f13,%f13,%f0
-	lfsx %f0,%r6,%r7
-	fmsubs %f0,%f12,%f0,%f13
-	stfs %f0,68(%r31)
-	lfsx %f0,%r6,%r7
-	lfs %f13,4(%r10)
-	lfsx %f12,%r8,%r0
-	fmuls %f13,%f13,%f0
-	lfs %f0,4(%r11)
-	fmsubs %f0,%f12,%f0,%f13
-	stfs %f0,72(%r31)
-	b .L2
-.L171:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
+	stfs %f0,8(%r10)
+	b .L298
+.L183:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lbz %r8,1(%r23)
+	addi %r23,%r11,1
+	stw %r23,80(%r31)
 	slwi %r8,%r8,2
+	lwzx %r10,%r31,%r10
+	lwzx %r7,%r31,%r22
+	add %r11,%r10,%r0
+	add %r9,%r7,%r8
+	lfs %f13,8(%r11)
+	lfs %f0,4(%r9)
+	lfs %f12,4(%r11)
+	fmuls %f13,%f13,%f0
+	lfs %f0,8(%r9)
+	fmsubs %f0,%f12,%f0,%f13
+	stfs %f0,64(%r31)
+	lfs %f0,8(%r9)
+	lfsx %f13,%r10,%r0
+	lfs %f12,8(%r11)
+	fmuls %f13,%f13,%f0
+	lfsx %f0,%r7,%r8
+	fmsubs %f0,%f12,%f0,%f13
+	stfs %f0,68(%r31)
+	lfsx %f0,%r7,%r8
+	lfs %f13,4(%r11)
+	lfsx %f12,%r10,%r0
+	fmuls %f13,%f13,%f0
+	lfs %f0,4(%r9)
+	fmsubs %f0,%f12,%f0,%f13
+	stfs %f0,72(%r31)
+	b .L298
+.L182:
+	addi %r8,%r23,1
+	lbz %r11,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r0,%r8,1
+	slwi %r22,%r22,2
+	slwi %r11,%r11,2
 	lfs %f13,64(%r31)
-	lbz %r9,1(%r9)
+	lbz %r9,1(%r23)
+	mr %r23,%r0
 	stw %r0,80(%r31)
 	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	lfsx %f0,%r10,%r8
-	add %r10,%r10,%r8
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f0,%r8,%r11
+	add %r11,%r8,%r11
 	fsubs %f0,%f13,%f0
-	stfsx %f0,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
+	stfsx %f0,%r10,%r9
+	add %r9,%r10,%r9
 	lfs %f13,68(%r31)
+	lfs %f0,4(%r11)
+	fsubs %f0,%f13,%f0
+	stfs %f0,4(%r9)
+	lfs %f0,8(%r11)
+	lfs %f13,72(%r31)
+	fsubs %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L181:
+	addi %r8,%r23,1
+	lbz %r11,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r0,%r8,1
+	slwi %r22,%r22,2
+	slwi %r11,%r11,2
+	lfs %f0,64(%r31)
+	lbz %r9,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f13,%r8,%r11
+	add %r11,%r8,%r11
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r10,%r9
+	add %r9,%r10,%r9
+	lfs %f13,4(%r11)
+	lfs %f0,68(%r31)
+	fsubs %f0,%f13,%f0
+	stfs %f0,4(%r9)
+	lfs %f13,8(%r11)
+	lfs %f0,72(%r31)
+	fsubs %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L180:
+	addi %r11,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r9,%r9,2
+	lbz %r0,1(%r23)
+	addi %r23,%r11,1
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r10,%r31,%r10
+	lwzx %r11,%r31,%r22
+	lfsx %f0,%r10,%r9
+	add %r9,%r10,%r9
+	lfsx %f13,%r11,%r0
+	add %r11,%r11,%r0
+	fsubs %f0,%f13,%f0
+	stfs %f0,64(%r31)
+	lfs %f13,4(%r11)
+	lfs %f0,4(%r9)
+	fsubs %f0,%f13,%f0
+	stfs %f0,68(%r31)
+	lfs %f13,8(%r11)
+	lfs %f0,8(%r9)
+	fsubs %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L298
+.L179:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lfs %f0,64(%r31)
+	lwzx %r11,%r31,%r22
+	lfsx %f13,%r11,%r0
+	add %r9,%r11,%r0
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r11,%r0
+	lfs %f0,68(%r31)
+	lfs %f12,4(%r9)
+	lfs %f13,8(%r9)
+	fsubs %f0,%f12,%f0
+	stfs %f0,4(%r9)
+	lfs %f0,72(%r31)
+	fsubs %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L178:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lfs %f13,64(%r31)
+	lfs %f12,68(%r31)
+	lwzx %r9,%r31,%r10
+	lfsx %f0,%r9,%r0
+	add %r9,%r9,%r0
+	fsubs %f0,%f13,%f0
+	lfs %f13,72(%r31)
+	stfs %f0,64(%r31)
+	lfs %f0,4(%r9)
+	fsubs %f0,%f12,%f0
+	stfs %f0,68(%r31)
+	lfs %f0,8(%r9)
+	fsubs %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L298
+.L177:
+	addi %r8,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r8,%r8,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r8
+	stw %r8,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r7,%r31,%r10
+	slwi %r10,%r9,2
+	lwzx %r11,%r31,%r22
+	lfsx %f0,%r7,%r10
+	add %r10,%r7,%r10
+	lfsx %f13,%r11,%r0
+	add %r9,%r11,%r0
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r11,%r0
 	lfs %f0,4(%r10)
-	fsubs %f0,%f13,%f0
-	stfs %f0,4(%r11)
+	lfs %f12,4(%r9)
+	lfs %f13,8(%r9)
+	fsubs %f0,%f12,%f0
+	stfs %f0,4(%r9)
 	lfs %f0,8(%r10)
-	lfs %f13,72(%r31)
 	fsubs %f0,%f13,%f0
-	stfs %f0,8(%r11)
-	b .L2
-.L170:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
-	slwi %r8,%r8,2
-	lfs %f0,64(%r31)
-	lbz %r9,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	lfsx %f13,%r10,%r8
-	add %r10,%r10,%r8
-	fsubs %f0,%f13,%f0
-	stfsx %f0,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
-	lfs %f13,4(%r10)
-	lfs %f0,68(%r31)
-	fsubs %f0,%f13,%f0
-	stfs %f0,4(%r11)
-	lfs %f13,8(%r10)
-	lfs %f0,72(%r31)
-	fsubs %f0,%f13,%f0
-	stfs %f0,8(%r11)
-	b .L2
-.L169:
-	addi %r8,%r9,1
-	lbz %r11,0(%r9)
+	stfs %f0,8(%r9)
+	b .L298
+.L176:
+	addi %r8,%r23,1
+	lbz %r11,1(%r9)
 	slwi %r10,%r10,2
 	stw %r8,80(%r31)
 	addi %r0,%r8,1
-	slwi %r23,%r23,2
-	slwi %r11,%r11,2
-	lbz %r9,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r8,%r31,%r10
-	lwzx %r10,%r31,%r23
-	lfsx %f0,%r8,%r11
-	add %r11,%r8,%r11
-	lfsx %f13,%r10,%r9
-	add %r10,%r10,%r9
-	mr %r9,%r0
-	fsubs %f0,%f13,%f0
-	stfs %f0,64(%r31)
-	lfs %f13,4(%r10)
-	lfs %f0,4(%r11)
-	fsubs %f0,%f13,%f0
-	stfs %f0,68(%r31)
-	lfs %f13,8(%r10)
-	lfs %f0,8(%r11)
-	fsubs %f0,%f13,%f0
-	stfs %f0,72(%r31)
-	b .L2
-.L168:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lfs %f0,64(%r31)
-	lwzx %r10,%r31,%r23
-	lfsx %f13,%r10,%r0
-	add %r11,%r10,%r0
-	fsubs %f0,%f13,%f0
-	stfsx %f0,%r10,%r0
-	lfs %f0,68(%r31)
-	lfs %f12,4(%r11)
-	lfs %f13,8(%r11)
-	fsubs %f0,%f12,%f0
-	stfs %f0,4(%r11)
-	lfs %f0,72(%r31)
-	fsubs %f0,%f13,%f0
-	stfs %f0,8(%r11)
-	b .L2
-.L167:
-	addi %r0,%r9,1
-	lbz %r9,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lfs %f13,64(%r31)
-	lfs %f12,68(%r31)
-	lwzx %r11,%r31,%r10
-	lfsx %f0,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
-	fsubs %f0,%f13,%f0
-	lfs %f13,72(%r31)
-	stfs %f0,64(%r31)
-	lfs %f0,4(%r11)
-	fsubs %f0,%f12,%f0
-	stfs %f0,68(%r31)
-	lfs %f0,8(%r11)
-	fsubs %f0,%f13,%f0
-	stfs %f0,72(%r31)
-	b .L2
-.L166:
-	addi %r7,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r7,80(%r31)
-	addi %r7,%r7,1
-	slwi %r23,%r23,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r11,2
-	stw %r7,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r8,%r31,%r10
-	lwzx %r10,%r31,%r23
-	lfsx %f0,%r8,%r9
-	add %r8,%r8,%r9
-	mr %r9,%r7
-	lfsx %f13,%r10,%r0
-	add %r11,%r10,%r0
-	fsubs %f0,%f13,%f0
-	stfsx %f0,%r10,%r0
-	lfs %f0,4(%r8)
-	lfs %f12,4(%r11)
-	lfs %f13,8(%r11)
-	fsubs %f0,%f12,%f0
-	stfs %f0,4(%r11)
-	lfs %f0,8(%r8)
-	fsubs %f0,%f13,%f0
-	stfs %f0,8(%r11)
-	b .L2
-.L165:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
-	slwi %r8,%r8,2
-	lfs %f0,64(%r31)
-	lbz %r9,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	lfsx %f13,%r10,%r8
-	add %r10,%r10,%r8
-	fadds %f0,%f13,%f0
-	stfsx %f0,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
-	lfs %f13,4(%r10)
-	lfs %f0,68(%r31)
-	fadds %f0,%f13,%f0
-	stfs %f0,4(%r11)
-	lfs %f13,8(%r10)
-	lfs %f0,72(%r31)
-	fadds %f0,%f13,%f0
-	stfs %f0,8(%r11)
-	b .L2
-.L164:
-	addi %r8,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r8,80(%r31)
-	addi %r0,%r8,1
-	slwi %r23,%r23,2
-	slwi %r11,%r11,2
-	lbz %r9,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r8,%r31,%r10
-	lwzx %r10,%r31,%r23
-	lfsx %f0,%r8,%r11
-	add %r11,%r8,%r11
-	lfsx %f13,%r10,%r9
-	add %r10,%r10,%r9
-	mr %r9,%r0
-	fadds %f0,%f13,%f0
-	stfs %f0,64(%r31)
-	lfs %f13,4(%r10)
-	lfs %f0,4(%r11)
-	fadds %f0,%f13,%f0
-	stfs %f0,68(%r31)
-	lfs %f13,8(%r10)
-	lfs %f0,8(%r11)
-	fadds %f0,%f13,%f0
-	stfs %f0,72(%r31)
-	b .L2
-.L163:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lfs %f0,64(%r31)
-	lwzx %r10,%r31,%r23
-	lfsx %f13,%r10,%r0
-	add %r11,%r10,%r0
-	fadds %f0,%f13,%f0
-	stfsx %f0,%r10,%r0
-	lfs %f0,68(%r31)
-	lfs %f12,4(%r11)
-	lfs %f13,8(%r11)
-	fadds %f0,%f12,%f0
-	stfs %f0,4(%r11)
-	lfs %f0,72(%r31)
-	fadds %f0,%f13,%f0
-	stfs %f0,8(%r11)
-	b .L2
-.L162:
-	addi %r0,%r9,1
-	lbz %r9,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lfs %f13,64(%r31)
-	lfs %f12,68(%r31)
-	lwzx %r11,%r31,%r10
-	lfsx %f0,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
-	fadds %f0,%f13,%f0
-	lfs %f13,72(%r31)
-	stfs %f0,64(%r31)
-	lfs %f0,4(%r11)
-	fadds %f0,%f12,%f0
-	stfs %f0,68(%r31)
-	lfs %f0,8(%r11)
-	fadds %f0,%f13,%f0
-	stfs %f0,72(%r31)
-	b .L2
-.L161:
-	addi %r7,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r7,80(%r31)
-	addi %r7,%r7,1
-	slwi %r23,%r23,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r11,2
-	stw %r7,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r8,%r31,%r10
-	lwzx %r10,%r31,%r23
-	lfsx %f0,%r8,%r9
-	add %r8,%r8,%r9
-	mr %r9,%r7
-	lfsx %f13,%r10,%r0
-	add %r11,%r10,%r0
-	fadds %f0,%f13,%f0
-	stfsx %f0,%r10,%r0
-	lfs %f0,4(%r8)
-	lfs %f12,4(%r11)
-	lfs %f13,8(%r11)
-	fadds %f0,%f12,%f0
-	stfs %f0,4(%r11)
-	lfs %f0,8(%r8)
-	fadds %f0,%f13,%f0
-	stfs %f0,8(%r11)
-	b .L2
-.L185:
-	addi %r0,%r9,1
-	lbz %r22,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
 	slwi %r22,%r22,2
-	lwzx %r21,%r31,%r10
-	add %r23,%r21,%r22
-	lfsx %f0,%r21,%r22
-	lfs %f13,4(%r23)
-	lfs %f1,8(%r23)
-	fmuls %f13,%f13,%f13
-	fmadds %f0,%f0,%f0,%f13
-	fmadds %f1,%f1,%f1,%f0
-	bl sqrtf
-	lfs %f13,0(%r29)
-	lfsx %f0,%r21,%r22
-	lwz %r9,80(%r31)
-	fdivs %f13,%f13,%f1
-	fmuls %f0,%f0,%f13
+	slwi %r11,%r11,2
+	lfs %f0,64(%r31)
+	lbz %r9,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f13,%r8,%r11
+	add %r11,%r8,%r11
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r10,%r9
+	add %r9,%r10,%r9
+	lfs %f13,4(%r11)
+	lfs %f0,68(%r31)
+	fadds %f0,%f13,%f0
+	stfs %f0,4(%r9)
+	lfs %f13,8(%r11)
+	lfs %f0,72(%r31)
+	fadds %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L175:
+	addi %r11,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r9,%r9,2
+	lbz %r0,1(%r23)
+	addi %r23,%r11,1
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r10,%r31,%r10
+	lwzx %r11,%r31,%r22
+	lfsx %f0,%r10,%r9
+	add %r9,%r10,%r9
+	lfsx %f13,%r11,%r0
+	add %r11,%r11,%r0
+	fadds %f0,%f13,%f0
 	stfs %f0,64(%r31)
-	lfs %f0,4(%r23)
-	fmuls %f0,%f0,%f13
+	lfs %f13,4(%r11)
+	lfs %f0,4(%r9)
+	fadds %f0,%f13,%f0
 	stfs %f0,68(%r31)
-	lfs %f0,8(%r23)
-	fmuls %f13,%f0,%f13
+	lfs %f13,8(%r11)
+	lfs %f0,8(%r9)
+	fadds %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L298
+.L174:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lfs %f0,64(%r31)
+	lwzx %r11,%r31,%r22
+	lfsx %f13,%r11,%r0
+	add %r9,%r11,%r0
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r11,%r0
+	lfs %f0,68(%r31)
+	lfs %f12,4(%r9)
+	lfs %f13,8(%r9)
+	fadds %f0,%f12,%f0
+	stfs %f0,4(%r9)
+	lfs %f0,72(%r31)
+	fadds %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L173:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lfs %f13,64(%r31)
+	lfs %f12,68(%r31)
+	lwzx %r9,%r31,%r10
+	lfsx %f0,%r9,%r0
+	add %r9,%r9,%r0
+	fadds %f0,%f13,%f0
+	lfs %f13,72(%r31)
+	stfs %f0,64(%r31)
+	lfs %f0,4(%r9)
+	fadds %f0,%f12,%f0
+	stfs %f0,68(%r31)
+	lfs %f0,8(%r9)
+	fadds %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L298
+.L172:
+	addi %r8,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r8,%r8,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r8
+	stw %r8,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r7,%r31,%r10
+	slwi %r10,%r9,2
+	lwzx %r11,%r31,%r22
+	lfsx %f0,%r7,%r10
+	add %r10,%r7,%r10
+	lfsx %f13,%r11,%r0
+	add %r9,%r11,%r0
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r11,%r0
+	lfs %f0,4(%r10)
+	lfs %f12,4(%r9)
+	lfs %f13,8(%r9)
+	fadds %f0,%f12,%f0
+	stfs %f0,4(%r9)
+	lfs %f0,8(%r10)
+	fadds %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L171:
+	lfs %f0,76(%r31)
+	addi %r23,%r23,-1
+	lfs %f12,64(%r31)
+	lfs %f11,68(%r31)
+	lfs %f13,72(%r31)
+	fmuls %f12,%f12,%f0
+	stw %r23,80(%r31)
+	fmuls %f13,%f13,%f0
+	fmuls %f0,%f11,%f0
+	stfs %f12,64(%r31)
 	stfs %f13,72(%r31)
-	b .L2
-.L186:
-	lfs %f13,68(%r31)
-	addi %r0,%r9,1
-	slwi %r23,%r23,2
-	lfs %f0,64(%r31)
-	lfs %f1,72(%r31)
-	fmuls %f13,%f13,%f13
-	lbz %r22,0(%r9)
-	stw %r0,80(%r31)
+	stfs %f0,68(%r31)
+	b .L298
+.L170:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lfs %f12,64(%r31)
+	lfs %f11,68(%r31)
+	lwzx %r9,%r31,%r10
+	lfs %f13,72(%r31)
+	lfsx %f0,%r9,%r0
+	fmuls %f12,%f12,%f0
+	fmuls %f13,%f13,%f0
+	fmuls %f0,%f11,%f0
+	stfs %f12,64(%r31)
+	stfs %f13,72(%r31)
+	stfs %f0,68(%r31)
+	b .L298
+.L169:
+	slwi %r10,%r10,2
+	lfs %f13,64(%r31)
+	lfsx %f0,%r31,%r10
+	lfs %f12,68(%r31)
+	fmuls %f0,%f13,%f0
+	lfs %f13,72(%r31)
+	stfs %f0,64(%r31)
+	lfsx %f0,%r31,%r10
+	fmuls %f0,%f12,%f0
+	stfs %f0,68(%r31)
+	lfsx %f0,%r31,%r10
+	fmuls %f0,%f13,%f0
+	stfs %f0,72(%r31)
+	b .L298
+.L168:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r22,%r22,2
-	fmadds %f0,%f0,%f0,%f13
-	lwzx %r23,%r31,%r23
-	fmadds %f1,%f1,%f1,%f0
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lfs %f0,76(%r31)
+	lwzx %r11,%r31,%r22
+	lfsx %f13,%r11,%r0
+	add %r9,%r11,%r0
+	fmuls %f0,%f13,%f0
+	stfsx %f0,%r11,%r0
+	lfs %f0,76(%r31)
+	lfs %f12,4(%r9)
+	lfs %f13,8(%r9)
+	fmuls %f0,%f12,%f0
+	stfs %f0,4(%r9)
+	lfs %f0,76(%r31)
+	fmuls %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L167:
+	addi %r8,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r8,%r8,1
+	slwi %r22,%r22,2
+	slwi %r9,%r9,2
+	lbz %r0,1(%r23)
+	mr %r23,%r8
+	stw %r8,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r11,%r31,%r22
+	lwzx %r10,%r31,%r10
+	lfsx %f13,%r11,%r0
+	lfsx %f0,%r10,%r9
+	add %r9,%r11,%r0
+	fmuls %f13,%f13,%f0
+	stfsx %f13,%r11,%r0
+	lfs %f13,4(%r9)
+	lfs %f12,8(%r9)
+	fmuls %f13,%f13,%f0
+	fmuls %f0,%f12,%f0
+	stfs %f13,4(%r9)
+	stfs %f0,8(%r9)
+	b .L298
+.L166:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r11,%r31,%r22
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r11,%r0
+	add %r9,%r11,%r0
+	fmuls %f0,%f13,%f0
+	stfsx %f0,%r11,%r0
+	lfsx %f0,%r31,%r10
+	lfs %f12,4(%r9)
+	lfs %f13,8(%r9)
+	fmuls %f0,%f12,%f0
+	stfs %f0,4(%r9)
+	lfsx %f0,%r31,%r10
+	fmuls %f0,%f13,%f0
+	stfs %f0,8(%r9)
+	b .L298
+.L165:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L164:
+	addi %r11,%r23,1
+	lbz %r6,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r5,%r6,2
+	lbz %r7,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r7,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lwzx %r5,%r8,%r5
+	lwzx %r0,%r10,%r0
+	cmpw %cr7,%r5,%r0
+	beq- %cr7,.L309
+.L277:
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L163:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L162:
+	addi %r11,%r23,1
+	lbz %r6,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r5,%r6,2
+	lbz %r7,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r7,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lwzx %r5,%r8,%r5
+	lwzx %r0,%r10,%r0
+	cmpw %cr7,%r5,%r0
+	beq- %cr7,.L310
+.L276:
+	addi %r23,%r9,2
+	stw %r23,80(%r31)
+	b .L298
+.L161:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	lwz %r11,64(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	stwx %r11,%r9,%r0
+	add %r9,%r9,%r0
+	lwz %r0,68(%r31)
+	stw %r0,4(%r9)
+	lwz %r0,72(%r31)
+	stw %r0,8(%r9)
+	b .L298
+.L145:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfsx %f1,%r31,%r10
+	bl cosf
+	stfsx %f1,%r31,%r22
+	b .L298
+.L144:
+	addi %r11,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r0,%r11,1
+	slwi %r22,%r22,2
+	slwi %r9,%r9,2
+	lbz %r21,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	lwzx %r11,%r31,%r10
+	lfsx %f1,%r11,%r9
+	bl sinf
+	lwzx %r9,%r31,%r22
+	slwi %r0,%r21,2
+	stfsx %f1,%r9,%r0
+	b .L298
+.L143:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f1,%r9,%r0
+	bl sinf
+	stfsx %f1,%r31,%r22
+	b .L298
+.L142:
+	addi %r23,%r23,1
+	lbz %r21,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	lfsx %f1,%r31,%r10
+	bl sinf
+	lwzx %r9,%r31,%r22
+	slwi %r0,%r21,2
+	stfsx %f1,%r9,%r0
+	b .L298
+.L141:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfsx %f1,%r31,%r10
+	bl sinf
+	stfsx %f1,%r31,%r22
+	b .L298
+.L140:
+	slwi %r22,%r22,2
+	slwi %r21,%r10,2
+.L200:
+	addi %r9,%r23,1
+	lbz %r0,0(%r23)
+	stw %r9,80(%r31)
+	addi %r9,%r9,1
+	slwi %r0,%r0,2
+	lbz %r23,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r23,%r23,2
+	lwzx %r9,%r31,%r21
+	lwzx %r22,%r31,%r22
+	lfsx %f1,%r9,%r0
 	bl sqrtf
-	lfs %f13,0(%r29)
-	add %r11,%r23,%r22
-	lfs %f0,64(%r31)
-	lwz %r9,80(%r31)
-	fdivs %f13,%f13,%f1
-	fmuls %f0,%f0,%f13
-	stfsx %f0,%r23,%r22
-	lfs %f0,68(%r31)
-	fmuls %f0,%f0,%f13
-	stfs %f0,4(%r11)
-	lfs %f0,72(%r31)
-	fmuls %f13,%f0,%f13
-	stfs %f13,8(%r11)
-	b .L2
-.L187:
+	stfsx %f1,%r22,%r23
+	lwz %r23,80(%r31)
+	b .L298
+.L139:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r21,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r21
+	lfsx %f1,%r9,%r0
+	bl sqrtf
+	stfsx %f1,%r31,%r22
+	lwz %r23,80(%r31)
+	b .L200
+.L138:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r23,%r0,2
+	lfsx %f1,%r31,%r10
+	lwzx %r22,%r31,%r22
+	bl sqrtf
+	stfsx %f1,%r22,%r23
+	lwz %r23,80(%r31)
+	b .L298
+.L137:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfsx %f1,%r31,%r10
+	bl sqrtf
+	stfsx %f1,%r31,%r22
+	lwz %r23,80(%r31)
+	b .L298
+.L136:
+	addi %r11,%r23,1
+	lbz %r8,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r8,%r8,2
+	lbz %r0,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r7,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f13,%r7,%r8
+	lfsx %f0,%r10,%r0
+	fcmpu %cr7,%f13,%f0
+	bng- %cr7,.L306
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L135:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f0,%r31,%r22
+	lfsx %f13,%r9,%r0
+	fcmpu %cr7,%f13,%f0
+	bng- %cr7,.L305
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L134:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r11,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lfsx %f13,%r31,%r10
+	lfsx %f0,%r9,%r0
+	fcmpu %cr7,%f13,%f0
+	bng- %cr7,.L304
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L133:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfsx %f13,%r31,%r10
+	lfsx %f0,%r31,%r22
+	fcmpu %cr7,%f13,%f0
+	bng- %cr7,.L303
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L131:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f0,%r31,%r22
+	lfsx %f13,%r9,%r0
+	fcmpu %cr7,%f13,%f0
+	cror 30,29,30
+	bne- %cr7,.L301
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L132:
+	addi %r11,%r23,1
+	lbz %r8,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r8,%r8,2
+	lbz %r0,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r7,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f13,%r7,%r8
+	lfsx %f0,%r10,%r0
+	fcmpu %cr7,%f13,%f0
+	cror 30,29,30
+	bne- %cr7,.L302
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L130:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r11,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lfsx %f13,%r31,%r10
+	lfsx %f0,%r9,%r0
+	fcmpu %cr7,%f13,%f0
+	cror 30,29,30
+	bne- %cr7,.L300
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L153:
+	lbz %r0,1(%r9)
+	addi %r23,%r23,1
+	slwi %r22,%r22,2
+	stw %r10,12(%r1)
+	stw %r27,8(%r1)
+	slwi %r0,%r0,2
+	lfs %f0,0(%r26)
+	lfd %f13,8(%r1)
+	stw %r23,80(%r31)
+	fsub %f0,%f13,%f0
+	lwzx %r11,%r31,%r22
+	frsp %f0,%f0
+	add %r9,%r11,%r0
+	stfsx %f0,%r11,%r0
+	stfs %f0,8(%r9)
+	stfs %f0,4(%r9)
+	b .L298
+.L157:
+	slwi %r10,%r10,2
+	lwzx %r0,%r31,%r10
+	stw %r0,64(%r31)
+	lwzx %r0,%r31,%r10
+	stw %r0,68(%r31)
+	lwzx %r0,%r31,%r10
+	stw %r0,72(%r31)
+	b .L298
+.L156:
+	stw %r10,20(%r1)
+	stw %r27,16(%r1)
+	lfs %f0,0(%r26)
+	lfd %f13,16(%r1)
+	fsub %f0,%f13,%f0
+	frsp %f0,%f0
+	stfs %f0,72(%r31)
+	stfs %f0,64(%r31)
+	stfs %f0,68(%r31)
+	b .L298
+.L155:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lbz %r11,1(%r23)
+	mr %r23,%r9
+	stw %r9,80(%r31)
+	lwzx %r10,%r31,%r10
+	lwzx %r8,%r31,%r22
+	lwzx %r0,%r10,%r0
+	slwi %r10,%r11,2
+	add %r11,%r8,%r10
+	stwx %r0,%r8,%r10
+	stw %r0,8(%r11)
+	stw %r0,4(%r11)
+	b .L298
+.L154:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	stwx %r11,%r9,%r0
+	add %r9,%r9,%r0
+	lwzx %r0,%r31,%r10
+	stw %r0,4(%r9)
+	lwzx %r0,%r31,%r10
+	stw %r0,8(%r9)
+	b .L298
+.L159:
+	addi %r8,%r23,1
+	lbz %r11,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r0,%r8,1
+	slwi %r22,%r22,2
+	slwi %r11,%r11,2
+	lbz %r9,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r8,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lwzx %r7,%r8,%r11
+	add %r11,%r8,%r11
+	stwx %r7,%r10,%r9
+	add %r9,%r10,%r9
+	lwz %r10,4(%r11)
+	stw %r10,4(%r9)
+	lwz %r0,8(%r11)
+	stw %r0,8(%r9)
+	b .L298
+.L158:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	stw %r0,72(%r31)
+	stw %r0,64(%r31)
+	stw %r0,68(%r31)
+	b .L298
+.L160:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r11,%r9,%r0
+	add %r9,%r9,%r0
+	stw %r11,64(%r31)
+	lwz %r0,4(%r9)
+	stw %r0,68(%r31)
+	lwz %r0,8(%r9)
+	stw %r0,72(%r31)
+	b .L298
+.L149:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfsx %f1,%r31,%r10
+	bl tanf
+	stfsx %f1,%r31,%r22
+	b .L298
+.L148:
+	addi %r11,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r0,%r11,1
+	slwi %r22,%r22,2
+	slwi %r9,%r9,2
+	lbz %r21,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	lwzx %r11,%r31,%r10
+	lfsx %f1,%r11,%r9
+	bl cosf
+	lwzx %r9,%r31,%r22
+	slwi %r0,%r21,2
+	stfsx %f1,%r9,%r0
+	b .L298
+.L147:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f1,%r9,%r0
+	bl cosf
+	stfsx %f1,%r31,%r22
+	b .L298
+.L146:
+	addi %r23,%r23,1
+	lbz %r21,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	lfsx %f1,%r31,%r10
+	bl cosf
+	lwzx %r9,%r31,%r22
+	slwi %r0,%r21,2
+	stfsx %f1,%r9,%r0
+	b .L298
+.L151:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f1,%r9,%r0
+	bl tanf
+	stfsx %f1,%r31,%r22
+	b .L298
+.L150:
+	addi %r23,%r23,1
+	lbz %r21,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	lfsx %f1,%r31,%r10
+	bl tanf
+	lwzx %r9,%r31,%r22
+	slwi %r0,%r21,2
+	stfsx %f1,%r9,%r0
+	b .L298
+.L152:
+	addi %r11,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r0,%r11,1
+	slwi %r22,%r22,2
+	slwi %r9,%r9,2
+	lbz %r21,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	lwzx %r11,%r31,%r10
+	lfsx %f1,%r11,%r9
+	bl tanf
+	lwzx %r9,%r31,%r22
+	slwi %r0,%r21,2
+	stfsx %f1,%r9,%r0
+	b .L298
+.L129:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfsx %f13,%r31,%r10
+	lfsx %f0,%r31,%r22
+	fcmpu %cr7,%f13,%f0
+	cror 30,29,30
+	bne- %cr7,.L299
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L128:
+	addi %r11,%r23,1
+	lbz %r8,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r8,%r8,2
+	lfs %f13,0(%r28)
+	lbz %r0,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r7,%r31,%r10
+	lwzx %r10,%r31,%r22
+	lfsx %f12,%r7,%r8
+	lfsx %f0,%r10,%r0
+	fsubs %f0,%f12,%f0
+	fcmpu %cr7,%f0,%f13
+	cror 30,29,30
+	bne- %cr7,.L257
+	lfs %f13,0(%r25)
+	fcmpu %cr7,%f0,%f13
+	cror 30,28,30
+	bne- %cr7,.L257
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L65:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	cmpwi %cr7,%r0,0
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	lwzx %r9,%r31,%r22
+	divw %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L97:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r0,%r31,%r10
+	lwzx %r9,%r31,%r22
+	srw %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L96:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	addi %r10,%r10,1
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r9,%r0
+	srw %r11,%r11,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L95:
+	slwi %r22,%r22,2
+	addi %r10,%r10,1
+	lwzx %r0,%r31,%r22
+	srw %r0,%r0,%r10
+	stwx %r0,%r31,%r22
+	b .L298
+.L94:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	slw %r11,%r8,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L93:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	lwzx %r9,%r31,%r22
+	slw %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L92:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	slw %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L91:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r0,%r31,%r10
+	lwzx %r9,%r31,%r22
+	slw %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L90:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	addi %r10,%r10,1
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r9,%r0
+	slw %r11,%r11,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L89:
+	slwi %r22,%r22,2
+	addi %r10,%r10,1
+	lwzx %r0,%r31,%r22
+	slw %r0,%r0,%r10
+	stwx %r0,%r31,%r22
+	b .L298
+.L88:
+	addi %r11,%r23,1
+	lbz %r8,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r0,%r11,1
+	slwi %r22,%r22,2
+	slwi %r8,%r8,2
+	lbz %r9,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r10,%r31,%r10
+	lwzx %r11,%r31,%r22
+	lwzx %r10,%r10,%r8
+	nor %r10,%r10,%r10
+	stwx %r10,%r11,%r9
+	b .L298
+.L87:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	nor %r0,%r0,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L86:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r11,%r31,%r10
+	lwzx %r9,%r31,%r22
+	nor %r11,%r11,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L85:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lwzx %r0,%r31,%r10
+	nor %r0,%r0,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L84:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	xor %r11,%r8,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L83:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r9,%r9,%r0
+	lwzx %r0,%r31,%r22
+	xor %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L82:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	xor %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L81:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r31,%r22
+	xor %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L80:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	or %r11,%r8,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L79:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r9,%r9,%r0
+	lwzx %r0,%r31,%r22
+	or %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L78:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	or %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L77:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r31,%r22
+	or %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L76:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	and %r11,%r8,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L75:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r9,%r9,%r0
+	lwzx %r0,%r31,%r22
+	and %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L74:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	and %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L73:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r31,%r22
+	and %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L72:
+	addi %r8,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r8,%r8,1
+	slwi %r9,%r9,2
+	lbz %r0,1(%r23)
+	stw %r8,80(%r31)
+	lwzx %r11,%r31,%r10
+	lwzx %r11,%r11,%r9
+	cmpwi %cr7,%r11,0
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	mr %r23,%r8
+	lwzx %r10,%r9,%r0
+	and %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L71:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	cmpwi %cr7,%r0,0
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	lwzx %r9,%r31,%r22
+	divw %r11,%r9,%r0
+	mullw %r0,%r11,%r0
+	subf %r9,%r0,%r9
+	stwx %r9,%r31,%r22
+	b .L298
+.L70:
+	addi %r23,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	lwzx %r0,%r31,%r10
+	cmpwi %cr7,%r0,0
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	slwi %r9,%r9,2
+	lwzx %r11,%r31,%r22
+	lwzx %r10,%r11,%r9
+	divw %r8,%r10,%r0
+	mullw %r0,%r8,%r0
+	subf %r10,%r0,%r10
+	stwx %r10,%r11,%r9
+	b .L298
+.L69:
+	slwi %r10,%r10,2
+	lwzx %r0,%r31,%r10
+	cmpwi %cr7,%r0,0
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	lwzx %r9,%r31,%r22
+	divw %r11,%r9,%r0
+	mullw %r0,%r11,%r0
+	subf %r9,%r0,%r9
+	stwx %r9,%r31,%r22
+	b .L298
+.L68:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	addi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r9,%r0
+	divw %r8,%r11,%r10
+	mullw %r10,%r8,%r10
+	subf %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L67:
+	slwi %r22,%r22,2
+	addi %r10,%r10,2
+	lwzx %r0,%r31,%r22
+	divw %r9,%r0,%r10
+	mullw %r10,%r9,%r10
+	subf %r0,%r10,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L66:
+	addi %r8,%r23,1
+	lbz %r9,1(%r9)
+	slwi %r10,%r10,2
+	stw %r8,80(%r31)
+	addi %r8,%r8,1
+	slwi %r9,%r9,2
+	lbz %r0,1(%r23)
+	stw %r8,80(%r31)
+	lwzx %r11,%r31,%r10
+	lwzx %r11,%r11,%r9
+	cmpwi %cr7,%r11,0
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	mr %r23,%r8
+	lwzx %r10,%r9,%r0
+	divw %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L113:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r31,%r22
+	fmuls %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L112:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r8,%r10
+	lfsx %f13,%r9,%r0
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L111:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f13,%r31,%r22
+	lfsx %f0,%r9,%r0
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L110:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r9,%r0
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L109:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r31,%r22
+	fsubs %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L108:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r8,%r10
+	lfsx %f13,%r9,%r0
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L107:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f13,%r31,%r22
+	lfsx %f0,%r9,%r0
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L106:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r9,%r0
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L105:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r31,%r22
+	fadds %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L104:
+	addi %r11,%r23,1
+	lbz %r8,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r0,%r11,1
+	slwi %r22,%r22,2
+	slwi %r8,%r8,2
+	lbz %r9,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r10,%r31,%r10
+	lwzx %r11,%r31,%r22
+	lfsx %f0,%r10,%r8
+	fneg %f0,%f0
+	stfsx %f0,%r11,%r9
+	b .L298
+.L103:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f0,%r9,%r0
+	fneg %f0,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L102:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lfsx %f0,%r31,%r10
+	lwzx %r9,%r31,%r22
+	fneg %f0,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L101:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfsx %f0,%r31,%r10
+	fneg %f0,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L100:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	srw %r11,%r8,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L99:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	lwzx %r9,%r31,%r22
+	srw %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L98:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	srw %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L121:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lfsx %f2,%r31,%r10
+	lfsx %f1,%r31,%r22
+	bl fmodf
+	stfsx %f1,%r31,%r22
+	lwz %r23,80(%r31)
+	b .L298
+.L120:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r8,%r10
+	lfsx %f13,%r9,%r0
+	fdivs %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L119:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f13,%r31,%r22
+	lfsx %f0,%r9,%r0
+	fdivs %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L118:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r9,%r0
+	fdivs %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L117:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r31,%r22
+	fdivs %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L116:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r8,%r10
+	lfsx %f13,%r9,%r0
+	fmuls %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L115:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lfsx %f13,%r31,%r22
+	lfsx %f0,%r9,%r0
+	fmuls %f0,%f13,%f0
+	stfsx %f0,%r31,%r22
+	b .L298
+.L114:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lfsx %f0,%r31,%r10
+	lfsx %f13,%r9,%r0
+	fmuls %f0,%f13,%f0
+	stfsx %f0,%r9,%r0
+	b .L298
+.L125:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lfs %f13,0(%r28)
+	lfsx %f12,%r31,%r10
+	lfsx %f0,%r31,%r22
+	fsubs %f0,%f12,%f0
+	fcmpu %cr7,%f0,%f13
+	cror 30,29,30
+	bne- %cr7,.L248
+	lfs %f13,0(%r25)
+	fcmpu %cr7,%f0,%f13
+	cror 30,28,30
+	bne- %cr7,.L248
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L124:
+	slwi %r22,%r22,2
+	slwi %r21,%r10,2
+.L201:
+	addi %r9,%r23,1
+	lbz %r0,0(%r23)
+	stw %r9,80(%r31)
+	addi %r9,%r9,1
+	slwi %r0,%r0,2
+	lbz %r23,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r23,%r23,2
+	lwzx %r22,%r31,%r22
+	lwzx %r9,%r31,%r21
+	lfsx %f1,%r22,%r23
+	lfsx %f2,%r9,%r0
+	bl fmodf
+	stfsx %f1,%r22,%r23
+	lwz %r23,80(%r31)
+	b .L298
+.L123:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r21,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r21
+	lfsx %f1,%r31,%r22
+	lfsx %f2,%r9,%r0
+	bl fmodf
+	stfsx %f1,%r31,%r22
+	lwz %r23,80(%r31)
+	b .L201
+.L122:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r23,%r0,2
+	lwzx %r22,%r31,%r22
+	lfsx %f2,%r31,%r10
+	lfsx %f1,%r22,%r23
+	bl fmodf
+	stfsx %f1,%r22,%r23
+	lwz %r23,80(%r31)
+	b .L298
+.L127:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lfs %f13,0(%r28)
+	lwzx %r9,%r31,%r10
+	lfsx %f0,%r31,%r22
+	lfsx %f12,%r9,%r0
+	fsubs %f0,%f12,%f0
+	fcmpu %cr7,%f0,%f13
+	cror 30,29,30
+	bne- %cr7,.L254
+	lfs %f13,0(%r25)
+	fcmpu %cr7,%f0,%f13
+	cror 30,28,30
+	bne- %cr7,.L254
+	addi %r0,%r23,1
+	lbz %r11,0(%r23)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L126:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lfs %f13,0(%r28)
+	lwzx %r9,%r31,%r22
+	lfsx %f12,%r31,%r10
+	lfsx %f0,%r9,%r0
+	fsubs %f0,%f12,%f0
+	fcmpu %cr7,%f0,%f13
+	cror 30,29,30
+	bne- %cr7,.L251
+	lfs %f13,0(%r25)
+	fcmpu %cr7,%f0,%f13
+	cror 30,28,30
+	bne- %cr7,.L251
+	addi %r0,%r23,1
+	lbz %r11,0(%r23)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L33:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r9,%r9,%r0
+	lwzx %r0,%r31,%r22
+	cmpw %cr7,%r9,%r0
+	blt- %cr7,.L234
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L49:
+	slwi %r22,%r22,2
+	nor %r10,%r10,%r10
+	lwzx %r0,%r31,%r22
+	add %r0,%r10,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L17:
+	lwz %r9,88(%r31)
+	lwz %r0,96(%r31)
+	cmplw %cr7,%r9,%r0
+	ble- %cr7,.L209
+	lwz %r23,-4(%r9)
+	addi %r9,%r9,-4
+	stw %r9,88(%r31)
+	stw %r23,80(%r31)
+	b .L298
+.L16:
+	lbz %r0,1(%r9)
+	slwi %r11,%r11,8
+	addi %r23,%r23,1
+	lhz %r9,124(%r31)
+	or %r0,%r11,%r0
+	stw %r23,80(%r31)
+	cmplw %cr7,%r9,%r0
+	ble- %cr7,.L311
+	lwz %r9,116(%r31)
+	slwi %r0,%r0,2
+	lwzx %r0,%r9,%r0
+	cmpwi %cr7,%r0,0
+	beq- %cr7,.L208
+	mr %r3,%r31
+	mtctr %r0
+	bctrl
+	lwz %r23,80(%r31)
+	b .L298
+.L15:
+	lbz %r0,1(%r9)
+	slwi %r11,%r11,8
+	addi %r23,%r23,1
+	lhz %r9,124(%r31)
+	or %r0,%r11,%r0
+	stw %r23,80(%r31)
+	cmplw %cr7,%r9,%r0
+	ble- %cr7,.L312
+	lwz %r9,88(%r31)
+	lwz %r11,100(%r31)
+	cmplw %cr7,%r9,%r11
+	bge- %cr7,.L206
+	stw %r23,0(%r9)
+	slwi %r0,%r0,2
+	addi %r9,%r9,4
+	lwz %r11,112(%r31)
+	stw %r9,88(%r31)
+	lwzx %r23,%r11,%r0
+	stw %r23,80(%r31)
+	b .L298
+.L14:
+	lwz %r0,100(%r31)
+	addi %r23,%r23,1
+	lwz %r10,88(%r31)
+	cmplw %cr7,%r10,%r0
+	lbz %r0,1(%r9)
+	stw %r23,80(%r31)
+	bge- %cr7,.L206
+	stw %r23,0(%r10)
+	slwi %r11,%r11,8
+	addi %r10,%r10,4
+	or %r0,%r11,%r0
+	stw %r10,88(%r31)
+	extsh %r0,%r0
+	lwz %r23,80(%r31)
+	add %r23,%r23,%r0
+	stw %r23,80(%r31)
+	b .L298
+.L13:
+	lbz %r0,1(%r9)
+	slwi %r11,%r11,8
+	or %r0,%r11,%r0
+	extsh %r0,%r0
+	add %r23,%r23,%r0
+	stw %r23,80(%r31)
+	b .L298
+.L12:
+	extsb %r11,%r11
+	add %r23,%r23,%r11
+	stw %r23,80(%r31)
+	b .L298
+.L11:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	lwz %r11,76(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	stwx %r11,%r9,%r0
+	b .L298
+.L10:
+	lwz %r0,76(%r31)
+	slwi %r22,%r22,2
+	stwx %r0,%r31,%r22
+	b .L298
+.L9:
+	addi %r11,%r23,1
+	lbz %r8,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r0,%r11,1
+	slwi %r22,%r22,2
+	slwi %r8,%r8,2
+	lbz %r9,1(%r23)
+	mr %r23,%r0
+	stw %r0,80(%r31)
+	slwi %r9,%r9,2
+	lwzx %r10,%r31,%r10
+	lwzx %r11,%r31,%r22
+	lwzx %r10,%r10,%r8
+	stwx %r10,%r11,%r9
+	b .L298
+.L8:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L7:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L6:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lwzx %r0,%r31,%r10
+	stwx %r0,%r31,%r22
+	b .L298
+.L5:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	stwx %r10,%r9,%r0
+	b .L298
+.L4:
+	slwi %r22,%r22,2
+	stwx %r10,%r31,%r22
+	b .L298
+.L3:
+	addi %r23,%r23,-1
+	stw %r23,80(%r31)
+	b .L298
+.L198:
 	lfs %f13,68(%r31)
 	lfs %f0,64(%r31)
 	lfs %f1,72(%r31)
@@ -932,2609 +2757,931 @@ _ZN3GVM11Interpreter7executeEv:
 	lfs %f11,68(%r31)
 	fdivs %f13,%f13,%f1
 	lfs %f12,72(%r31)
-	lwz %r9,80(%r31)
-	addi %r9,%r9,-1
-	stw %r9,80(%r31)
+	lwz %r23,80(%r31)
+	addi %r23,%r23,-1
+	stw %r23,80(%r31)
 	fmuls %f12,%f12,%f13
 	fmuls %f0,%f0,%f13
 	fmuls %f13,%f11,%f13
 	stfs %f12,72(%r31)
 	stfs %f0,64(%r31)
 	stfs %f13,68(%r31)
-	b .L2
-.L160:
-	addi %r0,%r9,1
-	lbz %r9,0(%r9)
-	slwi %r23,%r23,2
-	stw %r0,80(%r31)
-	lwz %r10,64(%r31)
-	slwi %r9,%r9,2
-	lwzx %r11,%r31,%r23
-	stwx %r10,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
-	lwz %r0,68(%r31)
-	stw %r0,4(%r11)
-	lwz %r0,72(%r31)
-	stw %r0,8(%r11)
-	b .L2
-.L159:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r8,80(%r31)
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r10
-	lwzx %r10,%r11,%r0
-	add %r11,%r11,%r0
-	stw %r10,64(%r31)
-	lwz %r0,4(%r11)
-	stw %r0,68(%r31)
-	lwz %r0,8(%r11)
-	stw %r0,72(%r31)
-	b .L2
-.L158:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
-	slwi %r8,%r8,2
-	lbz %r9,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	lwzx %r7,%r10,%r8
-	add %r10,%r10,%r8
-	stwx %r7,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
-	lwz %r8,4(%r10)
-	stw %r8,4(%r11)
-	lwz %r0,8(%r10)
-	stw %r0,8(%r11)
-	b .L2
-.L157:
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
-	mr %r9,%r0
-	slwi %r11,%r11,2
-	lwzx %r10,%r31,%r10
-	lwzx %r0,%r10,%r11
-	stw %r0,72(%r31)
-	stw %r0,64(%r31)
-	stw %r0,68(%r31)
-	b .L2
-.L156:
-	slwi %r10,%r10,2
-	lwz %r9,80(%r31)
-	lwzx %r0,%r31,%r10
-	stw %r0,64(%r31)
-	lwzx %r0,%r31,%r10
-	stw %r0,68(%r31)
-	lwzx %r0,%r31,%r10
-	stw %r0,72(%r31)
-	b .L2
-.L155:
-	stw %r10,20(%r1)
-	stw %r27,16(%r1)
-	lfs %f0,0(%r26)
-	lfd %f13,16(%r1)
-	lwz %r9,80(%r31)
-	fsub %f0,%f13,%f0
-	frsp %f0,%f0
-	stfs %f0,72(%r31)
-	stfs %f0,64(%r31)
-	stfs %f0,68(%r31)
-	b .L2
-.L154:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r11,%r11,1
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lbz %r9,1(%r9)
-	stw %r11,80(%r31)
-	lwzx %r10,%r31,%r10
-	lwzx %r8,%r31,%r23
-	lwzx %r0,%r10,%r0
-	slwi %r10,%r9,2
-	add %r9,%r8,%r10
-	stwx %r0,%r8,%r10
-	stw %r0,8(%r9)
-	stw %r0,4(%r9)
-	mr %r9,%r11
-	b .L2
-.L153:
-	addi %r0,%r9,1
-	lbz %r9,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r9,%r9,2
-	lwzx %r11,%r31,%r23
-	lwzx %r8,%r31,%r10
-	stwx %r8,%r11,%r9
-	add %r11,%r11,%r9
-	mr %r9,%r0
-	lwzx %r0,%r31,%r10
-	stw %r0,4(%r11)
-	lwzx %r0,%r31,%r10
-	stw %r0,8(%r11)
-	b .L2
-.L152:
-	lbz %r0,0(%r9)
-	addi %r9,%r9,1
-	slwi %r23,%r23,2
-	stw %r10,12(%r1)
-	stw %r27,8(%r1)
-	slwi %r0,%r0,2
-	lfs %f0,0(%r26)
-	lfd %f13,8(%r1)
-	stw %r9,80(%r31)
-	fsub %f0,%f13,%f0
-	lwzx %r10,%r31,%r23
-	frsp %f0,%f0
-	add %r11,%r10,%r0
-	stfsx %f0,%r10,%r0
-	stfs %f0,8(%r11)
-	stfs %f0,4(%r11)
-	b .L2
-.L151:
-	addi %r22,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r22,80(%r31)
-	addi %r22,%r22,1
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lbz %r21,1(%r9)
-	stw %r22,80(%r31)
-	lwzx %r9,%r31,%r10
-	lfsx %f1,%r9,%r0
-	bl tanf
-	lwzx %r9,%r31,%r23
-	slwi %r0,%r21,2
-	stfsx %f1,%r9,%r0
-	mr %r9,%r22
-	b .L2
-.L150:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f1,%r9,%r0
-	bl tanf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L149:
-	addi %r22,%r9,1
-	lbz %r21,0(%r9)
-	slwi %r10,%r10,2
-	stw %r22,80(%r31)
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	bl tanf
-	lwzx %r9,%r31,%r23
-	slwi %r0,%r21,2
-	stfsx %f1,%r9,%r0
-	mr %r9,%r22
-	b .L2
-.L148:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	bl tanf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L147:
-	addi %r22,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r22,80(%r31)
-	addi %r22,%r22,1
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lbz %r21,1(%r9)
-	stw %r22,80(%r31)
-	lwzx %r9,%r31,%r10
-	lfsx %f1,%r9,%r0
-	bl cosf
-	lwzx %r9,%r31,%r23
-	slwi %r0,%r21,2
-	stfsx %f1,%r9,%r0
-	mr %r9,%r22
-	b .L2
-.L146:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f1,%r9,%r0
-	bl cosf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L145:
-	addi %r22,%r9,1
-	lbz %r21,0(%r9)
-	slwi %r10,%r10,2
-	stw %r22,80(%r31)
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	bl cosf
-	lwzx %r9,%r31,%r23
-	slwi %r0,%r21,2
-	stfsx %f1,%r9,%r0
-	mr %r9,%r22
-	b .L2
-.L144:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	bl cosf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L143:
-	addi %r22,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r22,80(%r31)
-	addi %r22,%r22,1
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lbz %r21,1(%r9)
-	stw %r22,80(%r31)
-	lwzx %r9,%r31,%r10
-	lfsx %f1,%r9,%r0
-	bl sinf
-	lwzx %r9,%r31,%r23
-	slwi %r0,%r21,2
-	stfsx %f1,%r9,%r0
-	mr %r9,%r22
-	b .L2
-.L142:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f1,%r9,%r0
-	bl sinf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L141:
-	addi %r22,%r9,1
-	lbz %r21,0(%r9)
-	slwi %r10,%r10,2
-	stw %r22,80(%r31)
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	bl sinf
-	lwzx %r9,%r31,%r23
-	slwi %r0,%r21,2
-	stfsx %f1,%r9,%r0
-	mr %r9,%r22
-	b .L2
-.L140:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	bl sinf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L139:
-	slwi %r23,%r23,2
-	slwi %r22,%r10,2
-.L189:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	stw %r11,80(%r31)
-	addi %r11,%r11,1
-	slwi %r0,%r0,2
-	lbz %r21,1(%r9)
-	stw %r11,80(%r31)
-	slwi %r21,%r21,2
-	lwzx %r9,%r31,%r22
-	lwzx %r23,%r31,%r23
-	lfsx %f1,%r9,%r0
-	bl sqrtf
-	lwz %r9,80(%r31)
-	stfsx %f1,%r23,%r21
-	b .L2
-.L138:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r22,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r22
-	lfsx %f1,%r9,%r0
-	bl sqrtf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L189
-.L137:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	lwzx %r22,%r31,%r23
-	slwi %r23,%r0,2
-	bl sqrtf
-	lwz %r9,80(%r31)
-	stfsx %f1,%r22,%r23
-	b .L2
-.L136:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfsx %f1,%r31,%r10
-	bl sqrtf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L135:
-	addi %r11,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r8,%r11,1
-	slwi %r23,%r23,2
-	slwi %r7,%r7,2
-	lbz %r0,1(%r9)
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r6,%r31,%r10
-	lwzx %r10,%r31,%r23
-	lfsx %f13,%r6,%r7
-	lfsx %f0,%r10,%r0
-	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L298
-	addi %r0,%r8,1
-	lbz %r11,1(%r11)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r8)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L134:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lfsx %f0,%r31,%r23
-	lfsx %f13,%r10,%r0
-	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L297
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L132:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfsx %f13,%r31,%r10
-	lfsx %f0,%r31,%r23
-	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L295
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L133:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r0,%r0,2
-	lwzx %r8,%r31,%r23
-	lfsx %f13,%r31,%r10
-	lfsx %f0,%r8,%r0
-	fcmpu %cr7,%f13,%f0
-	bng- %cr7,.L296
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L131:
-	addi %r11,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r8,%r11,1
-	slwi %r23,%r23,2
-	slwi %r7,%r7,2
-	lbz %r0,1(%r9)
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r6,%r31,%r10
-	lwzx %r10,%r31,%r23
-	lfsx %f13,%r6,%r7
-	lfsx %f0,%r10,%r0
-	fcmpu %cr7,%f13,%f0
-	cror 30,29,30
-	bne- %cr7,.L294
-	addi %r0,%r8,1
-	lbz %r11,1(%r11)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r8)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L130:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lfsx %f0,%r31,%r23
-	lfsx %f13,%r10,%r0
-	fcmpu %cr7,%f13,%f0
-	cror 30,29,30
-	bne- %cr7,.L293
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L66:
-	slwi %r23,%r23,2
-	addi %r10,%r10,2
-	lwzx %r0,%r31,%r23
-	divw %r9,%r0,%r10
-	mullw %r10,%r9,%r10
-	subf %r0,%r10,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L98:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r9,%r0
-	lwzx %r9,%r31,%r23
-	srw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L97:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	srw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L96:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r23
-	lwzx %r0,%r31,%r10
-	srw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L95:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r10,%r10,1
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r7,%r11,%r0
-	srw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L94:
-	slwi %r23,%r23,2
-	addi %r10,%r10,1
-	lwzx %r0,%r31,%r23
-	srw %r0,%r0,%r10
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L93:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	slw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L92:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r9,%r0
-	lwzx %r9,%r31,%r23
-	slw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L91:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	slw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L90:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r23
-	lwzx %r0,%r31,%r10
-	slw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L89:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r10,%r10,1
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r7,%r11,%r0
-	slw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L88:
-	slwi %r23,%r23,2
-	addi %r10,%r10,1
-	lwzx %r0,%r31,%r23
-	slw %r0,%r0,%r10
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L87:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
-	slwi %r8,%r8,2
-	lbz %r9,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r10,%r8
-	nor %r10,%r10,%r10
-	stwx %r10,%r11,%r9
-	mr %r9,%r0
-	b .L2
-.L86:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r9,%r0
-	nor %r0,%r0,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L85:
-	addi %r0,%r9,1
-	lbz %r9,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	nor %r10,%r10,%r10
-	stwx %r10,%r11,%r9
-	mr %r9,%r0
-	b .L2
-.L84:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lwzx %r0,%r31,%r10
-	nor %r0,%r0,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L83:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	xor %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L82:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r9,%r9,%r0
-	lwzx %r0,%r31,%r23
-	xor %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L81:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	xor %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L80:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r31,%r23
-	xor %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L79:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	or %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L78:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r9,%r9,%r0
-	lwzx %r0,%r31,%r23
-	or %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L77:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	or %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L76:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r31,%r23
-	or %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L75:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	and %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L74:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r9,%r9,%r0
-	lwzx %r0,%r31,%r23
-	and %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L73:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	and %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L72:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r31,%r23
-	and %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L71:
-	addi %r8,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	lbz %r0,1(%r9)
-	slwi %r9,%r11,2
-	stw %r8,80(%r31)
-	lwzx %r11,%r31,%r10
-	lwzx %r10,%r11,%r9
-	cmpwi %cr7,%r10,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	mr %r9,%r8
-	lwzx %r7,%r11,%r0
-	and %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L70:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r9,%r0
-	cmpwi %cr7,%r0,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
-	lwzx %r9,%r31,%r23
-	divw %r11,%r9,%r0
-	mullw %r0,%r11,%r0
-	subf %r9,%r0,%r9
-	stwx %r9,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L69:
-	addi %r7,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r7,80(%r31)
-	lwzx %r0,%r31,%r10
-	cmpwi %cr7,%r0,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
-	slwi %r11,%r11,2
-	lwzx %r10,%r31,%r23
-	mr %r9,%r7
-	lwzx %r8,%r10,%r11
-	divw %r7,%r8,%r0
-	mullw %r0,%r7,%r0
-	subf %r8,%r0,%r8
-	stwx %r8,%r10,%r11
-	b .L2
-.L68:
-	slwi %r10,%r10,2
-	lwzx %r0,%r31,%r10
-	cmpwi %cr7,%r0,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
-	lwzx %r9,%r31,%r23
-	divw %r11,%r9,%r0
-	mullw %r0,%r11,%r0
-	subf %r9,%r0,%r9
-	stwx %r9,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L67:
-	addi %r7,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r7,80(%r31)
-	addi %r10,%r10,2
-	mr %r9,%r7
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r8,%r11,%r0
-	divw %r7,%r8,%r10
-	mullw %r10,%r7,%r10
-	subf %r8,%r10,%r8
-	stwx %r8,%r11,%r0
-	b .L2
-.L114:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f13,%r31,%r23
-	lfsx %f0,%r9,%r0
-	fmuls %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L113:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r11,%r0
-	fmuls %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L112:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r31,%r23
-	fmuls %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L111:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lfsx %f13,%r11,%r0
-	lfsx %f0,%r10,%r9
-	mr %r9,%r8
-	fsubs %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L110:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f13,%r31,%r23
-	lfsx %f0,%r9,%r0
-	fsubs %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L109:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r11,%r0
-	fsubs %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L108:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r31,%r23
-	fsubs %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L107:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lfsx %f13,%r11,%r0
-	lfsx %f0,%r10,%r9
-	mr %r9,%r8
-	fadds %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L106:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f13,%r31,%r23
-	lfsx %f0,%r9,%r0
-	fadds %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L105:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r11,%r0
-	fadds %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L104:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r31,%r23
-	fadds %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L103:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
-	lbz %r11,1(%r9)
-	slwi %r9,%r8,2
-	stw %r0,80(%r31)
-	slwi %r11,%r11,2
-	lwzx %r8,%r31,%r10
-	lwzx %r10,%r31,%r23
-	lfsx %f0,%r8,%r9
-	mr %r9,%r0
-	fneg %f0,%f0
-	stfsx %f0,%r10,%r11
-	b .L2
-.L102:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f0,%r9,%r0
-	fneg %f0,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L101:
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
-	slwi %r23,%r23,2
-	mr %r9,%r0
-	slwi %r11,%r11,2
-	lfsx %f0,%r31,%r10
-	lwzx %r10,%r31,%r23
-	fneg %f0,%f0
-	stfsx %f0,%r10,%r11
-	b .L2
-.L100:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfsx %f0,%r31,%r10
-	fneg %f0,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L99:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	srw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L122:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r22,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r22
-	lfsx %f1,%r31,%r23
-	lfsx %f2,%r9,%r0
-	bl fmodf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-.L190:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	stw %r11,80(%r31)
-	addi %r11,%r11,1
-	slwi %r0,%r0,2
-	lbz %r21,1(%r9)
-	stw %r11,80(%r31)
-	slwi %r21,%r21,2
-	lwzx %r23,%r31,%r23
-	lwzx %r9,%r31,%r22
-	lfsx %f1,%r23,%r21
-	lfsx %f2,%r9,%r0
-	bl fmodf
-	lwz %r9,80(%r31)
-	stfsx %f1,%r23,%r21
-	b .L2
-.L121:
-	addi %r0,%r9,1
-	lbz %r22,0(%r9)
-	slwi %r23,%r23,2
-	stw %r0,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r22,%r22,2
-	lwzx %r23,%r31,%r23
-	lfsx %f2,%r31,%r10
-	lfsx %f1,%r23,%r22
-	bl fmodf
-	lwz %r9,80(%r31)
-	stfsx %f1,%r23,%r22
-	b .L2
-.L120:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lfsx %f2,%r31,%r10
-	lfsx %f1,%r31,%r23
-	bl fmodf
-	stfsx %f1,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L119:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lfsx %f13,%r11,%r0
-	lfsx %f0,%r10,%r9
-	mr %r9,%r8
-	fdivs %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L118:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lfsx %f13,%r31,%r23
-	lfsx %f0,%r9,%r0
-	fdivs %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L117:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r11,%r0
-	fdivs %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L116:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lfsx %f0,%r31,%r10
-	lfsx %f13,%r31,%r23
-	fdivs %f0,%f13,%f0
-	stfsx %f0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L115:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lfsx %f13,%r11,%r0
-	lfsx %f0,%r10,%r9
-	mr %r9,%r8
-	fmuls %f0,%f13,%f0
-	stfsx %f0,%r11,%r0
-	b .L2
-.L126:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lfs %f13,0(%r28)
-	lwzx %r9,%r31,%r10
-	lfsx %f0,%r31,%r23
-	lfsx %f12,%r9,%r0
-	fsubs %f0,%f12,%f0
-	fcmpu %cr7,%f0,%f13
-	cror 30,29,30
-	bne- %cr7,.L241
-	lfs %f13,0(%r25)
-	fcmpu %cr7,%f0,%f13
-	cror 30,28,30
-	bne- %cr7,.L241
-	addi %r0,%r11,1
-	lbz %r10,0(%r11)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L125:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r0,%r0,2
-	lfs %f13,0(%r28)
-	lwzx %r9,%r31,%r23
-	lfsx %f12,%r31,%r10
-	lfsx %f0,%r9,%r0
-	fsubs %f0,%f12,%f0
-	fcmpu %cr7,%f0,%f13
-	cror 30,29,30
-	bne- %cr7,.L238
-	lfs %f13,0(%r25)
-	fcmpu %cr7,%f0,%f13
-	cror 30,28,30
-	bne- %cr7,.L238
-	addi %r0,%r11,1
-	lbz %r10,0(%r11)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L124:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfs %f13,0(%r28)
-	lfsx %f12,%r31,%r10
-	lfsx %f0,%r31,%r23
-	fsubs %f0,%f12,%f0
-	fcmpu %cr7,%f0,%f13
-	cror 30,29,30
-	bne- %cr7,.L235
-	lfs %f13,0(%r25)
-	fcmpu %cr7,%f0,%f13
-	cror 30,28,30
-	bne- %cr7,.L235
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L123:
-	slwi %r23,%r23,2
-	slwi %r22,%r10,2
-	b .L190
-.L128:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lfsx %f13,%r31,%r10
-	lfsx %f0,%r31,%r23
-	fcmpu %cr7,%f13,%f0
-	cror 30,29,30
-	bne- %cr7,.L291
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L127:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r10,%r10,2
-	stw %r8,80(%r31)
-	addi %r11,%r8,1
-	slwi %r23,%r23,2
-	slwi %r7,%r7,2
-	lfs %f13,0(%r28)
-	lbz %r0,1(%r9)
-	stw %r11,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lwzx %r9,%r31,%r23
-	lfsx %f12,%r10,%r7
-	lfsx %f0,%r9,%r0
-	fsubs %f0,%f12,%f0
-	fcmpu %cr7,%f0,%f13
-	cror 30,29,30
-	bne- %cr7,.L244
-	lfs %f13,0(%r25)
-	fcmpu %cr7,%f0,%f13
-	cror 30,28,30
-	bne- %cr7,.L244
-	addi %r0,%r11,1
-	lbz %r10,1(%r8)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L129:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r0,%r0,2
-	lwzx %r8,%r31,%r23
-	lfsx %f13,%r31,%r10
-	lfsx %f0,%r8,%r0
-	fcmpu %cr7,%f13,%f0
-	cror 30,29,30
-	bne- %cr7,.L292
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L34:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lwzx %r11,%r31,%r10
-	lwzx %r0,%r31,%r23
-	cmpw %cr7,%r11,%r0
-	ble- %cr7,.L223
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L50:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r23
-	lwzx %r0,%r31,%r10
-	subf %r0,%r0,%r9
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L18:
-	lbz %r0,0(%r9)
-	slwi %r11,%r11,8
-	addi %r9,%r9,1
-	stw %r9,80(%r31)
-	or. %r0,%r11,%r0
-	beq- %cr0,.L2
-	lwz %r9,92(%r31)
-	lwz %r11,104(%r31)
-	cmplw %cr7,%r11,%r9
-	bge- %cr7,.L203
-	mr %r10,%r24
-.L204:
-	rlwinm %r11,%r0,17,31,31
-	cmpwi %cr7,%r11,0
-	bne- %cr7,.L301
-	bne- %cr0,.L290
-.L308:
-	lwz %r9,80(%r31)
-	b .L2
-.L17:
-	lbz %r0,0(%r9)
-	slwi %r11,%r11,8
-	addi %r9,%r9,1
-	stw %r9,80(%r31)
-	or. %r0,%r11,%r0
-	beq- %cr0,.L2
-	lwz %r9,92(%r31)
-	lwz %r8,108(%r31)
-	cmplw %cr7,%r8,%r9
-	ble- %cr7,.L203
-	mr %r11,%r31
-.L200:
-	rlwinm %r10,%r0,0,31,31
-	cmpwi %cr7,%r10,0
-	beq- %cr7,.L202
-	lwz %r10,0(%r11)
-	srwi. %r0,%r0,1
-	stw %r10,0(%r9)
-	addi %r9,%r9,4
-	stw %r9,92(%r31)
-.L202:
-	bne- %cr0,.L288
-	lwz %r9,80(%r31)
-	b .L2
-.L16:
-	lwz %r11,88(%r31)
-	lwz %r0,96(%r31)
-	cmplw %cr7,%r11,%r0
-	ble- %cr7,.L198
-	lwz %r9,-4(%r11)
-	addi %r11,%r11,-4
-	stw %r11,88(%r31)
-	stw %r9,80(%r31)
-	b .L2
-.L15:
-	lbz %r0,0(%r9)
-	slwi %r11,%r11,8
-	addi %r9,%r9,1
-	lhz %r10,124(%r31)
-	or %r0,%r11,%r0
-	stw %r9,80(%r31)
-	cmplw %cr7,%r10,%r0
-	ble- %cr7,.L302
-	lwz %r9,116(%r31)
-	slwi %r0,%r0,2
-	lwzx %r0,%r9,%r0
-	cmpwi %cr7,%r0,0
-	beq- %cr7,.L197
-	mr %r3,%r31
-	mtctr %r0
-	bctrl
-	lwz %r9,80(%r31)
-	b .L2
-.L14:
-	lbz %r0,0(%r9)
-	slwi %r11,%r11,8
-	addi %r9,%r9,1
-	lhz %r10,124(%r31)
-	or %r0,%r11,%r0
-	stw %r9,80(%r31)
-	cmplw %cr7,%r10,%r0
-	ble- %cr7,.L303
-	lwz %r11,88(%r31)
-	lwz %r10,100(%r31)
-	cmplw %cr7,%r11,%r10
-	bge- %cr7,.L195
-	stw %r9,0(%r11)
-	slwi %r0,%r0,2
-	addi %r11,%r11,4
-	lwz %r9,112(%r31)
-	stw %r11,88(%r31)
-	lwzx %r9,%r9,%r0
-	stw %r9,80(%r31)
-	b .L2
-.L13:
-	lwz %r10,88(%r31)
-	addi %r0,%r9,1
-	lwz %r8,100(%r31)
-	lbz %r9,0(%r9)
-	cmplw %cr7,%r10,%r8
-	stw %r0,80(%r31)
-	bge- %cr7,.L195
-	stw %r0,0(%r10)
-	slwi %r11,%r11,8
-	addi %r10,%r10,4
-	or %r0,%r9,%r11
-	stw %r10,88(%r31)
-	extsh %r0,%r0
-	lwz %r9,80(%r31)
-	add %r9,%r9,%r0
-	stw %r9,80(%r31)
-	b .L2
-.L12:
-	lbz %r0,0(%r9)
-	slwi %r11,%r11,8
-	or %r0,%r0,%r11
-	extsh %r0,%r0
-	add %r9,%r9,%r0
-	stw %r9,80(%r31)
-	b .L2
-.L11:
-	extsb %r11,%r11
-	add %r9,%r9,%r11
-	stw %r9,80(%r31)
-	b .L2
-.L10:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r0,%r11,1
-	slwi %r23,%r23,2
-	slwi %r8,%r8,2
-	lbz %r9,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r10,%r8
-	stwx %r10,%r11,%r9
-	mr %r9,%r0
-	b .L2
-.L9:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L8:
-	addi %r0,%r9,1
-	lbz %r9,0(%r9)
-	slwi %r23,%r23,2
-	stw %r0,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r9,%r9,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	stwx %r10,%r11,%r9
-	mr %r9,%r0
-	b .L2
-.L7:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lwzx %r0,%r31,%r10
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L6:
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r23,%r23,2
-	stw %r0,80(%r31)
-	mr %r9,%r0
-	slwi %r11,%r11,2
-	lwzx %r8,%r31,%r23
-	stwx %r10,%r8,%r11
-	b .L2
-.L5:
-	slwi %r23,%r23,2
-	stwx %r10,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L4:
-	addi %r9,%r9,-1
-	stw %r9,80(%r31)
-	b .L2
-.L184:
-	addi %r11,%r9,1
-	lbz %r21,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r11,%r11,1
-	slwi %r0,%r23,2
-	slwi %r21,%r21,2
-	lbz %r19,1(%r9)
-	stw %r11,80(%r31)
-	slwi %r19,%r19,2
-	lwzx %r23,%r31,%r10
-	lwzx %r18,%r31,%r0
-	add %r22,%r23,%r21
-	lfsx %f0,%r23,%r21
-	lfs %f13,4(%r22)
-	add %r20,%r18,%r19
-	lfs %f1,8(%r22)
-	fmuls %f13,%f13,%f13
-	fmadds %f0,%f0,%f0,%f13
-	fmadds %f1,%f1,%f1,%f0
-	bl sqrtf
-	lfs %f13,0(%r29)
-	lfsx %f0,%r23,%r21
-	lwz %r9,80(%r31)
-	fdivs %f13,%f13,%f1
-	fmuls %f0,%f0,%f13
-	stfsx %f0,%r18,%r19
-	lfs %f0,4(%r22)
-	fmuls %f0,%f0,%f13
-	stfs %f0,4(%r20)
-	lfs %f0,8(%r22)
-	fmuls %f13,%f0,%f13
-	stfs %f13,8(%r20)
-	b .L2
-.L26:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r23
-	lwzx %r0,%r10,%r0
-	cmpwi %cr7,%r0,0
-	beq- %cr7,.L215
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
+	b .L298
 .L25:
-	slwi %r23,%r23,2
-	lwzx %r0,%r31,%r23
-	cmpwi %cr7,%r0,0
-	beq- %cr7,.L214
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L30:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lwzx %r11,%r31,%r10
-	lwzx %r0,%r31,%r23
-	cmpw %cr7,%r11,%r0
-	blt- %cr7,.L219
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L22:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
 	stw %r11,80(%r31)
-	slwi %r23,%r23,2
 	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lwzx %r0,%r10,%r0
+	lwzx %r9,%r31,%r22
+	lwzx %r0,%r9,%r0
 	cmpwi %cr7,%r0,0
-	stwx %r0,%r31,%r23
-	beq- %cr7,.L211
+	bne- %cr7,.L226
 	addi %r0,%r11,1
-	lbz %r10,1(%r9)
+	lbz %r23,1(%r23)
 	stw %r0,80(%r31)
-	slwi %r10,%r10,8
+	slwi %r23,%r23,8
 	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L32:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lwzx %r10,%r10,%r0
-	lwzx %r0,%r31,%r23
-	cmpw %cr7,%r10,%r0
-	blt- %cr7,.L221
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
 .L24:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r23
-	lwzx %r0,%r10,%r0
+	slwi %r22,%r22,2
+	lwzx %r0,%r31,%r22
 	cmpwi %cr7,%r0,0
-	bne- %cr7,.L213
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L28:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r0,%r0,2
-	lwzx %r8,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r0,%r8,%r0
-	cmpw %cr7,%r10,%r0
-	beq- %cr7,.L304
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L20:
-	slwi %r23,%r23,2
-	lwz %r9,104(%r31)
-	lwzx %r0,%r31,%r23
-	cmplw %cr7,%r0,%r9
-	blt- %cr7,.L305
-	lwz %r9,108(%r31)
-	cmplw %cr7,%r0,%r9
-	bge- %cr7,.L203
-	stw %r0,92(%r31)
-	lwz %r9,80(%r31)
-	b .L2
-.L33:
-	addi %r11,%r9,1
-	lbz %r6,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r8,%r11,1
-	slwi %r23,%r23,2
-	slwi %r6,%r6,2
-	lbz %r0,1(%r9)
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r31,%r23
-	lwzx %r10,%r10,%r6
-	lwzx %r0,%r7,%r0
-	cmpw %cr7,%r10,%r0
-	blt- %cr7,.L222
-	addi %r0,%r8,1
-	lbz %r11,1(%r11)
+	bne- %cr7,.L225
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
 	stw %r0,80(%r31)
 	slwi %r11,%r11,8
-	lbz %r9,1(%r8)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L31:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r0,%r0,2
-	lwzx %r8,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r0,%r8,%r0
-	cmpw %cr7,%r10,%r0
-	blt- %cr7,.L220
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
 .L23:
-	slwi %r23,%r23,2
-	lwzx %r0,%r31,%r23
-	cmpwi %cr7,%r0,0
-	bne- %cr7,.L212
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L29:
-	addi %r11,%r9,1
-	lbz %r6,0(%r9)
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
-	addi %r8,%r11,1
-	slwi %r23,%r23,2
-	slwi %r6,%r6,2
-	lbz %r0,1(%r9)
-	stw %r8,80(%r31)
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r31,%r23
-	lwzx %r10,%r10,%r6
-	lwzx %r0,%r7,%r0
-	cmpw %cr7,%r10,%r0
-	beq- %cr7,.L306
-	addi %r9,%r9,4
-	stw %r9,80(%r31)
-	b .L2
-.L21:
-	slwi %r23,%r23,2
-	lwzx %r11,%r31,%r23
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	cmpwi %cr7,%r0,0
+	stwx %r0,%r31,%r22
+	beq- %cr7,.L224
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L22:
+	slwi %r22,%r22,2
+	lwzx %r11,%r31,%r22
 	addi %r0,%r11,-1
 	cmpwi %cr7,%r0,0
-	stwx %r0,%r31,%r23
-	beq- %cr7,.L210
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
+	stwx %r0,%r31,%r22
+	beq- %cr7,.L223
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
 	stw %r0,80(%r31)
 	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L27:
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L21:
+	slwi %r22,%r22,2
+	lwz %r9,104(%r31)
+	lwzx %r0,%r31,%r22
+	cmplw %cr7,%r0,%r9
+	blt- %cr7,.L313
+	lwz %r9,108(%r31)
+	cmplw %cr7,%r0,%r9
+	bge- %cr7,.L215
+	stw %r0,92(%r31)
+	b .L298
+.L29:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r11,80(%r31)
 	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lwzx %r11,%r31,%r10
-	lwzx %r0,%r31,%r23
-	cmpw %cr7,%r11,%r0
-	beq- %cr7,.L307
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r0,%r9,%r0
+	lwzx %r9,%r31,%r10
+	cmpw %cr7,%r9,%r0
+	beq- %cr7,.L314
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
 .L19:
+	lbz %r0,1(%r9)
+	slwi %r11,%r11,8
+	addi %r23,%r23,1
+	stw %r23,80(%r31)
+	or. %r0,%r11,%r0
+	beq- %cr0,.L298
+	lwz %r9,92(%r31)
+	lwz %r11,104(%r31)
+	cmplw %cr7,%r9,%r11
+	ble- %cr7,.L215
+	mr %r10,%r24
+.L216:
+	rlwinm %r11,%r0,17,31,31
+	cmpwi %cr7,%r11,0
+	bne- %cr7,.L315
+	bne- %cr0,.L217
+.L316:
+	lwz %r23,80(%r31)
+	b .L298
+.L315:
+	rlwinm. %r0,%r0,1,16,30
+	lwz %r11,-4(%r9)
+	addi %r9,%r9,-4
+	stw %r9,92(%r31)
+	stw %r11,0(%r10)
+	beq- %cr0,.L316
+.L217:
+	lwz %r9,92(%r31)
+	lwz %r11,104(%r31)
+	cmplw %cr7,%r9,%r11
+	ble- %cr7,.L215
+	addi %r10,%r10,-4
+	b .L216
+.L31:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lwzx %r11,%r31,%r10
+	lwzx %r0,%r31,%r22
+	cmpw %cr7,%r11,%r0
+	blt- %cr7,.L232
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L30:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r7,%r7,2
+	lbz %r0,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r10,%r31,%r10
+	lwzx %r8,%r31,%r22
+	lwzx %r10,%r10,%r7
+	lwzx %r0,%r8,%r0
+	cmpw %cr7,%r10,%r0
+	beq- %cr7,.L317
+	addi %r23,%r23,4
+	stw %r23,80(%r31)
+	b .L298
+.L32:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r11,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r0,%r9,%r0
+	lwzx %r9,%r31,%r10
+	cmpw %cr7,%r9,%r0
+	blt- %cr7,.L233
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L27:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r0,%r9,%r0
+	cmpwi %cr7,%r0,0
+	beq- %cr7,.L228
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L20:
 	addi %r0,%r11,1
 	lwz %r9,92(%r31)
 	slwi %r0,%r0,2
 	lwz %r10,108(%r31)
 	add %r11,%r9,%r0
 	cmplw %cr7,%r10,%r11
-	ble- %cr7,.L203
-	slwi %r23,%r23,2
-	stwx %r9,%r31,%r23
-	lwz %r11,92(%r31)
-	lwz %r9,80(%r31)
-	add %r0,%r11,%r0
+	ble- %cr7,.L215
+	slwi %r22,%r22,2
+	stwx %r9,%r31,%r22
+	lwz %r9,92(%r31)
+	add %r0,%r9,%r0
 	stw %r0,92(%r31)
-	b .L2
-.L58:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
+	b .L298
+.L28:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lwzx %r11,%r31,%r10
+	lwzx %r0,%r31,%r22
+	cmpw %cr7,%r11,%r0
+	beq- %cr7,.L318
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L26:
+	slwi %r22,%r22,2
+	lwzx %r0,%r31,%r22
+	cmpwi %cr7,%r0,0
+	beq- %cr7,.L227
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L18:
+	lbz %r0,1(%r9)
+	slwi %r11,%r11,8
+	addi %r23,%r23,1
+	stw %r23,80(%r31)
+	or. %r0,%r11,%r0
+	beq- %cr0,.L298
+	lwz %r9,92(%r31)
+	lwz %r8,108(%r31)
+	cmplw %cr7,%r8,%r9
+	ble- %cr7,.L215
+	mr %r11,%r31
+.L211:
+	rlwinm %r10,%r0,0,31,31
+	cmpwi %cr7,%r10,0
+	beq- %cr7,.L214
+	lwz %r10,0(%r11)
+	srwi. %r0,%r0,1
+	stw %r10,0(%r9)
+	addi %r9,%r9,4
+	stw %r9,92(%r31)
+.L214:
+	bne- %cr0,.L212
+	lwz %r23,80(%r31)
+	b .L298
+.L57:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r31,%r22
+	mullw %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L41:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r9,%r0
+	neg %r0,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L40:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r11,%r31,%r10
+	lwzx %r9,%r31,%r22
+	neg %r11,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L39:
+	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lwzx %r0,%r31,%r10
+	neg %r0,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L38:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
-	slwi %r23,%r23,2
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r7,%r7,2
+	lbz %r0,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r10,%r31,%r10
+	lwzx %r8,%r31,%r22
+	lwzx %r10,%r10,%r7
+	lwzx %r0,%r8,%r0
+	cmpw %cr7,%r10,%r0
+	ble- %cr7,.L239
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L37:
+	addi %r11,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lwzx %r9,%r31,%r10
 	lwzx %r9,%r9,%r0
-	lwzx %r0,%r31,%r23
-	mullw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L57:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
+	lwzx %r0,%r31,%r22
+	cmpw %cr7,%r9,%r0
+	ble- %cr7,.L238
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L35:
 	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	mullw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L56:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r31,%r23
-	mullw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L55:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r7,%r11,%r0
-	mullw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L54:
-	slwi %r23,%r23,2
-	addi %r10,%r10,2
-	lwzx %r0,%r31,%r23
-	mullw %r0,%r10,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L53:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
+	slwi %r22,%r22,2
+	lwzx %r11,%r31,%r10
+	lwzx %r0,%r31,%r22
+	cmpw %cr7,%r11,%r0
+	ble- %cr7,.L236
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L36:
+	addi %r11,%r23,1
 	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
+	slwi %r22,%r22,2
+	stw %r11,80(%r31)
+	slwi %r10,%r10,2
 	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	subf %r10,%r10,%r7
-	stwx %r10,%r11,%r0
-	b .L2
-.L52:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
+	lwzx %r9,%r31,%r22
+	lwzx %r0,%r9,%r0
+	lwzx %r9,%r31,%r10
+	cmpw %cr7,%r9,%r0
+	ble- %cr7,.L237
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L34:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
-	slwi %r23,%r23,2
+	addi %r9,%r11,1
+	slwi %r22,%r22,2
+	slwi %r7,%r7,2
+	lbz %r0,1(%r23)
+	stw %r9,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r10,%r31,%r10
+	lwzx %r8,%r31,%r22
+	lwzx %r10,%r10,%r7
+	lwzx %r0,%r8,%r0
+	cmpw %cr7,%r10,%r0
+	blt- %cr7,.L235
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L45:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r9,%r31,%r10
+	lwzx %r0,%r31,%r22
+	add %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L61:
+	slwi %r22,%r22,2
+	addi %r10,%r10,2
+	lwzx %r0,%r31,%r22
+	divw %r0,%r0,%r10
+	stwx %r0,%r31,%r22
+	b .L298
+.L60:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	mullw %r11,%r8,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L59:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lwzx %r9,%r31,%r10
-	lwzx %r0,%r9,%r0
-	lwzx %r9,%r31,%r23
-	subf %r0,%r0,%r9
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L51:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
+	lwzx %r9,%r9,%r0
+	lwzx %r0,%r31,%r22
+	mullw %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L58:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
 	slwi %r10,%r10,2
-	mr %r9,%r8
 	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	subf %r10,%r10,%r7
-	stwx %r10,%r11,%r0
-	b .L2
-.L62:
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	mullw %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L63:
 	slwi %r10,%r10,2
 	lwzx %r0,%r31,%r10
 	cmpwi %cr7,%r0,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
-	lwzx %r9,%r31,%r23
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	lwzx %r9,%r31,%r22
 	divw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L61:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r7,%r11,%r0
-	divw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L60:
-	slwi %r23,%r23,2
-	addi %r10,%r10,2
-	lwzx %r0,%r31,%r23
-	divw %r0,%r0,%r10
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L59:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
+	stwx %r0,%r31,%r22
+	b .L298
+.L62:
+	addi %r23,%r23,1
 	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	addi %r10,%r10,2
 	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	mullw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r9,%r0
+	divw %r11,%r11,%r10
+	stwx %r11,%r9,%r0
+	b .L298
 .L64:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
 	slwi %r10,%r10,2
-	stw %r11,80(%r31)
+	stw %r23,80(%r31)
+	lwzx %r11,%r31,%r10
+	cmpwi %cr7,%r11,0
+	beq- %cr7,.L247
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r9,%r0
+	divw %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L53:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
 	slwi %r0,%r0,2
 	lwzx %r9,%r31,%r10
 	lwzx %r0,%r9,%r0
-	cmpwi %cr7,%r0,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
-	lwzx %r9,%r31,%r23
-	divw %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L63:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r8,80(%r31)
-	lwzx %r10,%r31,%r10
-	cmpwi %cr7,%r10,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	mr %r9,%r8
-	lwzx %r7,%r11,%r0
-	divw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L65:
-	addi %r8,%r9,1
-	lbz %r11,0(%r9)
-	slwi %r10,%r10,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
+	lwzx %r9,%r31,%r22
+	subf %r0,%r0,%r9
+	stwx %r0,%r31,%r22
+	b .L298
+.L52:
+	addi %r23,%r23,1
 	lbz %r0,1(%r9)
-	slwi %r9,%r11,2
-	stw %r8,80(%r31)
-	lwzx %r11,%r31,%r10
-	lwzx %r10,%r11,%r9
-	cmpwi %cr7,%r10,0
-	beq- %cr7,.L234
-	slwi %r23,%r23,2
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
 	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	mr %r9,%r8
-	lwzx %r7,%r11,%r0
-	divw %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L42:
-	slwi %r23,%r23,2
-	lwzx %r9,%r31,%r23
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	subf %r11,%r11,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L51:
+	slwi %r22,%r22,2
+	slwi %r10,%r10,2
+	lwzx %r0,%r31,%r10
+	lwzx %r9,%r31,%r22
+	subf %r0,%r0,%r9
+	stwx %r0,%r31,%r22
+	b .L298
+.L50:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	nor %r10,%r10,%r10
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r9,%r0
+	add %r11,%r11,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L55:
+	slwi %r22,%r22,2
+	addi %r10,%r10,2
+	lwzx %r0,%r31,%r22
+	mullw %r0,%r10,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L54:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	subf %r11,%r10,%r8
+	stwx %r11,%r9,%r0
+	b .L298
+.L56:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	addi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r9,%r0
+	mullw %r11,%r11,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L47:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r10,%r10,2
+	stw %r23,80(%r31)
+	slwi %r22,%r22,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r10
+	lwzx %r9,%r9,%r0
+	lwzx %r0,%r31,%r22
+	add %r0,%r9,%r0
+	stwx %r0,%r31,%r22
+	b .L298
+.L46:
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
+	slwi %r10,%r10,2
+	slwi %r0,%r0,2
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r31,%r10
+	lwzx %r10,%r9,%r0
+	add %r11,%r10,%r11
+	stwx %r11,%r9,%r0
+	b .L298
+.L48:
+	addi %r11,%r23,1
+	lbz %r7,1(%r9)
+	slwi %r10,%r10,2
+	stw %r11,80(%r31)
+	addi %r11,%r11,1
+	slwi %r22,%r22,2
+	lbz %r0,1(%r23)
+	mr %r23,%r11
+	stw %r11,80(%r31)
+	slwi %r0,%r0,2
+	lwzx %r8,%r31,%r10
+	slwi %r10,%r7,2
+	lwzx %r9,%r31,%r22
+	lwzx %r10,%r8,%r10
+	lwzx %r8,%r9,%r0
+	add %r11,%r8,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L43:
+	slwi %r22,%r22,2
+	lwzx %r9,%r31,%r22
 	addi %r0,%r9,1
 	add %r10,%r0,%r10
-	stwx %r10,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L41:
-	addi %r11,%r9,1
-	lbz %r8,0(%r9)
+	stwx %r10,%r31,%r22
+	b .L298
+.L42:
+	addi %r11,%r23,1
+	lbz %r8,1(%r9)
 	slwi %r10,%r10,2
 	stw %r11,80(%r31)
 	addi %r0,%r11,1
-	slwi %r23,%r23,2
+	slwi %r22,%r22,2
 	slwi %r8,%r8,2
-	lbz %r9,1(%r9)
+	lbz %r9,1(%r23)
+	mr %r23,%r0
 	stw %r0,80(%r31)
 	slwi %r9,%r9,2
 	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
+	lwzx %r11,%r31,%r22
 	lwzx %r10,%r10,%r8
 	neg %r10,%r10
 	stwx %r10,%r11,%r9
-	mr %r9,%r0
-	b .L2
-.L40:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r9,%r0
-	neg %r0,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L39:
-	addi %r0,%r9,1
-	lbz %r9,0(%r9)
-	slwi %r10,%r10,2
-	stw %r0,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r9,%r9,2
-	lwzx %r10,%r31,%r10
-	lwzx %r11,%r31,%r23
-	neg %r10,%r10
-	stwx %r10,%r11,%r9
-	mr %r9,%r0
-	b .L2
-.L38:
-	slwi %r10,%r10,2
-	slwi %r23,%r23,2
-	lwzx %r0,%r31,%r10
-	neg %r0,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L37:
-	addi %r11,%r9,1
-	lbz %r6,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	addi %r8,%r11,1
-	slwi %r23,%r23,2
-	slwi %r6,%r6,2
-	lbz %r0,1(%r9)
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r31,%r23
-	lwzx %r10,%r10,%r6
-	lwzx %r0,%r7,%r0
-	cmpw %cr7,%r10,%r0
-	ble- %cr7,.L226
-	addi %r0,%r8,1
-	lbz %r11,1(%r11)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r8)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L36:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r10,%r31,%r10
-	lwzx %r10,%r10,%r0
-	lwzx %r0,%r31,%r23
-	cmpw %cr7,%r10,%r0
-	ble- %cr7,.L225
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L35:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r11,80(%r31)
-	slwi %r10,%r10,2
-	slwi %r0,%r0,2
-	lwzx %r8,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r0,%r8,%r0
-	cmpw %cr7,%r10,%r0
-	ble- %cr7,.L224
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L46:
-	addi %r11,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r10,%r10,2
-	stw %r11,80(%r31)
-	slwi %r23,%r23,2
-	slwi %r0,%r0,2
-	lwzx %r9,%r31,%r10
-	lwzx %r9,%r9,%r0
-	lwzx %r0,%r31,%r23
-	add %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L48:
-	slwi %r23,%r23,2
-	nor %r10,%r10,%r10
-	lwzx %r0,%r31,%r23
-	add %r0,%r10,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L47:
-	addi %r8,%r9,1
-	lbz %r7,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	addi %r8,%r8,1
-	slwi %r10,%r10,2
-	lbz %r0,1(%r9)
-	slwi %r9,%r7,2
-	stw %r8,80(%r31)
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	lwzx %r10,%r10,%r9
-	mr %r9,%r8
-	add %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L49:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	nor %r10,%r10,%r10
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r7,%r11,%r0
-	add %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
+	b .L298
 .L44:
-	slwi %r23,%r23,2
-	slwi %r10,%r10,2
-	lwzx %r9,%r31,%r10
-	lwzx %r0,%r31,%r23
-	add %r0,%r9,%r0
-	stwx %r0,%r31,%r23
-	lwz %r9,80(%r31)
-	b .L2
-.L43:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
+	addi %r23,%r23,1
+	lbz %r0,1(%r9)
+	slwi %r22,%r22,2
+	stw %r23,80(%r31)
 	addi %r10,%r10,1
-	mr %r9,%r8
 	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r7,%r11,%r0
-	add %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L45:
-	addi %r8,%r9,1
-	lbz %r0,0(%r9)
-	slwi %r23,%r23,2
-	stw %r8,80(%r31)
-	slwi %r10,%r10,2
-	mr %r9,%r8
-	slwi %r0,%r0,2
-	lwzx %r11,%r31,%r23
-	lwzx %r10,%r31,%r10
-	lwzx %r7,%r11,%r0
-	add %r10,%r7,%r10
-	stwx %r10,%r11,%r0
-	b .L2
-.L203:
+	lwzx %r9,%r31,%r22
+	lwzx %r11,%r9,%r0
+	add %r11,%r11,%r10
+	stwx %r11,%r9,%r0
+	b .L298
+.L215:
 	li %r0,6
 	stw %r0,84(%r31)
-	b .L263
-.L241:
-	addi %r9,%r11,2
-	stw %r9,80(%r31)
-	b .L2
-.L244:
-	addi %r9,%r11,2
-	stw %r9,80(%r31)
-	b .L2
-.L238:
-	addi %r9,%r11,2
-	stw %r9,80(%r31)
-	b .L2
-.L235:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L294:
-	addi %r9,%r9,4
-	stw %r9,80(%r31)
-	b .L2
-.L292:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L293:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L226:
-	addi %r9,%r9,4
-	stw %r9,80(%r31)
-	b .L2
-.L225:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L298:
-	addi %r9,%r9,4
-	stw %r9,80(%r31)
-	b .L2
-.L295:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L297:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L296:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L215:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L291:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L211:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L222:
-	addi %r9,%r9,4
-	stw %r9,80(%r31)
-	b .L2
-.L214:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
+	b .L279
 .L212:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L213:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L210:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L223:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L224:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L221:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L220:
-	addi %r9,%r9,3
-	stw %r9,80(%r31)
-	b .L2
-.L219:
-	addi %r9,%r9,2
-	stw %r9,80(%r31)
-	b .L2
-.L306:
-	addi %r0,%r8,1
-	lbz %r11,1(%r11)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r8)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L304:
-	addi %r0,%r11,1
-	lbz %r10,1(%r9)
-	stw %r0,80(%r31)
-	slwi %r10,%r10,8
-	lbz %r9,1(%r11)
-	or %r9,%r10,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L307:
-	addi %r0,%r9,1
-	lbz %r11,0(%r9)
-	stw %r0,80(%r31)
-	slwi %r11,%r11,8
-	lbz %r9,1(%r9)
-	or %r9,%r11,%r9
-	extsh %r9,%r9
-	add %r9,%r0,%r9
-	stw %r9,80(%r31)
-	b .L2
-.L301:
-	rlwinm. %r0,%r0,1,16,30
-	lwz %r11,-4(%r9)
-	addi %r9,%r9,-4
-	stw %r9,92(%r31)
-	stw %r11,0(%r10)
-	beq- %cr0,.L308
-.L290:
-	lwz %r9,92(%r31)
-	lwz %r11,104(%r31)
-	cmplw %cr7,%r9,%r11
-	ble- %cr7,.L203
-	addi %r10,%r10,-4
-	b .L204
-.L288:
 	cmplw %cr7,%r8,%r9
-	ble- %cr7,.L203
+	ble- %cr7,.L215
 	addi %r11,%r11,4
-	b .L200
+	b .L211
+.L257:
+	addi %r23,%r9,2
+	stw %r23,80(%r31)
+	b .L298
+.L251:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L248:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L254:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L300:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L299:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L306:
+	addi %r23,%r23,4
+	stw %r23,80(%r31)
+	b .L298
+.L305:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L304:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L301:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L303:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L302:
+	addi %r23,%r23,4
+	stw %r23,80(%r31)
+	b .L298
+.L239:
+	addi %r23,%r23,4
+	stw %r23,80(%r31)
+	b .L298
+.L236:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L238:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L237:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L223:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L228:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L227:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L232:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L226:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L225:
+	addi %r23,%r23,2
+	stw %r23,80(%r31)
+	b .L298
+.L224:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
 .L234:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L235:
+	addi %r23,%r23,4
+	stw %r23,80(%r31)
+	b .L298
+.L233:
+	addi %r23,%r23,3
+	stw %r23,80(%r31)
+	b .L298
+.L318:
+	addi %r0,%r23,1
+	lbz %r11,1(%r9)
+	stw %r0,80(%r31)
+	slwi %r11,%r11,8
+	lbz %r9,1(%r23)
+	or %r23,%r11,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L317:
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L314:
+	addi %r0,%r11,1
+	lbz %r23,1(%r23)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r11)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L309:
+	addi %r5,%r6,1
+	addi %r0,%r7,1
+	slwi %r5,%r5,2
+	slwi %r0,%r0,2
+	lwzx %r5,%r8,%r5
+	lwzx %r0,%r10,%r0
+	cmpw %cr7,%r5,%r0
+	bne+ %cr7,.L277
+	addi %r6,%r6,2
+	addi %r0,%r7,2
+	slwi %r6,%r6,2
+	slwi %r0,%r0,2
+	lwzx %r8,%r8,%r6
+	lwzx %r0,%r10,%r0
+	cmpw %cr7,%r8,%r0
+	bne+ %cr7,.L277
+	addi %r23,%r23,4
+	stw %r23,80(%r31)
+	b .L298
+.L310:
+	addi %r5,%r6,1
+	addi %r0,%r7,1
+	slwi %r5,%r5,2
+	slwi %r0,%r0,2
+	lwzx %r5,%r8,%r5
+	lwzx %r0,%r10,%r0
+	cmpw %cr7,%r5,%r0
+	bne+ %cr7,.L276
+	addi %r6,%r6,2
+	addi %r0,%r7,2
+	slwi %r6,%r6,2
+	slwi %r0,%r0,2
+	lwzx %r8,%r8,%r6
+	lwzx %r0,%r10,%r0
+	cmpw %cr7,%r8,%r0
+	bne+ %cr7,.L276
+	addi %r0,%r9,1
+	lbz %r23,1(%r11)
+	stw %r0,80(%r31)
+	slwi %r23,%r23,8
+	lbz %r9,1(%r9)
+	or %r23,%r23,%r9
+	extsh %r23,%r23
+	add %r23,%r0,%r23
+	stw %r23,80(%r31)
+	b .L298
+.L247:
 	li %r0,5
 	stw %r0,84(%r31)
-	b .L263
-.L195:
+	b .L279
+.L206:
 	li %r0,8
 	stw %r0,84(%r31)
-	b .L263
-.L198:
-	li %r0,2
-	stw %r0,84(%r31)
-	b .L263
-.L302:
-	li %r0,13
-	stw %r0,84(%r31)
-	b .L263
-.L197:
-	li %r0,10
-	stw %r0,84(%r31)
-	b .L263
-.L303:
+	b .L279
+.L312:
 	li %r0,11
 	stw %r0,84(%r31)
-	b .L263
-.L305:
+	b .L279
+.L311:
+	li %r0,13
+	stw %r0,84(%r31)
+	b .L279
+.L208:
+	li %r0,10
+	stw %r0,84(%r31)
+	b .L279
+.L209:
+	li %r0,2
+	stw %r0,84(%r31)
+	b .L279
+.L313:
 	li %r0,7
 	stw %r0,84(%r31)
-	b .L263
+	b .L279
 	.size	_ZN3GVM11Interpreter7executeEv, .-_ZN3GVM11Interpreter7executeEv
 	.section	.rodata.cst4,"aM",@progbits,4
 	.align 2

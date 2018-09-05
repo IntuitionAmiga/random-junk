@@ -46,7 +46,7 @@ namespace GVM {
       // General Purpose Registers
       Register reg[NUM_REG];
 
-      // Vector3 Accumulator
+      // Vector3 Accumulator and Magnitude
       float32  vacc[4];
 
       // Program counter
@@ -69,13 +69,13 @@ namespace GVM {
       const uint8** codeSymbol;
       HostCall*     hostCodeSymbol;
       uint32**      dataSymbol;
- 
+
       uint16        codeSymbolCount;
       uint16        hostCodeSymbolCount;
       uint16        dataSymbolCount;
 
     public:
-      void execute();      
+      void execute();
   };
 
 };
