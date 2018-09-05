@@ -147,6 +147,7 @@ forever:
         NEXT;
       } else {
         status = CALL_EMPTY_HOST;
+        EXIT;
       }
     }
 
@@ -1710,17 +1711,77 @@ forever:
       // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
       tmp1 = *pc++;
       tmp2 = *pc++;
-      float32* vs = &reg[src].pf[tmp1];
-      float32* vd = &reg[dst].pf[tmp2];
-      vacc[0] = vd[0] - vs[0];
-      vacc[1] = vd[1] - vs[1];
-      vacc[2] = vd[2] - vs[2];
-      NEXT;
+      float32* src1 = &reg[src].pf[tmp1];
+      float32* src2 = &reg[dst].pf[tmp2];
+      // x =  v1.y * v2.z - v1.z * v2.y,
+      // y =  v1.z * v2.x - v1.x * v2.z,
+      // z =  v1.x * v2.y - v1.y * v2.x
+      vacc[0] = src1[1] * src2[2] - src1[2] * src2[1];
+      vacc[1] = src1[2] * src2[0] - src1[0] * src2[2];
+      vacc[2] = src1[0] * src2[1] - src1[1] * src2[0];
       NEXT;
     }
 
-    // Vector3 dot product
-    IS(VDOT_II) {
+    // Vector3 cross product vector with accumulator into vector
+    IS(VMUL_AII) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      // x =  v1.y * v2.z - v1.z * v2.y,
+      // y =  v1.z * v2.x - v1.x * v2.z,
+      // z =  v1.x * v2.y - v1.y * v2.x
+      vd[0] = vacc[1] * vs[2] - vacc[2] * vs[1];
+      vd[1] = vacc[2] * vs[0] - vacc[0] * vs[2];
+      vd[2] = vacc[0] * vs[1] - vacc[1] * vs[0];
+      NEXT;
+    }
+
+
+    // Vector3 cross product vector with accumulator into vector
+    IS(VMUL_IAI) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      // x =  v1.y * v2.z - v1.z * v2.y,
+      // y =  v1.z * v2.x - v1.x * v2.z,
+      // z =  v1.x * v2.y - v1.y * v2.x
+      vd[0] = vs[1] * vacc[2] - vs[2] * vacc[1];
+      vd[1] = vs[2] * vacc[0] - vs[0] * vacc[2];
+      vd[2] = vs[0] * vacc[1] - vs[1] * vacc[0];
+      NEXT;
+    }
+
+    // Vector3 dot product product of two vectors, into accumulator
+    IS(VDOT_IIA) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      float32* vd = &reg[dst].pf[tmp2];
+      vacc[3] = vd[0] * vs[0] + vd[1] * vs[1] + vd[2] * vs[2];
+      NEXT;
+    }
+
+    // Vector3 dot product of accumulator, vector into register
+    IS(VDOT_AIR) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      reg[dst].f = vacc[0] * vs[0] + vacc[1] * vs[1] + vacc[2] * vs[2];
+      NEXT;
+    }
+
+    // Vector3 dot product of accumulator, vector into indirect
+    IS(VDOT_AII) {
+      // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+      tmp1 = *pc++;
+      tmp2 = *pc++;
+      float32* vs = &reg[src].pf[tmp1];
+      reg[dst].pf[tmp2] = vacc[0] * vs[0] + vacc[1] * vs[1] + vacc[2] * vs[2];
       NEXT;
     }
 

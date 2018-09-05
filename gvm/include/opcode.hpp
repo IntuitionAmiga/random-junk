@@ -291,9 +291,13 @@ namespace GVM {
 
       // Vec3 Cross
       _VMUL_IIA,
+      _VMUL_AII,
+      _VMUL_IAI,
 
       // Vec3 Dot
-      _VDOT_II,
+      _VDOT_IIA,
+      _VDOT_AIR,
+      _VDOT_AII,
 
       // Vec3 Mag
       _VMAG_IR,
