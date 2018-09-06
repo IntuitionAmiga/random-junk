@@ -59,10 +59,16 @@ namespace GVM {
       // Branch Call (16-bit offset)
       _BCALL,
 
-      // Function call (16-bit ID)
+      // Function call (16-bit ID fixed)
       _CALL,
 
-      // Host function call (16-bit ID)
+      // Function call (16-bit ID in register)
+      _CALL_R,
+
+      // Function call (16-bit ID via indirect)
+      _CALL_I,
+
+      // Host function call (16-bit ID fixed)
       _CALLH,
 
       // Return from call

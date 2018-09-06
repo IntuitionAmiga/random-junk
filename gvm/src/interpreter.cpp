@@ -132,7 +132,7 @@ forever:
     IS(CALL) {
       // [opcode:8] [symbol_id_msb:8] [symbol_id_lsb:8]
       uint16 symbol = ((uint16)tmp2) << 8 | *pc++;
-      if (symbol >= codeSymbolCount) {
+      if (!symbol || symbol >= codeSymbolCount) {
         status = UNKNOWN_CODE_SYMBOL;
         EXIT;
       }
@@ -145,6 +145,18 @@ forever:
         status = CALL_STACK_OVERFLOW;
         EXIT;
       }
+    }
+
+    // Function call (16-bit ID in register)
+    IS(CALL_R) {
+
+      EXIT;
+    }
+
+    // Function call (16-bit ID via indirect)
+    IS(CALL_I) {
+
+      EXIT;
     }
 
     // Call 16-but host function symbol ID
