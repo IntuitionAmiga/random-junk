@@ -190,38 +190,32 @@ forever:
       }
     }
 
-    // Push masked registers to data stack
+    // Push registers to data stack
     IS(PUSHR) {
-      // [opcode:8] [reg_mask_msb:8] [reg_mask_lsb:8]
-      uint16    mask = ((uint16)tmp2) << 8 | *pc++;
-      Register* push = reg;
-      while (mask && (dataStack < dataStackTop)) {
-        if (mask & 1) {
+      // [opcode:8] [range_start:4 range_end:4]
+
+      tmp2 = 1 + (dst - src);
+      if ((dataStack + tmp2) < dataStackTop) {
+        Register* push = &reg[src];
+        while (tmp2--) {
           *dataStack++ = push->w;
-          mask >>= 1;
+          push++;
         }
-        ++push;
-      }
-      if (mask) {
+      } else {
         status = DATA_STACK_OVERFLOW;
         EXIT;
       }
       NEXT;
     }
 
-    // Pop masked registers from data stack
+    // Pop registers from data stack
     IS(POPR) {
-      // [opcode:8] [reg_mask_msb:8] [reg_mask_lsb:8]
-      uint16    mask = ((uint16)tmp2) << 8 | *pc++;
-      Register* pop  = reg + NUM_REG - 1;
-      while (mask && (dataStack > dataStackBase)) {
-        if (mask & 0x8000) {
-          pop->w = *(--dataStack);
-          mask <<= 1;
-        }
-        --pop;
-      }
-      if (mask) {
+      // [opcode:8] [range_start:4 range_end:4]
+
+      tmp2 = 1 + (dst - src);
+      if ((dataStack - tmp1) > dataStackBase) {
+
+      } else {
         status = DATA_STACK_OVERFLOW;
         EXIT;
       }

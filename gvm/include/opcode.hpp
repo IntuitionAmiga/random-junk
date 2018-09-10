@@ -74,10 +74,10 @@ namespace GVM {
       // Return from call
       _RET,
 
-      // Push registers to stack (mask in 16-bit extension)
+      // Push registers to stack (range)
       _PUSHR,
 
-      // Pop registers from stack (mask in 16-bit extension)
+      // Pop registers from stack (range)
       _POPR,
 
       // Allocate Stack Storage
