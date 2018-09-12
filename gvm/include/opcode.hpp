@@ -56,6 +56,12 @@ namespace GVM {
       // Unconditional Branch (16-bit offset)
       _BRA,  // pc += ofs16
 
+      // Computed branch (short)
+      _TJMPS,
+
+      // Computed branch
+      _TJMP,
+
       // Branch Call (16-bit offset)
       _BCALL,
 

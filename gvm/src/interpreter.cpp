@@ -114,6 +114,50 @@ forever:
       NEXT;
     }
 
+    // Table jump (small), up to 18 8-bit displacements
+    IS(TJMPS) {
+      // [opcode:8] [(N-2):4 | reg:4] [offset_0:8] [offset_1:8]...[offset_N-1:8]
+
+      // Source nybble is table size - 2
+      src += 2;
+
+      // Get the jump index
+      tmp1 = reg[dst].w;
+
+      // Any values greater than the max fall through to the code after the jump
+      if (tmp1 > src) {
+        // Skip to the next instruction after the last table entry
+        pc += src;
+      } else {
+        tmp2 = pc[tmp1];
+        pc += (int8)tmp2;
+      }
+      NEXT;
+    }
+
+    // Table jump, up to 258 16-bit displacements
+    IS(TJMP) {
+      // [opcode:8] [0:4 | reg:4] [(N-2):8] [offset_0_MSB:8] [offset_0_LSB:8]...
+
+      // First extension byte is table size - 2.
+      uint16 size = ((*pc++) + 2);
+
+      // Get the jump index
+      uint16 jump = reg[dst].w;
+
+      // Any values greater than the max fall through to the code after the jump
+      if (jump > size) {
+        // Skip to the next instruction after the last table entry
+        pc += size;
+      } else {
+        // Double the jump index as each entry is 2 bytes
+        jump <<= 1;
+        size = pc[jump] << 8 | pc[jump+1];
+        pc += (int16)size;
+      }
+      NEXT;
+    }
+
     // Call 16-bit pc-relative
     IS(BCALL) {
       // [opcode:8] [signed_offset_msb:8] [signed_offset_lsb:8]
@@ -132,30 +176,28 @@ forever:
     IS(CALL) {
       // [opcode:8] [symbol_id_msb:8] [symbol_id_lsb:8]
       uint16 symbol = ((uint16)tmp2) << 8 | *pc++;
-      if (!symbol || symbol >= codeSymbolCount) {
-        status = UNKNOWN_CODE_SYMBOL;
-        EXIT;
-      }
-
-      if (callStack < callStackTop) {
-        *callStack++ = pc;
-        pc = codeSymbol[symbol];
+      if (call(symbol)) {
         NEXT;
-      } else {
-        status = CALL_STACK_OVERFLOW;
-        EXIT;
       }
+      EXIT;
     }
 
     // Function call (16-bit ID in register)
     IS(CALL_R) {
-
+      uint16 symbol = reg[src].w;
+      if (call(symbol)) {
+        NEXT;
+      }
       EXIT;
     }
 
     // Function call (16-bit ID via indirect)
     IS(CALL_I) {
-
+      tmp1 = *pc++;
+      uint16 symbol = reg[src].pw[tmp1];
+      if (call(symbol)) {
+        NEXT;
+      }
       EXIT;
     }
 
@@ -2056,3 +2098,20 @@ bailout:
 
   return;
 }
+
+int Interpreter::call(uint16 symbol) {
+  if (!symbol || symbol >= codeSymbolCount) {
+    status = UNKNOWN_CODE_SYMBOL;
+    return 0;
+  }
+
+  if (callStack < callStackTop) {
+    *callStack++ = pc;
+    pc = codeSymbol[symbol];
+    return 1;
+  } else {
+    status = CALL_STACK_OVERFLOW;
+    return 0;
+  }
+}
+

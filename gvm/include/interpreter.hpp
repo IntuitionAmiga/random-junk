@@ -76,6 +76,9 @@ namespace GVM {
 
     public:
       void execute();
+
+    private:
+      int call(uint16 symbol);
   };
 
 };
