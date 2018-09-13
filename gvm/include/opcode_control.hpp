@@ -95,7 +95,91 @@
 #elif defined(OS25D_GVM_OPCODE_MACRO)
 
   // CODE MACROS
+  #define nop      _OP(NOP),
+  #define bras(jo) _OP(BRAS), _D8(jo),
+  #define bra(jo)  _OP(BRA), _D16(jo),
 
+  // Computed branch (short)
+  //_TJMPS,
+
+  // Computed branch
+  //_TJMP,
+
+  // Branch Call (16-bit offset)
+  #define bcall(jo)          _OP(BCALL), _D16(jo),
+
+  // Function call (16-bit ID fixed)
+  #define call(fn)           _OP(CALL), _D16(fn),
+
+  // Function call (16-bit ID in register)
+  #define call_r(sr)         _OP(CALL_R), _S(sr),
+
+  // Function call (16-bit ID via indirect)
+  #define call_i(sr, so)     _OP(CALL_I), _S(sr), _D8(so),
+
+  // Host function call (16-bit ID fixed)
+  #define call_h(fn)         _OP(CALLH), _D16(fn),
+
+  // Return from call
+  #define ret                _OP(RET),
+
+  // Decrement and Branch if not Zero  (16-bit offset)
+  #define dbnz(dr,jo)        _OP(DBNZ_R), _D(dr), _D16(jo),
+
+  // Load Link and Branch if not Null  (16-bit offset)
+  #define ldbnn(sr,so,dr,jo) _OP(LBNN_IR), _SD(sr, dr), _D8(so), _D16(jo),
+
+  // Float/Integer Branch if Zero  (16-bit offset)
+  #define bez_r(dr,jo)        _OP(BEZ_R), _D(dr), _D16(jo),
+  #define bez_i(dr,do,jo)     _OP(BEZ_I), _D(dr), _D8(do), _D16(jo),
+
+  // Float/Integer Branch if Not Zero  (16-bit offset)
+  #define bnz_r(dr,jo)        _OP(BNZ_R), _D(dr), _D16(jo),
+  #define bnz_i(dr,do,jo)     _OP(BNZ_I), _D(dr), _D8(do), _D16(jo),
+
+  // Float/Integer Branch if Equal  (16-bit offset)
+  #define beq_rr(sr,dr,jo)       _OP(BEQ_RR), _SD(sr, dr), _D16(jo),
+  #define beq_ri(sr,dr,do,jo)    _OP(BEQ_RI), _SD(sr, dr), _D8(do), _D16(jo),
+  #define beq_ii(sr,so,dr,do,jo) _OP(BEQ_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+/*
+  // Integer Branch if Greater or Equal  (16-bit offset)
+  _BGE_RR,
+  _BGE_RI,
+  _BGE_IR,
+  _BGE_II,
+
+  // Integer Branch if Greater  (16-bit offset)
+  _BGT_RR,
+  _BGT_RI,
+  _BGT_IR,
+  _BGT_II,
+
+  // Float Branch if Almost Equal  (16-bit offset)
+  _FBEQ_RR,
+  _FBEQ_RI,
+  _FBEQ_IR,
+  _FBEQ_II,
+
+  // Float Branch if Greater or Equal  (16-bit offset)
+  _FBGE_RR,
+  _FBGE_RI,
+  _FBGE_IR,
+  _FBGE_II,
+
+  // Float Branch if Greater  (16-bit offset)
+  _FBGT_RR,
+  _FBGT_RI,
+  _FBGT_IR,
+  _FBGT_II,
+
+  // Vec3 Branch if equal
+  _VBEQ_II,
+  _VBEQ_IA,
+
+  // Vec3 Branch if not equal
+  _VBNE_II,
+  _VBNE_IA,
+*/
 #elif defined(OS25D_GVM_OPCODE_HANDLER)
 
   // HANDLER CODE
