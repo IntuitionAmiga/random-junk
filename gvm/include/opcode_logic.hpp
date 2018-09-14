@@ -1,6 +1,6 @@
 #if defined(OS25D_GVM_OPCODE_DEFINE)
 
-  // ENUMERATION
+  // ENUMERATION ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Logic AND
   _AND_RR,
@@ -44,11 +44,51 @@
 
 #elif defined(OS25D_GVM_OPCODE_MACRO)
 
-  // CODE MACROS
+  // CODE MACROS ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Logic AND
+  #define and_rr(rs,rd)       _OP(AND_RR), _SD(rs, rd),
+  #define and_ri(rs,rd,do)    _OP(AND_RI), _SD(rs, rd), _D8(do),
+  #define and_ir(rs,ro,rd)    _OP(AND_IR), _SD(rs, rd), _D8(so),
+  #define and_ii(rs,ro,rd,do) _OP(AND_II), _SD(rs, rd), _D8(so), _D8(do),
+
+  // Logic OR
+  #define or_rr(rs,rd)        _OP(OR_RR), _SD(rs, rd),
+  #define or_ri(rs,rd,do)     _OP(OR_RI), _SD(rs, rd), _D8(do),
+  #define or_ir(rs,so,rd)     _OP(OR_IR), _SD(rs, rd), _D8(so),
+  #define or_ii(rs,ro,rd,do)  _OP(OR_II), _SD(rs, rd), _D8(so), _D8(do),
+
+  // Logic XOR
+  #define xor_rr(rs,rd)       _OP(XOR_RR), _SD(rs, rd),
+  #define xor_ri(rs,rd,do)    _OP(XOR_RI), _SD(rs, rd), _D8(do),
+  #define xor_ir(rs,so,rd)    _OP(XOR_IR), _SD(rs, rd), _D8(so),
+  #define xor_ii(rs,ro,rd,do) _OP(XOR_II), _SD(rs, rd), _D8(so), _D8(do),
+
+  // Logic NOT
+  #define not_rr(rs,rd)       _OP(NOT_RR), _SD(rs, rd),
+  #define not_ri(rs,rd,do)    _OP(NOT_RI), _SD(rs, rd), _D8(do),
+  #define not_ir(rs,so,rd)    _OP(NOT_IR), _SD(rs, rd), _D8(so),
+  #define not_ii(rs,ro,rd,do) _OP(NOT_II), _SD(rs, rd), _D8(so), _D8(do),
+
+  // Logic SHL
+  #define lsl_lr(sl,rd)       _OP(LSL_LR), _SD(sl, rd),
+  #define lsl_li(sl,rd,do)    _OP(LSL_LI), _SD(sl, rd), _D8(do),
+  #define lsl_rr(rs,rd)       _OP(LSL_RR), _SD(rs, rd),
+  #define lsl_ri(rs,rd,do)    _OP(LSL_RI), _SD(rs, rd), _D8(do),
+  #define lsl_ir(rs,so,rd)    _OP(LSL_IR), _SD(rs, rd), _D8(so),
+  #define lsl_ii(rs,so,rd,do) _OP(LSL_II), _SD(rs, rd), _D8(so), _D8(do),
+
+  // Logic SHR
+  #define lsr_lr(sl,rd)       _OP(LSR_LR), _SD(sl, rd),
+  #define lsr_li(sl,rd,do)    _OP(LSR_LI), _SD(sl, rd), _D8(do),
+  #define lsr_rr(rs,rd)       _OP(LSR_RR), _SD(rs, rd),
+  #define lsr_ri(rs,rd,do)    _OP(LSR_RI), _SD(rs, rd), _D8(do),
+  #define lsr_ir(rs,so,rd)    _OP(LSR_IR), _SD(rs, rd), _D8(so),
+  #define lsr_ii(rs,so,rd,do) _OP(LSR_II), _SD(rs, rd), _D8(so), _D8(do),
 
 #elif defined(OS25D_GVM_OPCODE_HANDLER)
 
-  // HANDLER CODE
+  // HANDLER CODE //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Logical AND register to register
   IS(AND_RR) {

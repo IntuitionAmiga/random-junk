@@ -112,10 +112,10 @@
   #define call(fn)           _OP(CALL), _D16(fn),
 
   // Function call (16-bit ID in register)
-  #define call_r(sr)         _OP(CALL_R), _S(sr),
+  #define call_r(rs)         _OP(CALL_R), _S(rs),
 
   // Function call (16-bit ID via indirect)
-  #define call_i(sr, so)     _OP(CALL_I), _S(sr), _D8(so),
+  #define call_i(rs, so)     _OP(CALL_I), _S(rs), _D8(so),
 
   // Host function call (16-bit ID fixed)
   #define call_h(fn)         _OP(CALLH), _D16(fn),
@@ -124,60 +124,60 @@
   #define ret                _OP(RET),
 
   // Decrement and Branch if not Zero  (16-bit offset)
-  #define dbnz(dr,jo)        _OP(DBNZ_R), _D(dr), _D16(jo),
+  #define dbnz(rd,jo)        _OP(DBNZ_R), _D(rd), _D16(jo),
 
   // Load Link and Branch if not Null  (16-bit offset)
-  #define ldbnn(sr,so,dr,jo) _OP(LBNN_IR), _SD(sr, dr), _D8(so), _D16(jo),
+  #define ldbnn(rs,so,rd,jo) _OP(LBNN_IR), _SD(rs, rd), _D8(so), _D16(jo),
 
   // Float/Integer Branch if Zero  (16-bit offset)
-  #define bez_r(dr,jo)        _OP(BEZ_R), _D(dr), _D16(jo),
-  #define bez_i(dr,do,jo)     _OP(BEZ_I), _D(dr), _D8(do), _D16(jo),
+  #define bez_r(rd,jo)        _OP(BEZ_R), _D(rd), _D16(jo),
+  #define bez_i(rd,do,jo)     _OP(BEZ_I), _D(rd), _D8(do), _D16(jo),
 
   // Float/Integer Branch if Not Zero  (16-bit offset)
-  #define bnz_r(dr,jo)        _OP(BNZ_R), _D(dr), _D16(jo),
-  #define bnz_i(dr,do,jo)     _OP(BNZ_I), _D(dr), _D8(do), _D16(jo),
+  #define bnz_r(rd,jo)        _OP(BNZ_R), _D(rd), _D16(jo),
+  #define bnz_i(rd,do,jo)     _OP(BNZ_I), _D(rd), _D8(do), _D16(jo),
 
   // Float/Integer Branch if Equal  (16-bit offset)
-  #define beq_rr(sr,dr,jo)       _OP(BEQ_RR), _SD(sr, dr), _D16(jo),
-  #define beq_ri(sr,dr,do,jo)    _OP(BEQ_RI), _SD(sr, dr), _D8(do), _D16(jo),
-  #define beq_ii(sr,so,dr,do,jo) _OP(BEQ_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define beq_rr(rs,rd,jo)       _OP(BEQ_RR), _SD(rs, rd), _D16(jo),
+  #define beq_ri(rs,rd,do,jo)    _OP(BEQ_RI), _SD(rs, rd), _D8(do), _D16(jo),
+  #define beq_ii(rs,so,rd,do,jo) _OP(BEQ_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
 
   // Integer Branch if Greater or Equal  (16-bit offset)
-  #define bge_rr(sr,dr,jo)       _OP(BGE_RR), _SD(sr, dr), _D16(jo),
-  #define bge_ri(sr,dr,do,jo)    _OP(BGE_RI), _SD(sr, dr), _D8(do), _D16(jo),
-  #define bge_ir(sr,so,dr,jo)    _OP(BGE_IR), _SD(sr, dr), _D8(so), _D16(jo),
-  #define bge_ii(sr,so,dr,do,jo) _OP(BGE_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define bge_rr(rs,rd,jo)       _OP(BGE_RR), _SD(rs, rd), _D16(jo),
+  #define bge_ri(rs,rd,do,jo)    _OP(BGE_RI), _SD(rs, rd), _D8(do), _D16(jo),
+  #define bge_ir(rs,so,rd,jo)    _OP(BGE_IR), _SD(rs, rd), _D8(so), _D16(jo),
+  #define bge_ii(rs,so,rd,do,jo) _OP(BGE_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
 
   // Integer Branch if Greater  (16-bit offset)
-  #define bgt_rr(sr,dr,jo)       _OP(BGT_RR), _SD(sr, dr), _D16(jo),
-  #define bgt_ri(sr,dr,do,jo)    _OP(BGT_RI), _SD(sr, dr), _D8(do), _D16(jo),
-  #define bgt_ir(sr,so,dr,jo)    _OP(BGT_IR), _SD(sr, dr), _D8(so), _D16(jo),
-  #define bgt_ii(sr,so,dr,do,jo) _OP(BGT_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define bgt_rr(rs,rd,jo)       _OP(BGT_RR), _SD(rs, rd), _D16(jo),
+  #define bgt_ri(rs,rd,do,jo)    _OP(BGT_RI), _SD(rs, rd), _D8(do), _D16(jo),
+  #define bgt_ir(rs,so,rd,jo)    _OP(BGT_IR), _SD(rs, rd), _D8(so), _D16(jo),
+  #define bgt_ii(rs,so,rd,do,jo) _OP(BGT_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
 
   // Float Branch if Almost Equal  (16-bit offset)
-  #define fbeq_rr(sr,dr,jo)       _OP(FBEQ_RR), _SD(sr, dr), _D16(jo),
-  #define fbeq_ri(sr,dr,do,jo)    _OP(FBEQ_RI), _SD(sr, dr), _D8(do), _D16(jo),
-  #define fbeq_ii(sr,so,dr,do,jo) _OP(FBEQ_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define fbeq_rr(rs,rd,jo)       _OP(FBEQ_RR), _SD(rs, rd), _D16(jo),
+  #define fbeq_ri(rs,rd,do,jo)    _OP(FBEQ_RI), _SD(rs, rd), _D8(do), _D16(jo),
+  #define fbeq_ii(rs,so,rd,do,jo) _OP(FBEQ_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
 
   // Float Branch if Greater or Equal  (16-bit offset)
-  #define fbge_rr(sr,dr,jo)       _OP(FBGE_RR), _SD(sr, dr), _D16(jo),
-  #define fbge_ri(sr,dr,do,jo)    _OP(FBGE_RI), _SD(sr, dr), _D8(do), _D16(jo),
-  #define fbge_ir(sr,so,dr,jo)    _OP(FBGE_IR), _SD(sr, dr), _D8(so), _D16(jo),
-  #define fbge_ii(sr,so,dr,do,jo) _OP(FBGE_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define fbge_rr(rs,rd,jo)       _OP(FBGE_RR), _SD(rs, rd), _D16(jo),
+  #define fbge_ri(rs,rd,do,jo)    _OP(FBGE_RI), _SD(rs, rd), _D8(do), _D16(jo),
+  #define fbge_ir(rs,so,rd,jo)    _OP(FBGE_IR), _SD(rs, rd), _D8(so), _D16(jo),
+  #define fbge_ii(rs,so,rd,do,jo) _OP(FBGE_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
 
   // Float Branch if Greater  (16-bit offset)
-  #define fbgt_rr(sr,dr,jo)       _OP(FBGT_RR), _SD(sr, dr), _D16(jo),
-  #define fbgt_ri(sr,dr,do,jo)    _OP(FBGT_RI), _SD(sr, dr), _D8(do), _D16(jo),
-  #define fbgt_ir(sr,so,dr,jo)    _OP(FBGT_IR), _SD(sr, dr), _D8(so), _D16(jo),
-  #define fbgt_ii(sr,so,dr,do,jo) _OP(FBGT_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define fbgt_rr(rs,rd,jo)       _OP(FBGT_RR), _SD(rs, rd), _D16(jo),
+  #define fbgt_ri(rs,rd,do,jo)    _OP(FBGT_RI), _SD(rs, rd), _D8(do), _D16(jo),
+  #define fbgt_ir(rs,so,rd,jo)    _OP(FBGT_IR), _SD(rs, rd), _D8(so), _D16(jo),
+  #define fbgt_ii(rs,so,rd,do,jo) _OP(FBGT_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
 
   // Vec3 Branch if equal
-  #define vbeq_ii(sr,so,dr,do,jo) _OP(VBEQ_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
-  #define vbeq_ia(sr,so,jo)       _OP(VBEQ_IA), _S(sr), _D8(so), _D16(jo),
+  #define vbeq_ii(rs,so,rd,do,jo) _OP(VBEQ_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
+  #define vbeq_ia(rs,so,jo)       _OP(VBEQ_IA), _S(rs), _D8(so), _D16(jo),
 
   // Vec3 Branch if not equal
-  #define vbne_ii(sr,so,dr,do,jo) _OP(VBNE_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
-  #define vbne_ia(sr,so,jo)       _OP(VBNE_II), _S(sr), _D8(so), _D16(jo),
+  #define vbne_ii(rs,so,rd,do,jo) _OP(VBNE_II), _SD(rs, rd), _D8(so), _D8(do), _D16(jo),
+  #define vbne_ia(rs,so,jo)       _OP(VBNE_II), _S(rs), _D8(so), _D16(jo),
 
 #elif defined(OS25D_GVM_OPCODE_HANDLER)
 

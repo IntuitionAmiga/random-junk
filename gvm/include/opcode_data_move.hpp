@@ -43,42 +43,42 @@
 
   // CODE MACROS ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  #define move_lr(sl,dr)       _OP(MOVE_LR), _SD(sl, dr),
-  #define move_li(sl,dr,do)    _OP(MOVE_LI), _SD(sl, dr), _D8(do),
+  #define move_lr(sl,rd)       _OP(MOVE_LR), _SD(sl, rd),
+  #define move_li(sl,rd,do)    _OP(MOVE_LI), _SD(sl, rd), _D8(do),
 
   // Float/Integer Move
-  #define move_rr(sr,dr)       _OP(MOVE_RR), _SD(sr, dr),
-  #define move_ri(sr,dr,do)    _OP(MOVE_RI), _SD(sr, dr), _D8(do),
-  #define move_ir(sr,so,dr)    _OP(MOVE_IR), _SD(sr, dr), _D8(so),
-  #define move_ii(sr,so,dr,do) _OP(MOVE_II), _SD(sr, dr), _D8(so), _D8(do),
-  #define move_mr(dr)          _OP(MOVE_MR), _D(dr),
-  #define move_mi(dr,do)       _OP(MOVE_MI), _D(dr), _D8(do),
+  #define move_rr(rs,rd)       _OP(MOVE_RR), _SD(rs, rd),
+  #define move_ri(rs,rd,do)    _OP(MOVE_RI), _SD(rs, rd), _D8(do),
+  #define move_ir(rs,so,rd)    _OP(MOVE_IR), _SD(rs, rd), _D8(so),
+  #define move_ii(rs,so,rd,do) _OP(MOVE_II), _SD(rs, rd), _D8(so), _D8(do),
+  #define move_mr(rd)          _OP(MOVE_MR), _D(rd),
+  #define move_mi(rd,do)       _OP(MOVE_MI), _D(rd), _D8(do),
 
   // Push registers to stack (range)
-  #define pushr(sr,dr)         _OP(PUSHR), _SD(sr, dr),
+  #define pushr(rs,rd)         _OP(PUSHR), _SD(rs, rd),
 
   // Pop registers from stack (range)
-  #define popr(sr,dr)          _OP(POPR), _SD(sr, dr),
+  #define popr(rs,rd)          _OP(POPR), _SD(rs, rd),
 
   // Allocate Stack Storage
-  #define asf(dr,sz)           _OP(ASF), _D(dr), _D8(sz),
+  #define asf(rd,sz)           _OP(ASF), _D(rd), _D8(sz),
 
   // Free Stack Storage
-  #define fsf(dr,sz)           _OP(FSF), _D(dr), _D8(sz),
+  #define fsf(rd,sz)           _OP(FSF), _D(rd), _D8(sz),
 
   // Vec3 Splat
-  #define vspl_li(sl,dr,do)    _OP(VSPL_LI), _SD(sl, dr), _D8(do),
-  #define vspl_ri(sr,dr,do)    _OP(VSPL_RI), _SD(sr, dr), _D8(do),
-  #define vspl_ii(sr,so,dr,do) _OP(VSPL_II), _SD(sr, dr), _D8(so), _D8(do),
+  #define vspl_li(sl,rd,do)    _OP(VSPL_LI), _SD(sl, rd), _D8(do),
+  #define vspl_ri(rs,rd,do)    _OP(VSPL_RI), _SD(rs, rd), _D8(do),
+  #define vspl_ii(rs,so,rd,do) _OP(VSPL_II), _SD(rs, rd), _D8(so), _D8(do),
   #define vspl_la(sl)          _OP(VSPL_LA), _S(sl),
   #define vspl_ra(rs)          _OP(VSPL_RA), _S(rs),
   #define vspl_ia(rs,so)       _OP(VSPL_IA), _S(rs), _D8(so),
 
 
   // Vec3 Move
-  #define vmve_ii(sr,so,dr,do) _OP(VMVE_II), _SD(sr, dr), _D8(so), _D8(do),
-  #define vmve_ia(sr,so)       _OP(VMVE_IA), _S(sr), _D8(so),
-  #define vmve_ai(dr,do)       _OP(VMVE_AI), _D(dr), _D8(do),
+  #define vmve_ii(rs,so,rd,do) _OP(VMVE_II), _SD(rs, rd), _D8(so), _D8(do),
+  #define vmve_ia(rs,so)       _OP(VMVE_IA), _S(rs), _D8(so),
+  #define vmve_ai(rd,do)       _OP(VMVE_AI), _D(rd), _D8(do),
 
 #elif defined(OS25D_GVM_OPCODE_HANDLER)
 
