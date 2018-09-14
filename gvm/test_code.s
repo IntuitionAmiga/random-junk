@@ -1,0 +1,381 @@
+	.file	"test_code.cpp"
+	.globl	inst_vbne_ia
+	.data
+	.align 4
+	.type	inst_vbne_ia, @object
+	.size	inst_vbne_ia, 5
+inst_vbne_ia:
+	.byte	41
+	.byte	112
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_vbne_ii
+	.align 4
+	.type	inst_vbne_ii, @object
+	.size	inst_vbne_ii, 6
+inst_vbne_ii:
+	.byte	41
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_vbeq_ia
+	.align 4
+	.type	inst_vbeq_ia, @object
+	.size	inst_vbeq_ia, 5
+inst_vbeq_ia:
+	.byte	40
+	.byte	112
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_vbeq_ii
+	.align 4
+	.type	inst_vbeq_ii, @object
+	.size	inst_vbeq_ii, 6
+inst_vbeq_ii:
+	.byte	39
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbgt_ii
+	.align 4
+	.type	inst_fbgt_ii, @object
+	.size	inst_fbgt_ii, 6
+inst_fbgt_ii:
+	.byte	38
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbgt_ir
+	.align 4
+	.type	inst_fbgt_ir, @object
+	.size	inst_fbgt_ir, 5
+inst_fbgt_ir:
+	.byte	37
+	.byte	120
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbgt_ri
+	.align 4
+	.type	inst_fbgt_ri, @object
+	.size	inst_fbgt_ri, 5
+inst_fbgt_ri:
+	.byte	36
+	.byte	120
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbgt_rr
+	.align 4
+	.type	inst_fbgt_rr, @object
+	.size	inst_fbgt_rr, 4
+inst_fbgt_rr:
+	.byte	35
+	.byte	120
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbge_ii
+	.align 4
+	.type	inst_fbge_ii, @object
+	.size	inst_fbge_ii, 6
+inst_fbge_ii:
+	.byte	34
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbge_ir
+	.align 4
+	.type	inst_fbge_ir, @object
+	.size	inst_fbge_ir, 5
+inst_fbge_ir:
+	.byte	33
+	.byte	120
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbge_ri
+	.align 4
+	.type	inst_fbge_ri, @object
+	.size	inst_fbge_ri, 5
+inst_fbge_ri:
+	.byte	32
+	.byte	120
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbge_rr
+	.align 4
+	.type	inst_fbge_rr, @object
+	.size	inst_fbge_rr, 4
+inst_fbge_rr:
+	.byte	31
+	.byte	120
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbeq_ii
+	.align 4
+	.type	inst_fbeq_ii, @object
+	.size	inst_fbeq_ii, 6
+inst_fbeq_ii:
+	.byte	34
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbeq_ri
+	.align 4
+	.type	inst_fbeq_ri, @object
+	.size	inst_fbeq_ri, 5
+inst_fbeq_ri:
+	.byte	32
+	.byte	120
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_fbeq_rr
+	.align 4
+	.type	inst_fbeq_rr, @object
+	.size	inst_fbeq_rr, 4
+inst_fbeq_rr:
+	.byte	31
+	.byte	120
+	.byte	-1
+	.byte	-2
+	.globl	inst_bgt_ii
+	.align 4
+	.type	inst_bgt_ii, @object
+	.size	inst_bgt_ii, 6
+inst_bgt_ii:
+	.byte	27
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_bgt_ir
+	.align 4
+	.type	inst_bgt_ir, @object
+	.size	inst_bgt_ir, 5
+inst_bgt_ir:
+	.byte	26
+	.byte	120
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_bgt_ri
+	.align 4
+	.type	inst_bgt_ri, @object
+	.size	inst_bgt_ri, 5
+inst_bgt_ri:
+	.byte	25
+	.byte	120
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_bgt_rr
+	.align 4
+	.type	inst_bgt_rr, @object
+	.size	inst_bgt_rr, 4
+inst_bgt_rr:
+	.byte	24
+	.byte	120
+	.byte	-1
+	.byte	-2
+	.globl	inst_bge_ii
+	.align 4
+	.type	inst_bge_ii, @object
+	.size	inst_bge_ii, 6
+inst_bge_ii:
+	.byte	23
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_bge_ir
+	.align 4
+	.type	inst_bge_ir, @object
+	.size	inst_bge_ir, 5
+inst_bge_ir:
+	.byte	22
+	.byte	120
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_bge_ri
+	.align 4
+	.type	inst_bge_ri, @object
+	.size	inst_bge_ri, 5
+inst_bge_ri:
+	.byte	21
+	.byte	120
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_bge_rr
+	.align 4
+	.type	inst_bge_rr, @object
+	.size	inst_bge_rr, 4
+inst_bge_rr:
+	.byte	20
+	.byte	120
+	.byte	-1
+	.byte	-2
+	.globl	inst_beq_ii
+	.align 4
+	.type	inst_beq_ii, @object
+	.size	inst_beq_ii, 6
+inst_beq_ii:
+	.byte	19
+	.byte	120
+	.byte	1
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_beq_ri
+	.align 4
+	.type	inst_beq_ri, @object
+	.size	inst_beq_ri, 5
+inst_beq_ri:
+	.byte	18
+	.byte	120
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_beq_rr
+	.align 4
+	.type	inst_beq_rr, @object
+	.size	inst_beq_rr, 4
+inst_beq_rr:
+	.byte	17
+	.byte	120
+	.byte	-1
+	.byte	-2
+	.globl	inst_bnz_i
+	.align 4
+	.type	inst_bnz_i, @object
+	.size	inst_bnz_i, 5
+inst_bnz_i:
+	.byte	16
+	.byte	7
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_bnz_r
+	.align 4
+	.type	inst_bnz_r, @object
+	.size	inst_bnz_r, 4
+inst_bnz_r:
+	.byte	15
+	.byte	7
+	.byte	-1
+	.byte	-2
+	.globl	inst_bez_i
+	.align 4
+	.type	inst_bez_i, @object
+	.size	inst_bez_i, 5
+inst_bez_i:
+	.byte	14
+	.byte	7
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_bez_r
+	.align 4
+	.type	inst_bez_r, @object
+	.size	inst_bez_r, 4
+inst_bez_r:
+	.byte	13
+	.byte	7
+	.byte	-1
+	.byte	-2
+	.globl	inst_ldbnn
+	.align 4
+	.type	inst_ldbnn, @object
+	.size	inst_ldbnn, 5
+inst_ldbnn:
+	.byte	12
+	.byte	120
+	.byte	1
+	.byte	-1
+	.byte	-2
+	.globl	inst_dbnz
+	.align 4
+	.type	inst_dbnz, @object
+	.size	inst_dbnz, 4
+inst_dbnz:
+	.byte	11
+	.byte	7
+	.byte	-1
+	.byte	-2
+	.globl	inst_ret
+	.type	inst_ret, @object
+	.size	inst_ret, 1
+inst_ret:
+	.byte	10
+	.globl	inst_call_h
+	.type	inst_call_h, @object
+	.size	inst_call_h, 3
+inst_call_h:
+	.byte	9
+	.byte	-1
+	.byte	-1
+	.globl	inst_call_i
+	.type	inst_call_i, @object
+	.size	inst_call_i, 3
+inst_call_i:
+	.byte	8
+	.byte	112
+	.byte	1
+	.globl	inst_call_r
+	.type	inst_call_r, @object
+	.size	inst_call_r, 2
+inst_call_r:
+	.byte	7
+	.byte	112
+	.globl	inst_call
+	.type	inst_call, @object
+	.size	inst_call, 3
+inst_call:
+	.byte	6
+	.byte	-1
+	.byte	-1
+	.globl	inst_bcall
+	.type	inst_bcall, @object
+	.size	inst_bcall, 3
+inst_bcall:
+	.byte	5
+	.byte	-1
+	.byte	-1
+	.globl	inst_bra
+	.type	inst_bra, @object
+	.size	inst_bra, 3
+inst_bra:
+	.byte	2
+	.byte	-1
+	.byte	-2
+	.globl	inst_bras
+	.type	inst_bras, @object
+	.size	inst_bras, 2
+inst_bras:
+	.byte	1
+	.byte	-2
+	.globl	inst_nop
+	.bss
+	.type	inst_nop, @object
+	.size	inst_nop, 1
+inst_nop:
+	.zero	1
+	.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.10) 5.4.0 20160609"
+	.section	.note.GNU-stack,"",@progbits
