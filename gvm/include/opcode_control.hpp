@@ -1,6 +1,6 @@
 #if defined(OS25D_GVM_OPCODE_DEFINE)
 
-  // ENUMERATION
+  // ENUMERATION ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // No Operation
   _NOP,
@@ -69,7 +69,6 @@
   // Float Branch if Almost Equal  (16-bit offset)
   _FBEQ_RR,
   _FBEQ_RI,
-  _FBEQ_IR,
   _FBEQ_II,
 
   // Float Branch if Greater or Equal  (16-bit offset)
@@ -94,7 +93,8 @@
 
 #elif defined(OS25D_GVM_OPCODE_MACRO)
 
-  // CODE MACROS
+  // CODE MACROS ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
   #define nop      _OP(NOP),
   #define bras(jo) _OP(BRAS), _D8(jo),
   #define bra(jo)  _OP(BRA), _D16(jo),
@@ -141,48 +141,47 @@
   #define beq_rr(sr,dr,jo)       _OP(BEQ_RR), _SD(sr, dr), _D16(jo),
   #define beq_ri(sr,dr,do,jo)    _OP(BEQ_RI), _SD(sr, dr), _D8(do), _D16(jo),
   #define beq_ii(sr,so,dr,do,jo) _OP(BEQ_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
-/*
+
   // Integer Branch if Greater or Equal  (16-bit offset)
-  _BGE_RR,
-  _BGE_RI,
-  _BGE_IR,
-  _BGE_II,
+  #define bge_rr(sr,dr,jo)       _OP(BGE_RR), _SD(sr, dr), _D16(jo),
+  #define bge_ri(sr,dr,do,jo)    _OP(BGE_RI), _SD(sr, dr), _D8(do), _D16(jo),
+  #define bge_ir(sr,so,dr,jo)    _OP(BGE_IR), _SD(sr, dr), _D8(so), _D16(jo),
+  #define bge_ii(sr,so,dr,do,jo) _OP(BGE_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
 
   // Integer Branch if Greater  (16-bit offset)
-  _BGT_RR,
-  _BGT_RI,
-  _BGT_IR,
-  _BGT_II,
+  #define bgt_rr(sr,dr,jo)       _OP(BGT_RR), _SD(sr, dr), _D16(jo),
+  #define bgt_ri(sr,dr,do,jo)    _OP(BGT_RI), _SD(sr, dr), _D8(do), _D16(jo),
+  #define bgt_ir(sr,so,dr,jo)    _OP(BGT_IR), _SD(sr, dr), _D8(so), _D16(jo),
+  #define bgt_ii(sr,so,dr,do,jo) _OP(BGT_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
 
   // Float Branch if Almost Equal  (16-bit offset)
-  _FBEQ_RR,
-  _FBEQ_RI,
-  _FBEQ_IR,
-  _FBEQ_II,
+  #define fbeq_rr(sr,dr,jo)       _OP(FBEQ_RR), _SD(sr, dr), _D16(jo),
+  #define fbeq_ri(sr,dr,do,jo)    _OP(FBEQ_RI), _SD(sr, dr), _D8(do), _D16(jo),
+  #define fbeq_ii(sr,so,dr,do,jo) _OP(FBEQ_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
 
   // Float Branch if Greater or Equal  (16-bit offset)
-  _FBGE_RR,
-  _FBGE_RI,
-  _FBGE_IR,
-  _FBGE_II,
+  #define fbge_rr(sr,dr,jo)       _OP(FBGE_RR), _SD(sr, dr), _D16(jo),
+  #define fbge_ri(sr,dr,do,jo)    _OP(FBGE_RI), _SD(sr, dr), _D8(do), _D16(jo),
+  #define fbge_ir(sr,so,dr,jo)    _OP(FBGE_IR), _SD(sr, dr), _D8(so), _D16(jo),
+  #define fbge_ii(sr,so,dr,do,jo) _OP(FBGE_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
 
   // Float Branch if Greater  (16-bit offset)
-  _FBGT_RR,
-  _FBGT_RI,
-  _FBGT_IR,
-  _FBGT_II,
+  #define fbgt_rr(sr,dr,jo)       _OP(FBGT_RR), _SD(sr, dr), _D16(jo),
+  #define fbgt_ri(sr,dr,do,jo)    _OP(FBGT_RI), _SD(sr, dr), _D8(do), _D16(jo),
+  #define fbgt_ir(sr,so,dr,jo)    _OP(FBGT_IR), _SD(sr, dr), _D8(so), _D16(jo),
+  #define fbgt_ii(sr,so,dr,do,jo) _OP(FBGT_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
 
   // Vec3 Branch if equal
-  _VBEQ_II,
-  _VBEQ_IA,
+  #define vbeq_ii(sr,so,dr,do,jo) _OP(VBEQ_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define vbeq_ia(sr,so,jo)       _OP(VBEQ_IA), _S(sr), _D8(so), _D16(jo),
 
   // Vec3 Branch if not equal
-  _VBNE_II,
-  _VBNE_IA,
-*/
+  #define vbne_ii(sr,so,dr,do,jo) _OP(VBNE_II), _SD(sr, dr), _D8(so), _D8(do), _D16(jo),
+  #define vbne_ia(sr,so,jo)       _OP(VBNE_II), _S(sr), _D8(so), _D16(jo),
+
 #elif defined(OS25D_GVM_OPCODE_HANDLER)
 
-  // HANDLER CODE
+  // HANDLER CODE //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // No Operation
   IS(NOP) {
@@ -588,21 +587,6 @@
     NEXT;
   }
 
-  // Branch on floating point indirect to register equality within epsilon
-  IS(FBEQ_IR) {
-    // [opcode:8] [src:4 dst:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
-    tmp1 = *pc++;
-    float32 diff = reg[src].pf[tmp1] - reg[dst].f;
-    if (diff >= -FLT_EPSILON && diff <= FLT_EPSILON) {
-      tmp2 = *pc++;
-      uint16 offset = ((uint16)tmp2) << 8 | *pc;
-      pc += (int16)offset;
-    } else {
-      pc += 2;
-    }
-    NEXT;
-  }
-
   // Branch on floating point indirect to indirect equality within epsilon
   IS(FBEQ_II) {
     // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
@@ -748,6 +732,7 @@
 
   // Vector3 branch if vector and accumulator equal
   IS(VBEQ_IA) {
+    // [opcode:8] [src:4 |0:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
     // todo
     pc += 3;
     NEXT;
@@ -775,6 +760,7 @@
 
   // Vector3 branch if vector and accumulator not equal
   IS(VBNE_IA) {
+    // [opcode:8] [src:4 |0:4] [src_index:8] [signed_offset_msb:8] [signed_offset_lsb:8]
     // todo
     pc += 3;
     NEXT;
