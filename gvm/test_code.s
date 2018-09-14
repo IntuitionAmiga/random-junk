@@ -1,6 +1,152 @@
 	.file	"test_code.cpp"
-	.globl	inst_vbne_ia
+	.globl	inst_vmve_ai
 	.data
+	.type	inst_vmve_ai, @object
+	.size	inst_vmve_ai, 3
+inst_vmve_ai:
+	.byte	63
+	.byte	8
+	.byte	2
+	.globl	inst_vmve_ia
+	.type	inst_vmve_ia, @object
+	.size	inst_vmve_ia, 3
+inst_vmve_ia:
+	.byte	62
+	.byte	112
+	.byte	1
+	.globl	inst_vmve_ii
+	.align 4
+	.type	inst_vmve_ii, @object
+	.size	inst_vmve_ii, 4
+inst_vmve_ii:
+	.byte	61
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	inst_vspl_ia
+	.type	inst_vspl_ia, @object
+	.size	inst_vspl_ia, 3
+inst_vspl_ia:
+	.byte	60
+	.byte	112
+	.byte	1
+	.globl	inst_vspl_ra
+	.type	inst_vspl_ra, @object
+	.size	inst_vspl_ra, 2
+inst_vspl_ra:
+	.byte	59
+	.byte	112
+	.globl	inst_vspl_la
+	.type	inst_vspl_la, @object
+	.size	inst_vspl_la, 2
+inst_vspl_la:
+	.byte	58
+	.byte	48
+	.globl	inst_vspl_ii
+	.align 4
+	.type	inst_vspl_ii, @object
+	.size	inst_vspl_ii, 4
+inst_vspl_ii:
+	.byte	57
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	inst_vspl_ri
+	.type	inst_vspl_ri, @object
+	.size	inst_vspl_ri, 3
+inst_vspl_ri:
+	.byte	56
+	.byte	120
+	.byte	2
+	.globl	inst_vspl_li
+	.type	inst_vspl_li, @object
+	.size	inst_vspl_li, 3
+inst_vspl_li:
+	.byte	55
+	.byte	56
+	.byte	2
+	.globl	inst_fsf
+	.type	inst_fsf, @object
+	.size	inst_fsf, 3
+inst_fsf:
+	.byte	54
+	.byte	8
+	.byte	-16
+	.globl	inst_asf
+	.type	inst_asf, @object
+	.size	inst_asf, 3
+inst_asf:
+	.byte	53
+	.byte	8
+	.byte	-16
+	.globl	inst_popr
+	.type	inst_popr, @object
+	.size	inst_popr, 2
+inst_popr:
+	.byte	52
+	.byte	120
+	.globl	inst_pushr
+	.type	inst_pushr, @object
+	.size	inst_pushr, 2
+inst_pushr:
+	.byte	51
+	.byte	120
+	.globl	inst_move_mi
+	.type	inst_move_mi, @object
+	.size	inst_move_mi, 3
+inst_move_mi:
+	.byte	50
+	.byte	8
+	.byte	2
+	.globl	inst_move_mr
+	.type	inst_move_mr, @object
+	.size	inst_move_mr, 2
+inst_move_mr:
+	.byte	49
+	.byte	8
+	.globl	inst_move_ii
+	.align 4
+	.type	inst_move_ii, @object
+	.size	inst_move_ii, 4
+inst_move_ii:
+	.byte	48
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	inst_move_ir
+	.type	inst_move_ir, @object
+	.size	inst_move_ir, 3
+inst_move_ir:
+	.byte	47
+	.byte	120
+	.byte	1
+	.globl	inst_move_ri
+	.type	inst_move_ri, @object
+	.size	inst_move_ri, 3
+inst_move_ri:
+	.byte	46
+	.byte	120
+	.byte	2
+	.globl	inst_move_rr
+	.type	inst_move_rr, @object
+	.size	inst_move_rr, 2
+inst_move_rr:
+	.byte	45
+	.byte	120
+	.globl	inst_move_li
+	.type	inst_move_li, @object
+	.size	inst_move_li, 3
+inst_move_li:
+	.byte	44
+	.byte	56
+	.byte	2
+	.globl	inst_move_lr
+	.type	inst_move_lr, @object
+	.size	inst_move_lr, 2
+inst_move_lr:
+	.byte	43
+	.byte	56
+	.globl	inst_vbne_ia
 	.align 4
 	.type	inst_vbne_ia, @object
 	.size	inst_vbne_ia, 5

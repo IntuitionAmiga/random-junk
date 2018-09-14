@@ -19,7 +19,6 @@ using namespace GVM;
 // Symbol ID shall always be 0xFFFF (-1)
 
 
-
 uint8 inst_nop[]     = { nop };
 uint8 inst_bras[]    = { bras(-2) };
 uint8 inst_bra[]     = { bra(-2) };
@@ -62,4 +61,41 @@ uint8 inst_vbeq_ia[] = { vbeq_ia(r7, 1, -2) };
 uint8 inst_vbne_ii[] = { vbne_ii(r7, 1, r8, 2, -2) };
 uint8 inst_vbne_ia[] = { vbne_ia(r7, 1, -2) };
 
+uint8 inst_move_lr[] = { move_lr(3, r8) };
+uint8 inst_move_li[] = { move_li(3, r8, 2) };
+
+// Float/Integer Move
+uint8 inst_move_rr[] = { move_rr(r7, r8) };
+
+uint8 inst_move_ri[] = { move_ri(r7, r8, 2) };
+uint8 inst_move_ir[] = { move_ir(r7, 1, r8) };
+uint8 inst_move_ii[] = { move_ii(r7, 1, r8, 2) };
+uint8 inst_move_mr[] = { move_mr(r8) };
+uint8 inst_move_mi[] = { move_mi(r8, 2) };
+
+// Push registers to stack (range)
+uint8 inst_pushr[]   = { pushr(r7, r8) };
+
+// Pop registers from stack (range)
+uint8 inst_popr[]    = { popr(r7, r8) };
+
+// Allocate Stack Storage
+uint8 inst_asf[]     = { asf(r8, 240) };
+
+// Free Stack Storage
+uint8 inst_fsf[]     = { fsf(r8, 240) };
+
+// Vec3 Splat
+uint8 inst_vspl_li[] = { vspl_li(3, r8, 2) };
+uint8 inst_vspl_ri[] = { vspl_ri(r7, r8, 2) };
+uint8 inst_vspl_ii[] = { vspl_ii(r7, 1, r8, 2) };
+uint8 inst_vspl_la[] = { vspl_la(3) };
+uint8 inst_vspl_ra[] = { vspl_ra(r7) };
+uint8 inst_vspl_ia[] = { vspl_ia(r7, 1) };
+
+
+// Vec3 Move
+uint8 inst_vmve_ii[] = { vmve_ii(r7, 1, r8, 2) };
+uint8 inst_vmve_ia[] = { vmve_ia(r7, 1) };
+uint8 inst_vmve_ai[] = { vmve_ai(r8, 2) };
 
