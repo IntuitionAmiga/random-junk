@@ -1,6 +1,274 @@
 	.file	"test_code.cpp"
-	.globl	op_vmve_ai
+	.globl	op_fneg_ii
 	.data
+	.align 4
+	.type	op_fneg_ii, @object
+	.size	op_fneg_ii, 4
+op_fneg_ii:
+	.byte	101
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fneg_ir
+	.type	op_fneg_ir, @object
+	.size	op_fneg_ir, 3
+op_fneg_ir:
+	.byte	100
+	.byte	120
+	.byte	1
+	.globl	op_fneg_ri
+	.type	op_fneg_ri, @object
+	.size	op_fneg_ri, 3
+op_fneg_ri:
+	.byte	99
+	.byte	120
+	.byte	2
+	.globl	op_fneg_rr
+	.type	op_fneg_rr, @object
+	.size	op_fneg_rr, 2
+op_fneg_rr:
+	.byte	98
+	.byte	120
+	.globl	op_mod_ii
+	.align 4
+	.type	op_mod_ii, @object
+	.size	op_mod_ii, 4
+op_mod_ii:
+	.byte	97
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_mod_ir
+	.type	op_mod_ir, @object
+	.size	op_mod_ir, 3
+op_mod_ir:
+	.byte	96
+	.byte	120
+	.byte	1
+	.globl	op_mod_ri
+	.type	op_mod_ri, @object
+	.size	op_mod_ri, 3
+op_mod_ri:
+	.byte	95
+	.byte	120
+	.byte	2
+	.globl	op_mod_rr
+	.type	op_mod_rr, @object
+	.size	op_mod_rr, 2
+op_mod_rr:
+	.byte	94
+	.byte	120
+	.globl	op_mod_li
+	.type	op_mod_li, @object
+	.size	op_mod_li, 3
+op_mod_li:
+	.byte	93
+	.byte	56
+	.byte	2
+	.globl	op_mod_lr
+	.type	op_mod_lr, @object
+	.size	op_mod_lr, 2
+op_mod_lr:
+	.byte	92
+	.byte	56
+	.globl	op_div_ii
+	.align 4
+	.type	op_div_ii, @object
+	.size	op_div_ii, 4
+op_div_ii:
+	.byte	91
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_div_ir
+	.type	op_div_ir, @object
+	.size	op_div_ir, 3
+op_div_ir:
+	.byte	90
+	.byte	120
+	.byte	1
+	.globl	op_div_ri
+	.type	op_div_ri, @object
+	.size	op_div_ri, 3
+op_div_ri:
+	.byte	89
+	.byte	120
+	.byte	2
+	.globl	op_div_rr
+	.type	op_div_rr, @object
+	.size	op_div_rr, 2
+op_div_rr:
+	.byte	88
+	.byte	120
+	.globl	op_div_li
+	.type	op_div_li, @object
+	.size	op_div_li, 3
+op_div_li:
+	.byte	87
+	.byte	56
+	.byte	2
+	.globl	op_div_lr
+	.type	op_div_lr, @object
+	.size	op_div_lr, 2
+op_div_lr:
+	.byte	86
+	.byte	56
+	.globl	op_mul_ii
+	.align 4
+	.type	op_mul_ii, @object
+	.size	op_mul_ii, 4
+op_mul_ii:
+	.byte	85
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_mul_ir
+	.type	op_mul_ir, @object
+	.size	op_mul_ir, 3
+op_mul_ir:
+	.byte	84
+	.byte	120
+	.byte	1
+	.globl	op_mul_ri
+	.type	op_mul_ri, @object
+	.size	op_mul_ri, 3
+op_mul_ri:
+	.byte	83
+	.byte	120
+	.byte	2
+	.globl	op_mul_rr
+	.type	op_mul_rr, @object
+	.size	op_mul_rr, 2
+op_mul_rr:
+	.byte	82
+	.byte	120
+	.globl	op_mul_li
+	.type	op_mul_li, @object
+	.size	op_mul_li, 3
+op_mul_li:
+	.byte	81
+	.byte	56
+	.byte	2
+	.globl	op_mul_lr
+	.type	op_mul_lr, @object
+	.size	op_mul_lr, 2
+op_mul_lr:
+	.byte	80
+	.byte	56
+	.globl	op_sub_ii
+	.align 4
+	.type	op_sub_ii, @object
+	.size	op_sub_ii, 4
+op_sub_ii:
+	.byte	79
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_sub_ir
+	.type	op_sub_ir, @object
+	.size	op_sub_ir, 3
+op_sub_ir:
+	.byte	78
+	.byte	120
+	.byte	1
+	.globl	op_sub_ri
+	.type	op_sub_ri, @object
+	.size	op_sub_ri, 3
+op_sub_ri:
+	.byte	77
+	.byte	120
+	.byte	2
+	.globl	op_sub_rr
+	.type	op_sub_rr, @object
+	.size	op_sub_rr, 2
+op_sub_rr:
+	.byte	76
+	.byte	120
+	.globl	op_sub_li
+	.type	op_sub_li, @object
+	.size	op_sub_li, 3
+op_sub_li:
+	.byte	75
+	.byte	56
+	.byte	2
+	.globl	op_sub_lr
+	.type	op_sub_lr, @object
+	.size	op_sub_lr, 2
+op_sub_lr:
+	.byte	74
+	.byte	56
+	.globl	op_add_ii
+	.align 4
+	.type	op_add_ii, @object
+	.size	op_add_ii, 4
+op_add_ii:
+	.byte	73
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_add_ir
+	.type	op_add_ir, @object
+	.size	op_add_ir, 3
+op_add_ir:
+	.byte	72
+	.byte	120
+	.byte	1
+	.globl	op_add_ri
+	.type	op_add_ri, @object
+	.size	op_add_ri, 3
+op_add_ri:
+	.byte	71
+	.byte	120
+	.byte	2
+	.globl	op_add_rr
+	.type	op_add_rr, @object
+	.size	op_add_rr, 2
+op_add_rr:
+	.byte	70
+	.byte	120
+	.globl	op_add_li
+	.type	op_add_li, @object
+	.size	op_add_li, 3
+op_add_li:
+	.byte	69
+	.byte	56
+	.byte	2
+	.globl	op_add_lr
+	.type	op_add_lr, @object
+	.size	op_add_lr, 2
+op_add_lr:
+	.byte	68
+	.byte	56
+	.globl	op_neg_ii
+	.align 4
+	.type	op_neg_ii, @object
+	.size	op_neg_ii, 4
+op_neg_ii:
+	.byte	67
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_neg_ir
+	.type	op_neg_ir, @object
+	.size	op_neg_ir, 3
+op_neg_ir:
+	.byte	66
+	.byte	120
+	.byte	1
+	.globl	op_neg_ri
+	.type	op_neg_ri, @object
+	.size	op_neg_ri, 3
+op_neg_ri:
+	.byte	65
+	.byte	120
+	.byte	2
+	.globl	op_neg_rr
+	.type	op_neg_rr, @object
+	.size	op_neg_rr, 2
+op_neg_rr:
+	.byte	64
+	.byte	120
+	.globl	op_vmve_ai
 	.type	op_vmve_ai, @object
 	.size	op_vmve_ai, 3
 op_vmve_ai:
