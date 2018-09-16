@@ -114,4 +114,32 @@ uint8 op_div_ri[]   = { div_ri(r7, r8, 2)    };
 uint8 op_div_ir[]   = { div_ir(r7, 1, r8)    };
 uint8 op_div_ii[]   = { div_ii(r7, 1, r8, 2) };
 
+uint8 op_mod_lr[]   = { mod_lr(3, r8)        };
+uint8 op_mod_li[]   = { mod_li(3, r8, 2)     };
+uint8 op_mod_rr[]   = { mod_rr(r7, r8)       };
+uint8 op_mod_ri[]   = { mod_ri(r7, r8, 2)    };
+uint8 op_mod_ir[]   = { mod_ir(r7, 1, r8)    };
+uint8 op_mod_ii[]   = { mod_ii(r7, 1, r8, 2) };
+
+uint8 op_fneg_rr[]  = { fneg_rr(r7, r8)       };
+uint8 op_fneg_ri[]  = { fneg_ri(r7, r8, 2)    };
+uint8 op_fneg_ir[]  = { fneg_ir(r7, 1, r8)    };
+uint8 op_fneg_ii[]  = { fneg_ii(r7, 1, r8, 2) };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
