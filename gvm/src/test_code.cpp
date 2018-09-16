@@ -99,3 +99,19 @@ uint8 op_sub_rr[]   = { sub_rr(r7, r8)       };
 uint8 op_sub_ri[]   = { sub_ri(r7, r8, 2)    };
 uint8 op_sub_ir[]   = { sub_ir(r7, 1, r8)    };
 uint8 op_sub_ii[]   = { sub_ii(r7, 1, r8, 2) };
+
+uint8 op_mul_lr[]   = { mul_lr(3, r8)       };
+uint8 op_mul_li[]   = { mul_li(3, r8, 2)    };
+uint8 op_mul_rr[]   = { mul_rr(r7, r8)       };
+uint8 op_mul_ri[]   = { mul_ri(r7, r8, 2)    };
+uint8 op_mul_ir[]   = { mul_ir(r7, 1, r8)    };
+uint8 op_mul_ii[]   = { mul_ii(r7, 1, r8, 2) };
+
+uint8 op_div_lr[]   = { div_lr(3, r8)        };
+uint8 op_div_li[]   = { div_li(3, r8, 2)     };
+uint8 op_div_rr[]   = { div_rr(r7, r8)       };
+uint8 op_div_ri[]   = { div_ri(r7, r8, 2)    };
+uint8 op_div_ir[]   = { div_ir(r7, 1, r8)    };
+uint8 op_div_ii[]   = { div_ii(r7, 1, r8, 2) };
+
+
