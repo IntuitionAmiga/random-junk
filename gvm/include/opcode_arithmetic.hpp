@@ -108,6 +108,13 @@
   _FTAN_IR,
   _FTAN_II,
 
+  // Vec3 negate (todo)
+  _VNEG_I,  // (vd) = -(vd)
+  _VNEG_II, // (vd) = -(vs)
+  _VNEG_IA, //  va  = -(vs)
+  _VNEG_AI, // (vd) =  -va
+  _VNEG_A,  //  va  =  -va
+
   // Vec3 scale by float
   _VSCL_RI,  // (vd) *=  rs
   _VSCL_II,  // (vd) *= (rs)
@@ -166,14 +173,14 @@
   #define neg_ir(rs,so,rd)       _OP(NEG_IR), _SD(rs,rd), _D8(so),
   #define neg_ii(rs,so,rd,do)    _OP(NEG_II), _SD(rs,rd), _D8(so), _D8(do),
   #define add_lr(sl,rd)          _OP(ADD_LR), _SD(sl,rd),
-  #define add_li(sl,rd,do)       _OP(ADD_LI), _SD(rl,rd), _D8(do),
+  #define add_li(sl,rd,do)       _OP(ADD_LI), _SD(sl,rd), _D8(do),
   #define add_rr(rs,rd)          _OP(ADD_RR), _SD(rs,rd),
   #define add_ri(rs,rd,do)       _OP(ADD_RI), _SD(rs,rd), _D8(do),
   #define add_ir(rs,so,rd)       _OP(ADD_IR), _SD(rs,rd), _D8(so),
   #define add_ii(rs,so,rd,do)    _OP(ADD_II), _SD(rs,rd), _D8(so), _D8(do),
+  #define sub_lr(sl,rd)          _OP(SUB_LR), _SD(sl,rd),
   #define sub_li(sl,rd,do)       _OP(SUB_LI), _SD(sl,rd), _D8(do),
   #define sub_rr(rs,rd)          _OP(SUB_RR), _SD(rs,rd),
-  #define sub_lr(sl,rd)          _OP(SUB_LR), _SD(sl,rd),
   #define sub_ri(rs,rd,do)       _OP(SUB_RI), _SD(rs,rd), _D8(do),
   #define sub_ir(rs,so,rd)       _OP(SUB_IR), _SD(rs,rd), _D8(so),
   #define sub_ii(rs,so,rd,do)    _OP(SUB_II), _SD(rs,rd), _D8(so), _D8(do),
@@ -235,6 +242,7 @@
   #define ftan_ri(rs,rd,do)      _OP(FTAN_RI), _SD(rs,rd), _D8(do),
   #define ftan_ir(rs,so,rd)      _OP(FTAN_IR), _SD(rs,rd), _D8(so),
   #define ftan_ii(rs,so,rd,do)   _OP(FTAN_II), _SD(rs,rd), _D8(so), _D8(do),
+
   #define vscl_ri(rs,rd,do)      _OP(VSCL_RI), _SD(rs,rd), _D8(do),
   #define vscl_ii(rs,so,rd,do)   _OP(VSCL_II), _SD(rs,rd), _D8(so), _D8(do),
   #define vscl_mi(rd,do)         _OP(VSCL_MI), _D(rd), _D8(do),
@@ -907,6 +915,60 @@
     tmp1 = *pc++;
     tmp2 = *pc++;
     reg[dst].pf[tmp2] = std::tan(reg[src].pf[tmp1]);
+    NEXT;
+  }
+
+  // Vec3 negate
+  IS(VNEG_I) {  // (vd) = -(vd)
+    // [opcode:8] [0:4 dst:4] [dst_index:8]
+    tmp1 = *pc++;
+    float32* vd = &reg[dst].pf[tmp1];
+    vd[0] = -vd[0];
+    vd[1] = -vd[1];
+    vd[2] = -vd[2];
+    NEXT;
+  }
+
+  IS(VNEG_II) { // (vd) = -(vs)
+    // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
+    tmp1 = *pc++;
+    tmp2 = *pc++;
+    float32* vs = &reg[src].pf[tmp1];
+    float32* vd = &reg[dst].pf[tmp2];
+    vd[0] = -vs[0];
+    vd[1] = -vs[1];
+    vd[2] = -vs[2];
+    NEXT;
+  }
+
+  IS(VNEG_IA) { //  va  = -(vs)
+    // [opcode:8] [src:4 | 0:4] [src_index:8]
+    tmp1        = *pc++;
+    float32* vs = &reg[src].pf[tmp1];
+    vacc[0] = -vs[0];
+    vacc[1] = -vs[1];
+    vacc[2] = -vs[2];
+    NEXT;
+  }
+
+  IS(VNEG_AI) { // (vd) =  -va
+    // [opcode:8] [0:4 | dst:4] [dst_index:8]
+    tmp1        = *pc++;
+    float32* vd = &reg[dst].pf[tmp1];
+    vd[0] = -vacc[0];
+    vd[1] = -vacc[1];
+    vd[2] = -vacc[2];
+    NEXT;
+  }
+
+  IS(VNEG_A) {  //  va  =  -va
+    // [opcode:8]
+    vacc[0] = -vacc[0];
+    vacc[1] = -vacc[1];
+    vacc[2] = -vacc[2];
+
+    // No operands, back up a byte
+    --pc;
     NEXT;
   }
 

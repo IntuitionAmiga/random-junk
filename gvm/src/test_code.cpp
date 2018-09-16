@@ -59,41 +59,43 @@ uint8 op_vbeq_ii[] = { vbeq_ii(r7, 1, r8, 2, -2) };
 uint8 op_vbeq_ia[] = { vbeq_ia(r7, 1, -2) };
 uint8 op_vbne_ii[] = { vbne_ii(r7, 1, r8, 2, -2) };
 uint8 op_vbne_ia[] = { vbne_ia(r7, 1, -2) };
-
 uint8 op_move_lr[] = { move_lr(3, r8) };
 uint8 op_move_li[] = { move_li(3, r8, 2) };
-
-// Float/Integer Move
 uint8 op_move_rr[] = { move_rr(r7, r8) };
-
 uint8 op_move_ri[] = { move_ri(r7, r8, 2) };
 uint8 op_move_ir[] = { move_ir(r7, 1, r8) };
 uint8 op_move_ii[] = { move_ii(r7, 1, r8, 2) };
 uint8 op_move_mr[] = { move_mr(r8) };
 uint8 op_move_mi[] = { move_mi(r8, 2) };
-
-// Push registers to stack (range)
 uint8 op_pushr[]   = { pushr(r7, r8) };
-
-// Pop registers from stack (range)
 uint8 op_popr[]    = { popr(r7, r8) };
-
-// Allocate Stack Storage
 uint8 op_asf[]     = { asf(r8, 240) };
-
-// Free Stack Storage
 uint8 op_fsf[]     = { fsf(r8, 240) };
-
-// Vec3 Splat
 uint8 op_vspl_li[] = { vspl_li(3, r8, 2) };
 uint8 op_vspl_ri[] = { vspl_ri(r7, r8, 2) };
 uint8 op_vspl_ii[] = { vspl_ii(r7, 1, r8, 2) };
 uint8 op_vspl_la[] = { vspl_la(3) };
 uint8 op_vspl_ra[] = { vspl_ra(r7) };
 uint8 op_vspl_ia[] = { vspl_ia(r7, 1) };
-
-// Vec3 Move
 uint8 op_vmve_ii[] = { vmve_ii(r7, 1, r8, 2) };
 uint8 op_vmve_ia[] = { vmve_ia(r7, 1) };
 uint8 op_vmve_ai[] = { vmve_ai(r8, 2) };
 
+uint8 op_neg_rr[]  = { neg_rr(r7, r8) };
+uint8 op_neg_ri[]  = { neg_ri(r7, r8, 2) };
+uint8 op_neg_ir[]  = { neg_ir(r7, 1, r8) };
+uint8 op_neg_ii[]  = { neg_ii(r7, 1, r8, 2) };
+
+uint8 op_add_lr[]   = { add_lr(3, r8)        };
+uint8 op_add_li[]   = { add_li(3, r8, 2)     };
+uint8 op_add_rr[]   = { add_rr(r7, r8)       };
+uint8 op_add_ri[]   = { add_ri(r7, r8, 2)    };
+uint8 op_add_ir[]   = { add_ir(r7, 1, r8)    };
+uint8 op_add_ii[]   = { add_ii(r7, 1, r8,2)  };
+
+uint8 op_sub_lr[]   = { sub_lr(3, r8)        };
+uint8 op_sub_li[]   = { sub_li(3, r8, 2)     };
+uint8 op_sub_rr[]   = { sub_rr(r7, r8)       };
+uint8 op_sub_ri[]   = { sub_ri(r7, r8, 2)    };
+uint8 op_sub_ir[]   = { sub_ir(r7, 1, r8)    };
+uint8 op_sub_ii[]   = { sub_ii(r7, 1, r8, 2) };
