@@ -126,20 +126,87 @@ uint8 op_fneg_ri[]  = { fneg_ri(r7, r8, 2)    };
 uint8 op_fneg_ir[]  = { fneg_ir(r7, 1, r8)    };
 uint8 op_fneg_ii[]  = { fneg_ii(r7, 1, r8, 2) };
 
+uint8 op_fadd_rr[]  = { fadd_rr(r7, r8)        };
+uint8 op_fadd_ri[]  = { fadd_ri(r7, r8, 2)     };
+uint8 op_fadd_ir[]  = { fadd_ir(r7, 1, r8)     };
+uint8 op_fadd_ii[]  = { fadd_ii(r7, 1, r8, 2)  };
 
+uint8 op_fsub_rr[]  = { fsub_rr(r7, r8)        };
+uint8 op_fsub_ri[]  = { fsub_ri(r7, r8, 2)     };
+uint8 op_fsub_ir[]  = { fsub_ir(r7, 1, r8)     };
+uint8 op_fsub_ii[]  = { fsub_ii(r7, 1, r8, 2)  };
 
+uint8 op_fmul_rr[]  = { fmul_rr(r7, r8)        };
+uint8 op_fmul_ri[]  = { fmul_ri(r7, r8, 2)     };
+uint8 op_fmul_ir[]  = { fmul_ir(r7, 1, r8)     };
+uint8 op_fmul_ii[]  = { fmul_ii(r7, 1, r8, 2)  };
 
+uint8 op_fdiv_rr[]  = { fdiv_rr(r7, r8)        };
+uint8 op_fdiv_ri[]  = { fdiv_ri(r7, r8, 2)     };
+uint8 op_fdiv_ir[]  = { fdiv_ir(r7, 1, r8)     };
+uint8 op_fdiv_ii[]  = { fdiv_ii(r7, 1, r8, 2)  };
 
+uint8 op_fmod_rr[]  = { fmod_rr(r7, r8)        };
+uint8 op_fmod_ri[]  = { fmod_ri(r7, r8, 2)     };
+uint8 op_fmod_ir[]  = { fmod_ir(r7, 1, r8)     };
+uint8 op_fmod_ii[]  = { fmod_ii(r7, 1, r8, 2)  };
 
+uint8 op_fsqrt_rr[]  = { fsqrt_rr(r7, r8)        };
+uint8 op_fsqrt_ri[]  = { fsqrt_ri(r7, r8, 2)     };
+uint8 op_fsqrt_ir[]  = { fsqrt_ir(r7, 1, r8)     };
+uint8 op_fsqrt_ii[]  = { fsqrt_ii(r7, 1, r8, 2)  };
 
+uint8 op_fsin_rr[]  = { fsin_rr(r7, r8)        };
+uint8 op_fsin_ri[]  = { fsin_ri(r7, r8, 2)     };
+uint8 op_fsin_ir[]  = { fsin_ir(r7, 1, r8)     };
+uint8 op_fsin_ii[]  = { fsin_ii(r7, 1, r8, 2)  };
 
+uint8 op_fcos_rr[]  = { fcos_rr(r7, r8)        };
+uint8 op_fcos_ri[]  = { fcos_ri(r7, r8, 2)     };
+uint8 op_fcos_ir[]  = { fcos_ir(r7, 1, r8)     };
+uint8 op_fcos_ii[]  = { fcos_ii(r7, 1, r8, 2)  };
 
+uint8 op_ftan_rr[]  = { ftan_rr(r7, r8)        };
+uint8 op_ftan_ri[]  = { ftan_ri(r7, r8, 2)     };
+uint8 op_ftan_ir[]  = { ftan_ir(r7, 1, r8)     };
+uint8 op_ftan_ii[]  = { ftan_ii(r7, 1, r8, 2)  };
 
+uint8 op_vscl_ri[]  = { vscl_ri(r7, r8, 2)     };
+uint8 op_vscl_ii[]  = { vscl_ii(r7, 1, r8, 2)  };
+uint8 op_vscl_mi[]  = { vscl_mi(r8, 2)         };
+uint8 op_vscl_ra[]  = { vscl_ra(r7)            };
+uint8 op_vscl_ia[]  = { vscl_ia(r7, 1)         };
+uint8 op_vscl_ma[]  = { vscl_ma                };
 
+uint8 op_vadd_ii[]  = { vadd_ii(r7, 1, r8, 2)  };
+uint8 op_vadd_ia[]  = { vadd_ia(r7, 1)         };
+uint8 op_vadd_ai[]  = { vadd_ai(r8, 2)         };
+uint8 op_vadd_iia[] = { vadd_iia(r7, 1, r8, 2) };
+uint8 op_vadd_iai[] = { vadd_iai(r7, 1, r8, 2) };
 
+uint8 op_vsub_ii[] =  { vsub_ii(r7, 1, r8, 2)  };
+uint8 op_vsub_ia[] =  { vsub_ia(r7, 1)         };
+uint8 op_vsub_ai[] =  { vsub_ai(r8, 2)         };
+uint8 op_vsub_iia[] = { vsub_iia(r7, 1, r8, 2) };
+uint8 op_vsub_iai[] = { vsub_iai(r7, 1, r8, 2) };
+uint8 op_vsub_aii[] = { vsub_aii(r7, 1, r8, 2) };
 
+uint8 op_vmul_iia[] = { vmul_iia(r7, 1,r8, 2) };
+uint8 op_vmul_aii[] = { vmul_aii(r7, 1,r8, 2) };
+uint8 op_vmul_iai[] = { vmul_iai(r7, 1,r8, 2) };
 
+uint8 op_vdot_iim[] = { vdot_iim(r7, 1, r8, 2) };
+uint8 op_vdot_air[] = { vdot_air(r7, 1, r8)    };
+uint8 op_vdot_aii[] = { vdot_aii(r7, 1, r8, 2) };
 
+uint8 op_vmag_ir[]  = { vmag_ir(r7,1,r8)     };
+uint8 op_vmag_ii[]  = { vmag_ii(r7,1,r8,2)   };
+uint8 op_vmag_ar[]  = { vmag_ar(r8)          };
+uint8 op_vmag_ai[]  = { vmag_ai(r8,2)        };
+uint8 op_vmag_m[]   = { vmag_m               };
 
-
-
+uint8 op_vnrm_i []  = { vnrm_i(r7, 1)         };
+uint8 op_vnrm_ii[]  = { vnrm_ii(r7, 1, r8, 2) };
+uint8 op_vnrm_ia[]  = { vnrm_ia(r7, 1)        };
+uint8 op_vnrm_ai[]  = { vnrm_ai(r8, 2)        };
+uint8 op_vnrm_a[]   = { vnrm_a                };

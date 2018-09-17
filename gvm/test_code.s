@@ -1,6 +1,520 @@
 	.file	"test_code.cpp"
-	.globl	op_fneg_ii
+	.globl	op_vnrm_a
 	.data
+	.type	op_vnrm_a, @object
+	.size	op_vnrm_a, 1
+op_vnrm_a:
+	.byte	-81
+	.globl	op_vnrm_ai
+	.type	op_vnrm_ai, @object
+	.size	op_vnrm_ai, 3
+op_vnrm_ai:
+	.byte	-82
+	.byte	8
+	.byte	2
+	.globl	op_vnrm_ia
+	.type	op_vnrm_ia, @object
+	.size	op_vnrm_ia, 3
+op_vnrm_ia:
+	.byte	-83
+	.byte	112
+	.byte	1
+	.globl	op_vnrm_ii
+	.align 4
+	.type	op_vnrm_ii, @object
+	.size	op_vnrm_ii, 4
+op_vnrm_ii:
+	.byte	-84
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vnrm_i
+	.type	op_vnrm_i, @object
+	.size	op_vnrm_i, 3
+op_vnrm_i:
+	.byte	-85
+	.byte	7
+	.byte	1
+	.globl	op_vmag_m
+	.type	op_vmag_m, @object
+	.size	op_vmag_m, 1
+op_vmag_m:
+	.byte	-86
+	.globl	op_vmag_ai
+	.type	op_vmag_ai, @object
+	.size	op_vmag_ai, 3
+op_vmag_ai:
+	.byte	-87
+	.byte	8
+	.byte	2
+	.globl	op_vmag_ar
+	.type	op_vmag_ar, @object
+	.size	op_vmag_ar, 2
+op_vmag_ar:
+	.byte	-88
+	.byte	8
+	.globl	op_vmag_ii
+	.align 4
+	.type	op_vmag_ii, @object
+	.size	op_vmag_ii, 4
+op_vmag_ii:
+	.byte	-89
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vmag_ir
+	.type	op_vmag_ir, @object
+	.size	op_vmag_ir, 3
+op_vmag_ir:
+	.byte	-90
+	.byte	120
+	.byte	1
+	.globl	op_vdot_aii
+	.align 4
+	.type	op_vdot_aii, @object
+	.size	op_vdot_aii, 4
+op_vdot_aii:
+	.byte	-91
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vdot_air
+	.type	op_vdot_air, @object
+	.size	op_vdot_air, 3
+op_vdot_air:
+	.byte	-92
+	.byte	120
+	.byte	1
+	.globl	op_vdot_iim
+	.align 4
+	.type	op_vdot_iim, @object
+	.size	op_vdot_iim, 4
+op_vdot_iim:
+	.byte	-93
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vmul_iai
+	.align 4
+	.type	op_vmul_iai, @object
+	.size	op_vmul_iai, 4
+op_vmul_iai:
+	.byte	-94
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vmul_aii
+	.align 4
+	.type	op_vmul_aii, @object
+	.size	op_vmul_aii, 4
+op_vmul_aii:
+	.byte	-95
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vmul_iia
+	.align 4
+	.type	op_vmul_iia, @object
+	.size	op_vmul_iia, 4
+op_vmul_iia:
+	.byte	-96
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vsub_aii
+	.align 4
+	.type	op_vsub_aii, @object
+	.size	op_vsub_aii, 4
+op_vsub_aii:
+	.byte	-97
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vsub_iai
+	.align 4
+	.type	op_vsub_iai, @object
+	.size	op_vsub_iai, 4
+op_vsub_iai:
+	.byte	-98
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vsub_iia
+	.align 4
+	.type	op_vsub_iia, @object
+	.size	op_vsub_iia, 4
+op_vsub_iia:
+	.byte	-99
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vsub_ai
+	.type	op_vsub_ai, @object
+	.size	op_vsub_ai, 3
+op_vsub_ai:
+	.byte	-100
+	.byte	8
+	.byte	2
+	.globl	op_vsub_ia
+	.type	op_vsub_ia, @object
+	.size	op_vsub_ia, 3
+op_vsub_ia:
+	.byte	-101
+	.byte	112
+	.byte	1
+	.globl	op_vsub_ii
+	.align 4
+	.type	op_vsub_ii, @object
+	.size	op_vsub_ii, 4
+op_vsub_ii:
+	.byte	-102
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vadd_iai
+	.align 4
+	.type	op_vadd_iai, @object
+	.size	op_vadd_iai, 4
+op_vadd_iai:
+	.byte	-103
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vadd_iia
+	.align 4
+	.type	op_vadd_iia, @object
+	.size	op_vadd_iia, 4
+op_vadd_iia:
+	.byte	-104
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vadd_ai
+	.type	op_vadd_ai, @object
+	.size	op_vadd_ai, 3
+op_vadd_ai:
+	.byte	-105
+	.byte	8
+	.byte	2
+	.globl	op_vadd_ia
+	.type	op_vadd_ia, @object
+	.size	op_vadd_ia, 3
+op_vadd_ia:
+	.byte	-106
+	.byte	112
+	.byte	1
+	.globl	op_vadd_ii
+	.align 4
+	.type	op_vadd_ii, @object
+	.size	op_vadd_ii, 4
+op_vadd_ii:
+	.byte	-107
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vscl_ma
+	.type	op_vscl_ma, @object
+	.size	op_vscl_ma, 1
+op_vscl_ma:
+	.byte	-108
+	.globl	op_vscl_ia
+	.type	op_vscl_ia, @object
+	.size	op_vscl_ia, 3
+op_vscl_ia:
+	.byte	-109
+	.byte	112
+	.byte	1
+	.globl	op_vscl_ra
+	.type	op_vscl_ra, @object
+	.size	op_vscl_ra, 2
+op_vscl_ra:
+	.byte	-110
+	.byte	112
+	.globl	op_vscl_mi
+	.type	op_vscl_mi, @object
+	.size	op_vscl_mi, 3
+op_vscl_mi:
+	.byte	-111
+	.byte	8
+	.byte	2
+	.globl	op_vscl_ii
+	.align 4
+	.type	op_vscl_ii, @object
+	.size	op_vscl_ii, 4
+op_vscl_ii:
+	.byte	-112
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_vscl_ri
+	.type	op_vscl_ri, @object
+	.size	op_vscl_ri, 3
+op_vscl_ri:
+	.byte	-113
+	.byte	120
+	.byte	2
+	.globl	op_ftan_ii
+	.align 4
+	.type	op_ftan_ii, @object
+	.size	op_ftan_ii, 4
+op_ftan_ii:
+	.byte	-119
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_ftan_ir
+	.type	op_ftan_ir, @object
+	.size	op_ftan_ir, 3
+op_ftan_ir:
+	.byte	-120
+	.byte	120
+	.byte	1
+	.globl	op_ftan_ri
+	.type	op_ftan_ri, @object
+	.size	op_ftan_ri, 3
+op_ftan_ri:
+	.byte	-121
+	.byte	120
+	.byte	2
+	.globl	op_ftan_rr
+	.type	op_ftan_rr, @object
+	.size	op_ftan_rr, 2
+op_ftan_rr:
+	.byte	-122
+	.byte	120
+	.globl	op_fcos_ii
+	.align 4
+	.type	op_fcos_ii, @object
+	.size	op_fcos_ii, 4
+op_fcos_ii:
+	.byte	-123
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fcos_ir
+	.type	op_fcos_ir, @object
+	.size	op_fcos_ir, 3
+op_fcos_ir:
+	.byte	-124
+	.byte	120
+	.byte	1
+	.globl	op_fcos_ri
+	.type	op_fcos_ri, @object
+	.size	op_fcos_ri, 3
+op_fcos_ri:
+	.byte	-125
+	.byte	120
+	.byte	2
+	.globl	op_fcos_rr
+	.type	op_fcos_rr, @object
+	.size	op_fcos_rr, 2
+op_fcos_rr:
+	.byte	-126
+	.byte	120
+	.globl	op_fsin_ii
+	.align 4
+	.type	op_fsin_ii, @object
+	.size	op_fsin_ii, 4
+op_fsin_ii:
+	.byte	-127
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fsin_ir
+	.type	op_fsin_ir, @object
+	.size	op_fsin_ir, 3
+op_fsin_ir:
+	.byte	-128
+	.byte	120
+	.byte	1
+	.globl	op_fsin_ri
+	.type	op_fsin_ri, @object
+	.size	op_fsin_ri, 3
+op_fsin_ri:
+	.byte	127
+	.byte	120
+	.byte	2
+	.globl	op_fsin_rr
+	.type	op_fsin_rr, @object
+	.size	op_fsin_rr, 2
+op_fsin_rr:
+	.byte	126
+	.byte	120
+	.globl	op_fsqrt_ii
+	.align 4
+	.type	op_fsqrt_ii, @object
+	.size	op_fsqrt_ii, 4
+op_fsqrt_ii:
+	.byte	125
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fsqrt_ir
+	.type	op_fsqrt_ir, @object
+	.size	op_fsqrt_ir, 3
+op_fsqrt_ir:
+	.byte	124
+	.byte	120
+	.byte	1
+	.globl	op_fsqrt_ri
+	.type	op_fsqrt_ri, @object
+	.size	op_fsqrt_ri, 3
+op_fsqrt_ri:
+	.byte	123
+	.byte	120
+	.byte	2
+	.globl	op_fsqrt_rr
+	.type	op_fsqrt_rr, @object
+	.size	op_fsqrt_rr, 2
+op_fsqrt_rr:
+	.byte	122
+	.byte	120
+	.globl	op_fmod_ii
+	.align 4
+	.type	op_fmod_ii, @object
+	.size	op_fmod_ii, 4
+op_fmod_ii:
+	.byte	121
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fmod_ir
+	.type	op_fmod_ir, @object
+	.size	op_fmod_ir, 3
+op_fmod_ir:
+	.byte	120
+	.byte	120
+	.byte	1
+	.globl	op_fmod_ri
+	.type	op_fmod_ri, @object
+	.size	op_fmod_ri, 3
+op_fmod_ri:
+	.byte	119
+	.byte	120
+	.byte	2
+	.globl	op_fmod_rr
+	.type	op_fmod_rr, @object
+	.size	op_fmod_rr, 2
+op_fmod_rr:
+	.byte	118
+	.byte	120
+	.globl	op_fdiv_ii
+	.align 4
+	.type	op_fdiv_ii, @object
+	.size	op_fdiv_ii, 4
+op_fdiv_ii:
+	.byte	117
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fdiv_ir
+	.type	op_fdiv_ir, @object
+	.size	op_fdiv_ir, 3
+op_fdiv_ir:
+	.byte	116
+	.byte	120
+	.byte	1
+	.globl	op_fdiv_ri
+	.type	op_fdiv_ri, @object
+	.size	op_fdiv_ri, 3
+op_fdiv_ri:
+	.byte	115
+	.byte	120
+	.byte	2
+	.globl	op_fdiv_rr
+	.type	op_fdiv_rr, @object
+	.size	op_fdiv_rr, 2
+op_fdiv_rr:
+	.byte	114
+	.byte	120
+	.globl	op_fmul_ii
+	.align 4
+	.type	op_fmul_ii, @object
+	.size	op_fmul_ii, 4
+op_fmul_ii:
+	.byte	113
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fmul_ir
+	.type	op_fmul_ir, @object
+	.size	op_fmul_ir, 3
+op_fmul_ir:
+	.byte	112
+	.byte	120
+	.byte	1
+	.globl	op_fmul_ri
+	.type	op_fmul_ri, @object
+	.size	op_fmul_ri, 3
+op_fmul_ri:
+	.byte	111
+	.byte	120
+	.byte	2
+	.globl	op_fmul_rr
+	.type	op_fmul_rr, @object
+	.size	op_fmul_rr, 2
+op_fmul_rr:
+	.byte	110
+	.byte	120
+	.globl	op_fsub_ii
+	.align 4
+	.type	op_fsub_ii, @object
+	.size	op_fsub_ii, 4
+op_fsub_ii:
+	.byte	109
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fsub_ir
+	.type	op_fsub_ir, @object
+	.size	op_fsub_ir, 3
+op_fsub_ir:
+	.byte	108
+	.byte	120
+	.byte	1
+	.globl	op_fsub_ri
+	.type	op_fsub_ri, @object
+	.size	op_fsub_ri, 3
+op_fsub_ri:
+	.byte	107
+	.byte	120
+	.byte	2
+	.globl	op_fsub_rr
+	.type	op_fsub_rr, @object
+	.size	op_fsub_rr, 2
+op_fsub_rr:
+	.byte	106
+	.byte	120
+	.globl	op_fadd_ii
+	.align 4
+	.type	op_fadd_ii, @object
+	.size	op_fadd_ii, 4
+op_fadd_ii:
+	.byte	105
+	.byte	120
+	.byte	1
+	.byte	2
+	.globl	op_fadd_ir
+	.type	op_fadd_ir, @object
+	.size	op_fadd_ir, 3
+op_fadd_ir:
+	.byte	104
+	.byte	120
+	.byte	1
+	.globl	op_fadd_ri
+	.type	op_fadd_ri, @object
+	.size	op_fadd_ri, 3
+op_fadd_ri:
+	.byte	103
+	.byte	120
+	.byte	2
+	.globl	op_fadd_rr
+	.type	op_fadd_rr, @object
+	.size	op_fadd_rr, 2
+op_fadd_rr:
+	.byte	102
+	.byte	120
+	.globl	op_fneg_ii
 	.align 4
 	.type	op_fneg_ii, @object
 	.size	op_fneg_ii, 4
