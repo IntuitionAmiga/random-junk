@@ -49,26 +49,26 @@
   // Logic AND
   #define and_rr(rs,rd)       _OP(AND_RR), _SD(rs, rd),
   #define and_ri(rs,rd,do)    _OP(AND_RI), _SD(rs, rd), _D8(do),
-  #define and_ir(rs,ro,rd)    _OP(AND_IR), _SD(rs, rd), _D8(so),
-  #define and_ii(rs,ro,rd,do) _OP(AND_II), _SD(rs, rd), _D8(so), _D8(do),
+  #define and_ir(rs,so,rd)    _OP(AND_IR), _SD(rs, rd), _D8(so),
+  #define and_ii(rs,so,rd,do) _OP(AND_II), _SD(rs, rd), _D8(so), _D8(do),
 
   // Logic OR
   #define or_rr(rs,rd)        _OP(OR_RR), _SD(rs, rd),
   #define or_ri(rs,rd,do)     _OP(OR_RI), _SD(rs, rd), _D8(do),
   #define or_ir(rs,so,rd)     _OP(OR_IR), _SD(rs, rd), _D8(so),
-  #define or_ii(rs,ro,rd,do)  _OP(OR_II), _SD(rs, rd), _D8(so), _D8(do),
+  #define or_ii(rs,so,rd,do)  _OP(OR_II), _SD(rs, rd), _D8(so), _D8(do),
 
   // Logic XOR
   #define xor_rr(rs,rd)       _OP(XOR_RR), _SD(rs, rd),
   #define xor_ri(rs,rd,do)    _OP(XOR_RI), _SD(rs, rd), _D8(do),
   #define xor_ir(rs,so,rd)    _OP(XOR_IR), _SD(rs, rd), _D8(so),
-  #define xor_ii(rs,ro,rd,do) _OP(XOR_II), _SD(rs, rd), _D8(so), _D8(do),
+  #define xor_ii(rs,so,rd,do) _OP(XOR_II), _SD(rs, rd), _D8(so), _D8(do),
 
   // Logic NOT
   #define not_rr(rs,rd)       _OP(NOT_RR), _SD(rs, rd),
   #define not_ri(rs,rd,do)    _OP(NOT_RI), _SD(rs, rd), _D8(do),
   #define not_ir(rs,so,rd)    _OP(NOT_IR), _SD(rs, rd), _D8(so),
-  #define not_ii(rs,ro,rd,do) _OP(NOT_II), _SD(rs, rd), _D8(so), _D8(do),
+  #define not_ii(rs,so,rd,do) _OP(NOT_II), _SD(rs, rd), _D8(so), _D8(do),
 
   // Logic SHL
   #define lsl_lr(sl,rd)       _OP(LSL_LR), _SD(sl, rd),

@@ -100,10 +100,10 @@
   #define bra(jo)  _OP(BRA), _D16(jo),
 
   // Computed branch (short)
-  //_TJMPS,
+  #define tjmps _OP(TJMPS),
 
   // Computed branch
-  //_TJMP,
+  #define tjmp  _OP(TJMP),
 
   // Branch Call (16-bit offset)
   #define bcall(jo)          _OP(BCALL), _D16(jo),

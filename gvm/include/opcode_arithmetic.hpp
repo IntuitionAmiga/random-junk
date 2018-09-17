@@ -8,7 +8,7 @@
   _NEG_IR, //  rd  = -(rs)
   _NEG_II, // (rd) = -(rs)
 
-  // Integer Add
+  // Integer Addition
   _ADD_LR, //  rd  +=  I
   _ADD_LI, // (rd) +=  I
   _ADD_RR, //  rd  +=  rs
@@ -16,7 +16,7 @@
   _ADD_IR, //  rd  += (rs)
   _ADD_II, // (rd) += (rs)
 
-  // Integer Sub
+  // Integer Subtraction
   _SUB_LR,
   _SUB_LI,
   _SUB_RR,
@@ -24,7 +24,7 @@
   _SUB_IR,
   _SUB_II,
 
-  // Integer Mul
+  // Integer Multiplication
   _MUL_LR,
   _MUL_LI,
   _MUL_RR,
@@ -32,7 +32,7 @@
   _MUL_IR,
   _MUL_II,
 
-  // Integer Div
+  // Integer Division
   _DIV_LR,
   _DIV_LI,
   _DIV_RR,
@@ -40,7 +40,7 @@
   _DIV_IR,
   _DIV_II,
 
-  // Integer Mod
+  // Integer Modulus
   _MOD_LR,
   _MOD_LI,
   _MOD_RR,
@@ -54,31 +54,31 @@
   _FNEG_IR,
   _FNEG_II,
 
-  // Float Add
+  // Float Adddition
   _FADD_RR,
   _FADD_RI,
   _FADD_IR,
   _FADD_II,
 
-  // Float Sub
+  // Float Subtraction
   _FSUB_RR,
   _FSUB_RI,
   _FSUB_IR,
   _FSUB_II,
 
-  // Float Mul
+  // Float Multiplication
   _FMUL_RR,
   _FMUL_RI,
   _FMUL_IR,
   _FMUL_II,
 
-  // Float Div
+  // Float Division
   _FDIV_RR,
   _FDIV_RI,
   _FDIV_IR,
   _FDIV_II,
 
-  // Float Mod
+  // Float Modulus
   _FMOD_RR,
   _FMOD_RI,
   _FMOD_IR,
@@ -155,7 +155,7 @@
   _VMAG_AI, // (rd]) =  |va|
   _VMAG_M,  //  m    =  |va|
 
-  // Vec3 Normalize
+  // Vec3 Normalise
   _VNRM_I,  // (vd) = (vd) / |(vd)|
   _VNRM_II, // (vd) = (vs) / |(vs)|
   _VNRM_IA, //  va  = (vs) / |(vs)|
@@ -172,105 +172,155 @@
   #define neg_ri(rs,rd,do)       _OP(NEG_RI), _SD(rs,rd), _D8(do),
   #define neg_ir(rs,so,rd)       _OP(NEG_IR), _SD(rs,rd), _D8(so),
   #define neg_ii(rs,so,rd,do)    _OP(NEG_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Integer Addition
   #define add_lr(sl,rd)          _OP(ADD_LR), _SD(sl,rd),
   #define add_li(sl,rd,do)       _OP(ADD_LI), _SD(sl,rd), _D8(do),
   #define add_rr(rs,rd)          _OP(ADD_RR), _SD(rs,rd),
   #define add_ri(rs,rd,do)       _OP(ADD_RI), _SD(rs,rd), _D8(do),
   #define add_ir(rs,so,rd)       _OP(ADD_IR), _SD(rs,rd), _D8(so),
   #define add_ii(rs,so,rd,do)    _OP(ADD_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Integer Subtraction
   #define sub_lr(sl,rd)          _OP(SUB_LR), _SD(sl,rd),
   #define sub_li(sl,rd,do)       _OP(SUB_LI), _SD(sl,rd), _D8(do),
   #define sub_rr(rs,rd)          _OP(SUB_RR), _SD(rs,rd),
   #define sub_ri(rs,rd,do)       _OP(SUB_RI), _SD(rs,rd), _D8(do),
   #define sub_ir(rs,so,rd)       _OP(SUB_IR), _SD(rs,rd), _D8(so),
   #define sub_ii(rs,so,rd,do)    _OP(SUB_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Integer Multiplication
   #define mul_lr(sl,rd)          _OP(MUL_LR), _SD(sl,rd),
   #define mul_li(sl,rd,do)       _OP(MUL_LI), _SD(sl,rd), _D8(do),
   #define mul_rr(rs,rd)          _OP(MUL_RR), _SD(rs,rd),
   #define mul_ri(rs,rd,do)       _OP(MUL_RI), _SD(rs,rd), _D8(do),
   #define mul_ir(rs,so,rd)       _OP(MUL_IR), _SD(rs,rd), _D8(so),
   #define mul_ii(rs,so,rd,do)    _OP(MUL_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Integer Division
   #define div_lr(sl,rd)          _OP(DIV_LR), _SD(sl,rd),
   #define div_li(sl,rd,do)       _OP(DIV_LI), _SD(sl,rd), _D8(do),
   #define div_rr(rs,rd)          _OP(DIV_RR), _SD(rs,rd),
   #define div_ri(rs,rd,do)       _OP(DIV_RI), _SD(rs,rd), _D8(do),
   #define div_ir(rs,so,rd)       _OP(DIV_IR), _SD(rs,rd), _D8(so),
   #define div_ii(rs,so,rd,do)    _OP(DIV_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Integer Modulus
   #define mod_lr(sl,rd)          _OP(MOD_LR), _SD(sl,rd),
   #define mod_li(sl,rd,do)       _OP(MOD_LI), _SD(sl,rd), _D8(do),
   #define mod_rr(rs,rd)          _OP(MOD_RR), _SD(rs,rd),
   #define mod_ri(rs,rd,do)       _OP(MOD_RI), _SD(rs,rd), _D8(do),
   #define mod_ir(rs,so,rd)       _OP(MOD_IR), _SD(rs,rd), _D8(so),
   #define mod_ii(rs,so,rd,do)    _OP(MOD_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Negate
   #define fneg_rr(rs,rd)         _OP(FNEG_RR), _SD(rs,rd),
   #define fneg_ri(rs,rd,do)      _OP(FNEG_RI), _SD(rs,rd), _D8(do),
   #define fneg_ir(rs,so,rd)      _OP(FNEG_IR), _SD(rs,rd), _D8(so),
   #define fneg_ii(rs,so,rd,do)   _OP(FNEG_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Adddition
   #define fadd_rr(rs,rd)         _OP(FADD_RR), _SD(rs,rd),
   #define fadd_ri(rs,rd,do)      _OP(FADD_RI), _SD(rs,rd), _D8(do),
   #define fadd_ir(rs,so,rd)      _OP(FADD_IR), _SD(rs,rd), _D8(so),
   #define fadd_ii(rs,so,rd,do)   _OP(FADD_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Subtraction
   #define fsub_rr(rs,rd)         _OP(FSUB_RR), _SD(rs,rd),
   #define fsub_ri(rs,rd,do)      _OP(FSUB_RI), _SD(rs,rd), _D8(do),
   #define fsub_ir(rs,so,rd)      _OP(FSUB_IR), _SD(rs,rd), _D8(so),
   #define fsub_ii(rs,so,rd,do)   _OP(FSUB_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Multiplication
   #define fmul_rr(rs,rd)         _OP(FMUL_RR), _SD(rs,rd),
   #define fmul_ri(rs,rd,do)      _OP(FMUL_RI), _SD(rs,rd), _D8(do),
   #define fmul_ir(rs,so,rd)      _OP(FMUL_IR), _SD(rs,rd), _D8(so),
   #define fmul_ii(rs,so,rd,do)   _OP(FMUL_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Division
   #define fdiv_rr(rs,rd)         _OP(FDIV_RR), _SD(rs,rd),
   #define fdiv_ri(rs,rd,do)      _OP(FDIV_RI), _SD(rs,rd), _D8(do),
   #define fdiv_ir(rs,so,rd)      _OP(FDIV_IR), _SD(rs,rd), _D8(so),
   #define fdiv_ii(rs,so,rd,do)   _OP(FDIV_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Flloat Modulus
   #define fmod_rr(rs,rd)         _OP(FMOD_RR), _SD(rs,rd),
   #define fmod_ir(rs,so,rd)      _OP(FMOD_IR), _SD(rs,rd), _D8(so),
   #define fmod_ri(rs,rd,do)      _OP(FMOD_RI), _SD(rs,rd), _D8(do),
   #define fmod_ii(rs,so,rd,do)   _OP(FMOD_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Square Root
   #define fsqrt_rr(rs,rd)        _OP(FSQRT_RR), _SD(rs,rd),
   #define fsqrt_ri(rs,rd,do)     _OP(FSQRT_RI), _SD(rs,rd), _D8(do),
   #define fsqrt_ir(rs,so,rd)     _OP(FSQRT_IR), _SD(rs,rd), _D8(so),
   #define fsqrt_ii(rs,so,rd,do)  _OP(FSQRT_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Sine
   #define fsin_rr(rs,rd)         _OP(FSIN_RR), _SD(rs,rd),
   #define fsin_ri(rs,rd,do)      _OP(FSIN_RI), _SD(rs,rd), _D8(do),
   #define fsin_ir(rs,so,rd)      _OP(FSIN_IR), _SD(rs,rd), _D8(so),
   #define fsin_ii(rs,so,rd,do)   _OP(FSIN_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Cosine
   #define fcos_rr(rs,rd)         _OP(FCOS_RR), _SD(rs,rd),
   #define fcos_ri(rs,rd,do)      _OP(FCOS_RI), _SD(rs,rd), _D8(do),
   #define fcos_ir(rs,so,rd)      _OP(FCOS_IR), _SD(rs,rd), _D8(so),
   #define fcos_ii(rs,so,rd,do)   _OP(FCOS_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float Tangent
   #define ftan_rr(rs,rd)         _OP(FTAN_RR), _SD(rs,rd),
   #define ftan_ri(rs,rd,do)      _OP(FTAN_RI), _SD(rs,rd), _D8(do),
   #define ftan_ir(rs,so,rd)      _OP(FTAN_IR), _SD(rs,rd), _D8(so),
   #define ftan_ii(rs,so,rd,do)   _OP(FTAN_II), _SD(rs,rd), _D8(so), _D8(do),
 
+  // Vec3 negate
+  #define vneg_i(rd,do)          _OP(VNEG_I),  _D(rd), _D8(do),
+  #define vneg_ii(rs,so,rd,do)   _OP(VNEG_II), _SD(rs,rd), _D8(so), _D8(do),
+  #define vneg_ia(rs,so)         _OP(VNEG_IA), _S(rs), _D8(so),
+  #define vneg_ai(rd,do)         _OP(VNEG_AI), _D(rd), _D8(do),
+  #define vneg_a                 _OP(VNEG_A),
+
+  // Vec3 scale by float
   #define vscl_ri(rs,rd,do)      _OP(VSCL_RI), _SD(rs,rd), _D8(do),
   #define vscl_ii(rs,so,rd,do)   _OP(VSCL_II), _SD(rs,rd), _D8(so), _D8(do),
   #define vscl_mi(rd,do)         _OP(VSCL_MI), _D(rd), _D8(do),
   #define vscl_ra(rs)            _OP(VSCL_RA), _S(rs),
   #define vscl_ia(rs,so)         _OP(VSCL_IA), _S(rs), _D8(so),
   #define vscl_ma                _OP(VSCL_MA),
+
+  // Vec3 Addition
   #define vadd_ii(rs,so,rd,do)   _OP(VADD_II), _SD(rs,rd), _D8(so), _D8(do),
   #define vadd_ia(rs,so)         _OP(VADD_IA), _S(rs), _D8(so),
   #define vadd_ai(rd,do)         _OP(VADD_AI), _D(rd), _D8(do),
   #define vadd_iia(rs,so,rd,do)  _OP(VADD_IIA), _SD(rs,rd), _D8(so), _D8(do),
   #define vadd_iai(rs,so,rd,do)  _OP(VADD_IAI), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Vec3 Subtraction
   #define vsub_ii(rs,so,rd,do)   _OP(VSUB_II),  _SD(rs,rd), _D8(so), _D8(do),
   #define vsub_ia(rs,so)         _OP(VSUB_IA),  _S(rs), _D8(so),
   #define vsub_ai(rd,do)         _OP(VSUB_AI),  _D(rd), _D8(do),
   #define vsub_iia(rs,so,rd,do)  _OP(VSUB_IIA), _SD(rs,rd), _D8(so), _D8(do),
   #define vsub_iai(rs,so,rd,do)  _OP(VSUB_IAI), _SD(rs,rd), _D8(so), _D8(do),
   #define vsub_aii(rs,so,rd,do)  _OP(VSUB_AII), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Vec3 Cross Product
   #define vmul_iia(rs,so,rd,do)  _OP(VMUL_IIA), _SD(rs,rd), _D8(so), _D8(do),
   #define vmul_aii(rs,so,rd,do)  _OP(VMUL_AII), _SD(rs,rd), _D8(so), _D8(do),
   #define vmul_iai(rs,so,rd,do)  _OP(VMUL_IAI), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Vec3 Dot Product
   #define vdot_iim(rs,so,rd,do)  _OP(VDOT_IIM), _SD(rs,rd), _D8(so), _D8(do),
   #define vdot_air(rs,so,rd)     _OP(VDOT_AIR), _SD(rs,rd), _D8(so),
   #define vdot_aii(rs,so,rd,do)  _OP(VDOT_AII), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Vec3 Magnitude
   #define vmag_ir(rs,so,rd)      _OP(VMAG_IR),  _SD(rs,rd), _D8(so),
   #define vmag_ii(rs,so,rd,do)   _OP(VMAG_II),  _SD(rs,rd), _D8(so), _D8(do),
   #define vmag_ar(rd)            _OP(VMAG_AR),  _D(rd),
   #define vmag_ai(rd,do)         _OP(VMAG_AI),  _D(rd), _D8(do),
   #define vmag_m                 _OP(VMAG_M),
+
+  // Vec3 Normalise
   #define vnrm_i(rd,do)          _OP(VNRM_I),   _D(rd), _D8(do),
   #define vnrm_ii(rs,so,rd,do)   _OP(VNRM_II),  _SD(rs,rd), _D8(so), _D8(do),
   #define vnrm_ia(rs,so)         _OP(VNRM_IA),  _S(rs), _D8(so),
