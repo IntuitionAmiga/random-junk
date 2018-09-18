@@ -71,16 +71,16 @@
   #define not_ii(rs,so,rd,do) _OP(NOT_II), _SD(rs, rd), _D8(so), _D8(do),
 
   // Logic SHL
-  #define lsl_lr(sl,rd)       _OP(LSL_LR), _SD(sl, rd),
-  #define lsl_li(sl,rd,do)    _OP(LSL_LI), _SD(sl, rd), _D8(do),
+  #define lsl_lr(sl,rd)       _OP(LSL_LR), _SD(((sl)-1), rd),
+  #define lsl_li(sl,rd,do)    _OP(LSL_LI), _SD(((sl)-1), rd), _D8(do),
   #define lsl_rr(rs,rd)       _OP(LSL_RR), _SD(rs, rd),
   #define lsl_ri(rs,rd,do)    _OP(LSL_RI), _SD(rs, rd), _D8(do),
   #define lsl_ir(rs,so,rd)    _OP(LSL_IR), _SD(rs, rd), _D8(so),
   #define lsl_ii(rs,so,rd,do) _OP(LSL_II), _SD(rs, rd), _D8(so), _D8(do),
 
   // Logic SHR
-  #define lsr_lr(sl,rd)       _OP(LSR_LR), _SD(sl, rd),
-  #define lsr_li(sl,rd,do)    _OP(LSR_LI), _SD(sl, rd), _D8(do),
+  #define lsr_lr(sl,rd)       _OP(LSR_LR), _SD(((sl)-1), rd),
+  #define lsr_li(sl,rd,do)    _OP(LSR_LI), _SD(((sl)-1), rd), _D8(do),
   #define lsr_rr(rs,rd)       _OP(LSR_RR), _SD(rs, rd),
   #define lsr_ri(rs,rd,do)    _OP(LSR_RI), _SD(rs, rd), _D8(do),
   #define lsr_ir(rs,so,rd)    _OP(LSR_IR), _SD(rs, rd), _D8(so),

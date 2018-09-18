@@ -174,40 +174,40 @@
   #define neg_ii(rs,so,rd,do)    _OP(NEG_II), _SD(rs,rd), _D8(so), _D8(do),
 
   // Integer Addition
-  #define add_lr(sl,rd)          _OP(ADD_LR), _SD(sl,rd),
-  #define add_li(sl,rd,do)       _OP(ADD_LI), _SD(sl,rd), _D8(do),
+  #define add_lr(sl,rd)          _OP(ADD_LR), _SD(((sl)-1),rd),
+  #define add_li(sl,rd,do)       _OP(ADD_LI), _SD(((sl)-1),rd), _D8(do),
   #define add_rr(rs,rd)          _OP(ADD_RR), _SD(rs,rd),
   #define add_ri(rs,rd,do)       _OP(ADD_RI), _SD(rs,rd), _D8(do),
   #define add_ir(rs,so,rd)       _OP(ADD_IR), _SD(rs,rd), _D8(so),
   #define add_ii(rs,so,rd,do)    _OP(ADD_II), _SD(rs,rd), _D8(so), _D8(do),
 
   // Integer Subtraction
-  #define sub_lr(sl,rd)          _OP(SUB_LR), _SD(sl,rd),
-  #define sub_li(sl,rd,do)       _OP(SUB_LI), _SD(sl,rd), _D8(do),
+  #define sub_lr(sl,rd)          _OP(SUB_LR), _SD(((sl)-1),rd),
+  #define sub_li(sl,rd,do)       _OP(SUB_LI), _SD(((sl)-1),rd), _D8(do),
   #define sub_rr(rs,rd)          _OP(SUB_RR), _SD(rs,rd),
   #define sub_ri(rs,rd,do)       _OP(SUB_RI), _SD(rs,rd), _D8(do),
   #define sub_ir(rs,so,rd)       _OP(SUB_IR), _SD(rs,rd), _D8(so),
   #define sub_ii(rs,so,rd,do)    _OP(SUB_II), _SD(rs,rd), _D8(so), _D8(do),
 
   // Integer Multiplication
-  #define mul_lr(sl,rd)          _OP(MUL_LR), _SD(sl,rd),
-  #define mul_li(sl,rd,do)       _OP(MUL_LI), _SD(sl,rd), _D8(do),
+  #define mul_lr(sl,rd)          _OP(MUL_LR), _SD(((sl)-2),rd),
+  #define mul_li(sl,rd,do)       _OP(MUL_LI), _SD(((sl)-2),rd), _D8(do),
   #define mul_rr(rs,rd)          _OP(MUL_RR), _SD(rs,rd),
   #define mul_ri(rs,rd,do)       _OP(MUL_RI), _SD(rs,rd), _D8(do),
   #define mul_ir(rs,so,rd)       _OP(MUL_IR), _SD(rs,rd), _D8(so),
   #define mul_ii(rs,so,rd,do)    _OP(MUL_II), _SD(rs,rd), _D8(so), _D8(do),
 
   // Integer Division
-  #define div_lr(sl,rd)          _OP(DIV_LR), _SD(sl,rd),
-  #define div_li(sl,rd,do)       _OP(DIV_LI), _SD(sl,rd), _D8(do),
+  #define div_lr(sl,rd)          _OP(DIV_LR), _SD(((sl)-2),rd),
+  #define div_li(sl,rd,do)       _OP(DIV_LI), _SD(((sl)-2),rd), _D8(do),
   #define div_rr(rs,rd)          _OP(DIV_RR), _SD(rs,rd),
   #define div_ri(rs,rd,do)       _OP(DIV_RI), _SD(rs,rd), _D8(do),
   #define div_ir(rs,so,rd)       _OP(DIV_IR), _SD(rs,rd), _D8(so),
   #define div_ii(rs,so,rd,do)    _OP(DIV_II), _SD(rs,rd), _D8(so), _D8(do),
 
   // Integer Modulus
-  #define mod_lr(sl,rd)          _OP(MOD_LR), _SD(sl,rd),
-  #define mod_li(sl,rd,do)       _OP(MOD_LI), _SD(sl,rd), _D8(do),
+  #define mod_lr(sl,rd)          _OP(MOD_LR), _SD(((sl)-2),rd),
+  #define mod_li(sl,rd,do)       _OP(MOD_LI), _SD(((sl)-2),rd), _D8(do),
   #define mod_rr(rs,rd)          _OP(MOD_RR), _SD(rs,rd),
   #define mod_ri(rs,rd,do)       _OP(MOD_RI), _SD(rs,rd), _D8(do),
   #define mod_ir(rs,so,rd)       _OP(MOD_IR), _SD(rs,rd), _D8(so),
