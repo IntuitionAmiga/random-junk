@@ -23,14 +23,14 @@ Instruction 2
 	code: 0x02 0xFF 0xFE 
 
 Instruction 3
-	vasm: tjmps
-	size: 1
-	code: 0x03 
+	vasm: tjmps r8, 4, -2, -3, -4, -5
+	size: 6
+	code: 0x03 0x28 0xFE 0xFD 0xFC 0xFB 
 
 Instruction 4
-	vasm: tjmp
-	size: 1
-	code: 0x04 
+	vasm: tjmp r8, 4, -2, -3, -4, -5
+	size: 11
+	code: 0x04 0x08 0x02 0xFF 0xFE 0xFF 0xFD 0xFF 0xFC 0xFF 0xFB 
 
 Instruction 5
 	vasm: bcall -1
@@ -350,12 +350,12 @@ Instruction 67
 Instruction 68
 	vasm: add 3, r8
 	size: 2
-	code: 0x44 0x38 
+	code: 0x44 0x28 
 
 Instruction 69
 	vasm: add 3, 2(r8)
 	size: 3
-	code: 0x45 0x38 0x02 
+	code: 0x45 0x28 0x02 
 
 Instruction 70
 	vasm: add r7, r8
@@ -380,12 +380,12 @@ Instruction 73
 Instruction 74
 	vasm: sub 3, r8
 	size: 2
-	code: 0x4A 0x38 
+	code: 0x4A 0x28 
 
 Instruction 75
 	vasm: sub 3, 2(r8)
 	size: 3
-	code: 0x4B 0x38 0x02 
+	code: 0x4B 0x28 0x02 
 
 Instruction 76
 	vasm: sub r7, r8
@@ -410,12 +410,12 @@ Instruction 79
 Instruction 80
 	vasm: mul 3, r8
 	size: 2
-	code: 0x50 0x38 
+	code: 0x50 0x18 
 
 Instruction 81
 	vasm: mul 3, 2(r8)
 	size: 3
-	code: 0x51 0x38 0x02 
+	code: 0x51 0x18 0x02 
 
 Instruction 82
 	vasm: mul r7, r8
@@ -440,12 +440,12 @@ Instruction 85
 Instruction 86
 	vasm: div 3, r8
 	size: 2
-	code: 0x56 0x38 
+	code: 0x56 0x18 
 
 Instruction 87
 	vasm: div 3, 2(r8)
 	size: 3
-	code: 0x57 0x38 0x02 
+	code: 0x57 0x18 0x02 
 
 Instruction 88
 	vasm: div r7, r8
@@ -470,12 +470,12 @@ Instruction 91
 Instruction 92
 	vasm: mod 3, r8
 	size: 2
-	code: 0x5C 0x38 
+	code: 0x5C 0x18 
 
 Instruction 93
 	vasm: mod 3, 2(r8)
 	size: 3
-	code: 0x5D 0x38 0x02 
+	code: 0x5D 0x18 0x02 
 
 Instruction 94
 	vasm: mod r7, r8
@@ -970,12 +970,12 @@ Instruction 191
 Instruction 192
 	vasm: lsl 3, r8
 	size: 2
-	code: 0xC0 0x38 
+	code: 0xC0 0x28 
 
 Instruction 193
 	vasm: lsl 3, 2(r8)
 	size: 3
-	code: 0xC1 0x38 0x02 
+	code: 0xC1 0x28 0x02 
 
 Instruction 194
 	vasm: lsl r7, r8
@@ -1000,12 +1000,12 @@ Instruction 197
 Instruction 198
 	vasm: lsr 3, r8
 	size: 2
-	code: 0xC6 0x38 
+	code: 0xC6 0x28 
 
 Instruction 199
 	vasm: lsr 3, 2(r8)
 	size: 3
-	code: 0xC7 0x38 0x02 
+	code: 0xC7 0x28 0x02 
 
 Instruction 200
 	vasm: lsr r7, r8
