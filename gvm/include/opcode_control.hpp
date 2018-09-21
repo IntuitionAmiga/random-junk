@@ -267,7 +267,7 @@
   IS(CALL) {
     // [opcode:8] [symbol_id_msb:8] [symbol_id_lsb:8]
     uint16 symbol = ((uint16)tmp2) << 8 | *pc++;
-    if (call(symbol)) {
+    if (callSymbol(symbol)) {
       NEXT;
     }
     EXIT;
@@ -276,7 +276,7 @@
   // Function call (16-bit ID in register)
   IS(CALL_R) {
     uint16 symbol = reg[src].w;
-    if (call(symbol)) {
+    if (callSymbol(symbol)) {
       NEXT;
     }
     EXIT;
@@ -286,7 +286,7 @@
   IS(CALL_I) {
     tmp1 = *pc++;
     uint16 symbol = reg[src].pw[tmp1];
-    if (call(symbol)) {
+    if (callSymbol(symbol)) {
       NEXT;
     }
     EXIT;

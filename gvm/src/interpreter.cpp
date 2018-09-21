@@ -10,7 +10,6 @@ using namespace GVM;
 //
 
 #define DISPATCH(o) switch(o)
-//#define IS(o)   case Opcode::_##o: asm("# Opcode::_" #o "\n" : :);
 #define IS(o)   case Opcode::_##o:
 #define NEXT    goto forever
 #define EXIT    goto bailout
@@ -45,7 +44,7 @@ bailout:
   return;
 }
 
-int Interpreter::call(uint16 symbol) {
+int Interpreter::callSymbol(uint16 symbol) {
   if (!symbol || symbol >= codeSymbolCount) {
     status = UNKNOWN_CODE_SYMBOL;
     return 0;

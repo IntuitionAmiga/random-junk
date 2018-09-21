@@ -41,8 +41,7 @@ namespace GVM {
 
       typedef void (*HostCall)(Interpreter* vm);
 
-    //private:
-    public:
+    protected:
       // General Purpose Registers
       Register reg[NUM_REG];
 
@@ -78,8 +77,8 @@ namespace GVM {
     public:
       void execute();
 
-    private:
-      int     call(uint16 symbol);
+    protected:
+      int     callSymbol(uint16 symbol);
   };
 
 };
