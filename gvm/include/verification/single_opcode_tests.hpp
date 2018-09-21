@@ -338,8 +338,6 @@ uint8 op_lsr_ri[] = { lsr_ri(r7,r8,2) _END };
 uint8 op_lsr_ir[] = { lsr_ir(r7,1,r8) _END };
 uint8 op_lsr_ii[] = { lsr_ii(r7,1,r8,2) _END };
 
-
-
 uint8* opcode_tests[] = {
   op_halt,
   op_bras,     op_bra,  op_tjmps,  op_tjmp,
