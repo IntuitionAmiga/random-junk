@@ -995,9 +995,9 @@
     // [opcode:8] [src:4 | 0:4] [src_index:8]
     tmp1        = *pc++;
     float32* vs = &reg[src].pf[tmp1];
-    vacc[0] = -vs[0];
-    vacc[1] = -vs[1];
-    vacc[2] = -vs[2];
+    reg_vs[0] = -vs[0];
+    reg_vs[1] = -vs[1];
+    reg_vs[2] = -vs[2];
     NEXT;
   }
 
@@ -1005,17 +1005,17 @@
     // [opcode:8] [0:4 | dst:4] [dst_index:8]
     tmp1        = *pc++;
     float32* vd = &reg[dst].pf[tmp1];
-    vd[0] = -vacc[0];
-    vd[1] = -vacc[1];
-    vd[2] = -vacc[2];
+    vd[0] = -reg_vs[0];
+    vd[1] = -reg_vs[1];
+    vd[2] = -reg_vs[2];
     NEXT;
   }
 
   IS(VNEG_A) {  //  va  =  -va
     // [opcode:8]
-    vacc[0] = -vacc[0];
-    vacc[1] = -vacc[1];
-    vacc[2] = -vacc[2];
+    reg_vs[0] = -reg_vs[0];
+    reg_vs[1] = -reg_vs[1];
+    reg_vs[2] = -reg_vs[2];
 
     // No operands, back up a byte
     --pc;
@@ -1051,18 +1051,18 @@
     // [opcode:8] [0:4 | dst:4] [dst_index:8]
     tmp1        = *pc++;
     float32* vd = &reg[dst].pf[tmp1];
-    vd[0] *= vacc[3];
-    vd[1] *= vacc[3];
-    vd[2] *= vacc[3];
+    vd[0] *= reg_m;
+    vd[1] *= reg_m;
+    vd[2] *= reg_m;
     NEXT;
   }
 
   // Vector3 accumulator scale by float register
   IS(VSCL_RA) {
     // [opcode:8] [src:4 | 0:4]
-    vacc[0] *= reg[src].f;
-    vacc[1] *= reg[src].f;
-    vacc[2] *= reg[src].f;
+    reg_vs[0] *= reg[src].f;
+    reg_vs[1] *= reg[src].f;
+    reg_vs[2] *= reg[src].f;
     NEXT;
   }
 
@@ -1071,18 +1071,18 @@
     // [opcode:8] [src:4 | 0:4] [src_index:8]
     tmp1      = *pc++;
     float32 s = reg[src].pf[tmp1];
-    vacc[0] *= s;
-    vacc[1] *= s;
-    vacc[2] *= s;
+    reg_vs[0] *= s;
+    reg_vs[1] *= s;
+    reg_vs[2] *= s;
     NEXT;
   }
 
   // Vector3 accumulator scale by float magnitude
   IS(VSCL_MA) {
     // [opcode:8]
-    vacc[0] *= vacc[3];
-    vacc[1] *= vacc[3];
-    vacc[2] *= vacc[3];
+    reg_vs[0] *= reg_m;
+    reg_vs[1] *= reg_m;
+    reg_vs[2] *= reg_m;
     pc--;
     NEXT;
   }
@@ -1105,9 +1105,9 @@
     // [opcode:8] [src:4 | dst:4] [src_index:8]
     tmp1 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
-    vacc[0] += vs[0];
-    vacc[1] += vs[1];
-    vacc[2] += vs[2];
+    reg_vs[0] += vs[0];
+    reg_vs[1] += vs[1];
+    reg_vs[2] += vs[2];
     NEXT;
   }
 
@@ -1116,9 +1116,9 @@
     // [opcode:8] [src:4 | dst:4] [dst_index:8]
     tmp1 = *pc++;
     float32* vd = &reg[dst].pf[tmp1];
-    vd[0] += vacc[0];
-    vd[1] += vacc[1];
-    vd[2] += vacc[2];
+    vd[0] += reg_vs[0];
+    vd[1] += reg_vs[1];
+    vd[2] += reg_vs[2];
     NEXT;
   }
 
@@ -1129,9 +1129,9 @@
     tmp2 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
     float32* vd = &reg[dst].pf[tmp2];
-    vacc[0] = vd[0] + vs[0];
-    vacc[1] = vd[1] + vs[1];
-    vacc[2] = vd[2] + vs[2];
+    reg_vs[0] = vd[0] + vs[0];
+    reg_vs[1] = vd[1] + vs[1];
+    reg_vs[2] = vd[2] + vs[2];
     NEXT;
   }
 
@@ -1142,9 +1142,9 @@
     tmp2 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
     float32* vd = &reg[dst].pf[tmp2];
-    vd[0] = vs[0] + vacc[0];
-    vd[1] = vs[1] + vacc[1];
-    vd[2] = vs[2] + vacc[2];
+    vd[0] = vs[0] + reg_vs[0];
+    vd[1] = vs[1] + reg_vs[1];
+    vd[2] = vs[2] + reg_vs[2];
     NEXT;
   }
 
@@ -1166,9 +1166,9 @@
     // [opcode:8] [src:4 | dst:4] [src_index:8]
     tmp1 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
-    vacc[0] -= vs[0];
-    vacc[1] -= vs[1];
-    vacc[2] -= vs[2];
+    reg_vs[0] -= vs[0];
+    reg_vs[1] -= vs[1];
+    reg_vs[2] -= vs[2];
     NEXT;
   }
 
@@ -1177,9 +1177,9 @@
     // [opcode:8] [src:4 | dst:4] [dst_index:8]
     tmp1 = *pc++;
     float32* vd = &reg[dst].pf[tmp1];
-    vd[0] -= vacc[0];
-    vd[1] -= vacc[1];
-    vd[2] -= vacc[2];
+    vd[0] -= reg_vs[0];
+    vd[1] -= reg_vs[1];
+    vd[2] -= reg_vs[2];
     NEXT;
   }
 
@@ -1190,9 +1190,9 @@
     tmp2 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
     float32* vd = &reg[dst].pf[tmp2];
-    vacc[0] = vd[0] - vs[0];
-    vacc[1] = vd[1] - vs[1];
-    vacc[2] = vd[2] - vs[2];
+    reg_vs[0] = vd[0] - vs[0];
+    reg_vs[1] = vd[1] - vs[1];
+    reg_vs[2] = vd[2] - vs[2];
     NEXT;
   }
 
@@ -1203,9 +1203,9 @@
     tmp2 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
     float32* vd = &reg[dst].pf[tmp2];
-    vd[0] = vs[0] - vacc[0];
-    vd[1] = vs[1] - vacc[1];
-    vd[2] = vs[2] - vacc[2];
+    vd[0] = vs[0] - reg_vs[0];
+    vd[1] = vs[1] - reg_vs[1];
+    vd[2] = vs[2] - reg_vs[2];
     NEXT;
   }
 
@@ -1216,9 +1216,9 @@
     tmp2 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
     float32* vd = &reg[dst].pf[tmp2];
-    vd[0] = vacc[0] - vs[0];
-    vd[1] = vacc[1] - vs[1];
-    vd[2] = vacc[2] - vs[2];
+    vd[0] = reg_vs[0] - vs[0];
+    vd[1] = reg_vs[1] - vs[1];
+    vd[2] = reg_vs[2] - vs[2];
     NEXT;
   }
 
@@ -1232,9 +1232,9 @@
     // x =  v1.y * v2.z - v1.z * v2.y,
     // y =  v1.z * v2.x - v1.x * v2.z,
     // z =  v1.x * v2.y - v1.y * v2.x
-    vacc[0] = src1[1] * src2[2] - src1[2] * src2[1];
-    vacc[1] = src1[2] * src2[0] - src1[0] * src2[2];
-    vacc[2] = src1[0] * src2[1] - src1[1] * src2[0];
+    reg_vs[0] = src1[1] * src2[2] - src1[2] * src2[1];
+    reg_vs[1] = src1[2] * src2[0] - src1[0] * src2[2];
+    reg_vs[2] = src1[0] * src2[1] - src1[1] * src2[0];
     NEXT;
   }
 
@@ -1248,9 +1248,9 @@
     // x =  v1.y * v2.z - v1.z * v2.y,
     // y =  v1.z * v2.x - v1.x * v2.z,
     // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vacc[1] * vs[2] - vacc[2] * vs[1];
-    vd[1] = vacc[2] * vs[0] - vacc[0] * vs[2];
-    vd[2] = vacc[0] * vs[1] - vacc[1] * vs[0];
+    vd[0] = reg_vs[1] * vs[2] - reg_vs[2] * vs[1];
+    vd[1] = reg_vs[2] * vs[0] - reg_vs[0] * vs[2];
+    vd[2] = reg_vs[0] * vs[1] - reg_vs[1] * vs[0];
     NEXT;
   }
 
@@ -1264,9 +1264,9 @@
     // x =  v1.y * v2.z - v1.z * v2.y,
     // y =  v1.z * v2.x - v1.x * v2.z,
     // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs[1] * vacc[2] - vs[2] * vacc[1];
-    vd[1] = vs[2] * vacc[0] - vs[0] * vacc[2];
-    vd[2] = vs[0] * vacc[1] - vs[1] * vacc[0];
+    vd[0] = vs[1] * reg_vs[2] - vs[2] * reg_vs[1];
+    vd[1] = vs[2] * reg_vs[0] - vs[0] * reg_vs[2];
+    vd[2] = vs[0] * reg_vs[1] - vs[1] * reg_vs[0];
     NEXT;
   }
 
@@ -1277,7 +1277,7 @@
     tmp2 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
     float32* vd = &reg[dst].pf[tmp2];
-    vacc[3] = vd[0] * vs[0] + vd[1] * vs[1] + vd[2] * vs[2];
+    reg_m = vd[0] * vs[0] + vd[1] * vs[1] + vd[2] * vs[2];
     NEXT;
   }
 
@@ -1286,7 +1286,7 @@
     // [opcode:8] [src:4 | dst:4] [src_index:8] [dst_index:8]
     tmp1 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
-    reg[dst].f = vacc[0] * vs[0] + vacc[1] * vs[1] + vacc[2] * vs[2];
+    reg[dst].f = reg_vs[0] * vs[0] + reg_vs[1] * vs[1] + reg_vs[2] * vs[2];
     NEXT;
   }
 
@@ -1296,7 +1296,7 @@
     tmp1 = *pc++;
     tmp2 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
-    reg[dst].pf[tmp2] = vacc[0] * vs[0] + vacc[1] * vs[1] + vacc[2] * vs[2];
+    reg[dst].pf[tmp2] = reg_vs[0] * vs[0] + reg_vs[1] * vs[1] + reg_vs[2] * vs[2];
     NEXT;
   }
 
@@ -1322,7 +1322,7 @@
   // Vector3 accumulator magnitude to register
   IS(VMAG_AR) {
     // [opcode:8] [0:4 | dst:4]
-    reg[dst].f = std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+    reg[dst].f = std::sqrt(reg_vs[0]*reg_vs[0] + reg_vs[1]*reg_vs[1] + reg_vs[2]*reg_vs[2]);
     NEXT;
   }
 
@@ -1330,14 +1330,14 @@
   IS(VMAG_AI) {
     // [opcode:8] [0:4 | dst:4] [dst_index:8]
     tmp1 = *pc++;
-    reg[dst].pf[tmp1] = std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+    reg[dst].pf[tmp1] = std::sqrt(reg_vs[0]*reg_vs[0] + reg_vs[1]*reg_vs[1] + reg_vs[2]*reg_vs[2]);
     NEXT;
   }
 
   // Vector3 accumulator magnitude to accumulator
   IS(VMAG_M) {
     // [opcode:8]
-    vacc[3] = std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
+    reg_m = std::sqrt(reg_vs[0]*reg_vs[0] + reg_vs[1]*reg_vs[1] + reg_vs[2]*reg_vs[2]);
 
     // No operands, back up a byte
     --pc;
@@ -1376,9 +1376,9 @@
     tmp1 = *pc++;
     float32* vs = &reg[src].pf[tmp1];
     float32  sf = 1.0f/std::sqrt(vs[0]*vs[0] + vs[1]*vs[1] + vs[2]*vs[2]);
-    vacc[0] = sf*vs[0];
-    vacc[1] = sf*vs[1];
-    vacc[2] = sf*vs[2];
+    reg_vs[0] = sf*vs[0];
+    reg_vs[1] = sf*vs[1];
+    reg_vs[2] = sf*vs[2];
     NEXT;
   }
 
@@ -1387,20 +1387,20 @@
     // [opcode:8] [0:4 | dst:4] [dst_index:8]
     tmp1 = *pc++;
     float32* vd = &reg[dst].pf[tmp1];
-    float32  sf = 1.0f/std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
-    vd[0] = sf*vacc[0];
-    vd[1] = sf*vacc[1];
-    vd[2] = sf*vacc[2];
+    float32  sf = 1.0f/std::sqrt(reg_vs[0]*reg_vs[0] + reg_vs[1]*reg_vs[1] + reg_vs[2]*reg_vs[2]);
+    vd[0] = sf*reg_vs[0];
+    vd[1] = sf*reg_vs[1];
+    vd[2] = sf*reg_vs[2];
     NEXT;
   }
 
   // Vector3 normalise accumulator in place
   IS(VNRM_A) {
     // [opcode:8]
-    float32  sf = 1.0f/std::sqrt(vacc[0]*vacc[0] + vacc[1]*vacc[1] + vacc[2]*vacc[2]);
-    vacc[0] *= sf;
-    vacc[1] *= sf;
-    vacc[2] *= sf;
+    float32  sf = 1.0f/std::sqrt(reg_vs[0]*reg_vs[0] + reg_vs[1]*reg_vs[1] + reg_vs[2]*reg_vs[2]);
+    reg_vs[0] *= sf;
+    reg_vs[1] *= sf;
+    reg_vs[2] *= sf;
 
     // no operands, back up a byte
     --pc;

@@ -14,11 +14,21 @@
   _MOVE_MR, //  rd  =  m
   _MOVE_MI, // (rd) =  m
 
+  _MOVE_DR, //  rd  = data[symbol_id][offset]
+  _MOVE_DI, // (rd) = data[symbol_id][offset]
+
+
   // Push registers to stack (range)
   _PUSHR,
 
   // Pop registers from stack (range)
   _POPR,
+
+  // Push indirect values to stack
+  _PUSH_I,
+
+  // Pop values from stack to indirect destination
+  _POP_I,
 
   // Allocate Stack Storage
   _ASF,
@@ -43,22 +53,32 @@
 
   // CODE MACROS ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  #define move_lr(sl,rd)       _OP(MOVE_LR), _SD(sl, rd),
-  #define move_li(sl,rd,do)    _OP(MOVE_LI), _SD(sl, rd), _D8(do),
+  #define move_lr(sl,rd)        _OP(MOVE_LR), _SD(sl, rd),
+  #define move_li(sl,rd,do)     _OP(MOVE_LI), _SD(sl, rd), _D8(do),
 
   // Float/Integer Move
-  #define move_rr(rs,rd)       _OP(MOVE_RR), _SD(rs, rd),
-  #define move_ri(rs,rd,do)    _OP(MOVE_RI), _SD(rs, rd), _D8(do),
-  #define move_ir(rs,so,rd)    _OP(MOVE_IR), _SD(rs, rd), _D8(so),
-  #define move_ii(rs,so,rd,do) _OP(MOVE_II), _SD(rs, rd), _D8(so), _D8(do),
-  #define move_mr(rd)          _OP(MOVE_MR), _D(rd),
-  #define move_mi(rd,do)       _OP(MOVE_MI), _D(rd), _D8(do),
+  #define move_rr(rs,rd)        _OP(MOVE_RR), _SD(rs, rd),
+  #define move_ri(rs,rd,do)     _OP(MOVE_RI), _SD(rs, rd), _D8(do),
+  #define move_ir(rs,so,rd)     _OP(MOVE_IR), _SD(rs, rd), _D8(so),
+  #define move_ii(rs,so,rd,do)  _OP(MOVE_II), _SD(rs, rd), _D8(so), _D8(do),
+  #define move_mr(rd)           _OP(MOVE_MR), _D(rd),
+  #define move_mi(rd,do)        _OP(MOVE_MI), _D(rd), _D8(do),
+
+  // Load global data symbol
+  #define move_dr(gd,so,rd)    _OP(MOVE_DR), _D(rd), _D8(so), _D16(gd),
+  #define move_di(gd,so,rd,do) _OP(MOVE_DI), _D(rd), _D8(do), _D8(so), _D16(gd),
 
   // Push registers to stack (range)
   #define pushr(rs,rd)         _OP(PUSHR), _SD(rs, rd),
 
   // Pop registers from stack (range)
   #define popr(rs,rd)          _OP(POPR), _SD(rs, rd),
+
+  // Push registers to stack (range)
+  #define push_i(rs,so)         _OP(PUSH_I), _S(rs), _D8(so),
+
+  // Pop registers from stack (range)
+  #define pop_i(rd,do)          _OP(POP_I), _D(rd), _D8(do),
 
   // Allocate Stack Storage
   #define asf(rd,sz)           _OP(ASF), _D(rd), _D8(sz),
@@ -73,7 +93,6 @@
   #define vspl_la(sl)          _OP(VSPL_LA), _S(sl),
   #define vspl_ra(rs)          _OP(VSPL_RA), _S(rs),
   #define vspl_ia(rs,so)       _OP(VSPL_IA), _S(rs), _D8(so),
-
 
   // Vec3 Move
   #define vmve_ii(rs,so,rd,do) _OP(VMVE_II), _SD(rs, rd), _D8(so), _D8(do),
@@ -134,7 +153,7 @@
   // Move magnitude to register
   IS(MOVE_MR) {
     // [opcode:8] [0:4 | dst:4]
-    reg[dst].f = vacc[3];
+    reg[dst].f = reg_m;
     NEXT;
   }
 
@@ -142,7 +161,43 @@
   IS(MOVE_MI) {
     // [opcode:8] [0:4 | dst:4] [dst_index:8]
     tmp1 = *pc++;
-    reg[dst].pf[tmp1] = vacc[3];
+    reg[dst].pf[tmp1] = reg_m;
+    NEXT;
+  }
+
+  // Move global data to register
+  IS(MOVE_DR) {
+    // [opcode:8] [0:4 | dst:4] [symbol_index:8] [data_symbol_id_msb:8] [data_symbol_id_lsb:8]
+
+    tmp1 = *pc++;
+    tmp2 = *pc++;
+    uint16 symbol = ((uint16)tmp2) << 8 | *pc++;
+
+    if (!symbol || symbol >= dataSymbolCount) {
+      status = UNKNOWN_DATA_SYMBOL;
+      EXIT;
+    }
+
+    reg[dst].w = dataSymbol[symbol][tmp1];
+
+    NEXT;
+  }
+
+  // Move global data to indirect
+  IS(MOVE_DI) {
+    // [opcode:8] [0:4 | dst:4] [dst_index:8] [symbol_index:8] [data_symbol_id_msb:8] [data_symbol_id_lsb:8]
+
+    tmp1 = *pc++;
+    tmp2 = *pc++;
+    uint16 symbol = ((uint16)*pc++) << 8; symbol |= *pc++;
+
+    if (!symbol || symbol >= dataSymbolCount) {
+      status = UNKNOWN_DATA_SYMBOL;
+      EXIT;
+    }
+
+    reg[dst].pw[tmp1] = dataSymbol[symbol][tmp2];
+
     NEXT;
   }
 
@@ -170,12 +225,42 @@
 
     tmp2 = 1 + (dst - src);
     if ((dataStack - tmp1) > dataStackBase) {
+      Register* pop = &reg[dst];
+      while (tmp2--) {
+        pop->w = *(--dataStack);
+        pop--;
+      }
+    } else {
+      status = DATA_STACK_UNDERFLOW;
+      EXIT;
+    }
+    NEXT;
+  }
 
+  // Push indirect value to stack
+  IS(PUSH_I) {
+    // [opcode:8] [src:4 | 0:4] [src_offset:8]
+
+    if (dataStack < dataStackTop) {
+      *dataStack++ = *(reg[src].pw);
+      NEXT;
+    } else {
+      status = DATA_STACK_UNDERFLOW;
+      EXIT;
+    }
+  }
+
+  // Pop stack value to indirect
+  IS(POP_I) {
+    // [opcode:8] [0:4 | dst:4] [src_offset:8]
+
+    if (dataStack > dataStackBase) {
+      *(reg[src].pw) = *(--dataStack);
+      NEXT;
     } else {
       status = DATA_STACK_OVERFLOW;
       EXIT;
     }
-    NEXT;
   }
 
   // Allocate Stack Frame Storage (up to 256 entries)
@@ -245,18 +330,18 @@
   // Vector3 splat literal to vector accumulator
   IS(VSPL_LA) {
     // [opcode:8] [L:4 | dst:4]
-    vacc[0] = src;
-    vacc[1] = src;
-    vacc[2] = src;
+    reg_vs[0] = src;
+    reg_vs[1] = src;
+    reg_vs[2] = src;
     NEXT;
   }
 
   // Vector3 splat register to vector accumulator
   IS(VSPL_RA) {
     // [opcode:8] [src:4 | dst:4]
-    vacc[0] = reg[src].f;
-    vacc[1] = reg[src].f;
-    vacc[2] = reg[src].f;
+    reg_vs[0] = reg[src].f;
+    reg_vs[1] = reg[src].f;
+    reg_vs[2] = reg[src].f;
     NEXT;
   }
 
@@ -265,9 +350,9 @@
     // [opcode:8] [src:4 | dst:4] [src_index:8]
     tmp1       = *pc++;
     float32  s = reg[src].pf[tmp1];
-    vacc[0] = s;
-    vacc[1] = s;
-    vacc[2] = s;
+    reg_vs[0] = s;
+    reg_vs[1] = s;
+    reg_vs[2] = s;
     NEXT;
   }
 
@@ -289,9 +374,9 @@
     // [opcode:8] [src:4 | dst:4] [src_index:8]
     tmp1        = *pc++;
     float32* vs = &reg[src].pf[tmp1];
-    vacc[0] = vs[0];
-    vacc[1] = vs[1];
-    vacc[2] = vs[2];
+    reg_vs[0] = vs[0];
+    reg_vs[1] = vs[1];
+    reg_vs[2] = vs[2];
     NEXT;
   }
 
@@ -300,9 +385,9 @@
     // [opcode:8] [src:4 | dst:4] [dst_index:8]
     tmp1        = *pc++;
     float32* vd = &reg[dst].pf[tmp1];
-    vd[0] = vacc[0];
-    vd[1] = vacc[1];
-    vd[2] = vacc[2];
+    vd[0] = reg_vs[0];
+    vd[1] = reg_vs[1];
+    vd[2] = reg_vs[2];
     NEXT;
   }
 

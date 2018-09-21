@@ -3,7 +3,7 @@
   // ENUMERATION ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // No Operation
-  _NOP,
+  _HALT,
 
   // Short unconditional branch (8-bit offset)
   _BRAS,
@@ -95,7 +95,7 @@
 
   // CODE MACROS ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  #define nop      _OP(NOP),
+  #define halt     _OP(HALT),
   #define bras(jo) _OP(BRAS), _D8(jo),
   #define bra(jo)  _OP(BRA), _D16(jo),
 
@@ -183,11 +183,11 @@
 
   // HANDLER CODE //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // No Operation
-  IS(NOP) {
+  // Stop
+  IS(HALT) {
     // [opcode]
     --pc;
-    NEXT;
+    EXIT;
   }
 
   // Branch 8-bit displacement

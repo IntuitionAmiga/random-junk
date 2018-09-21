@@ -21,7 +21,7 @@ using namespace GVM;
 
 #define _END 0x00
 
-uint8 op_nop[]     = { nop _END };
+uint8 op_halt[]     = { halt _END };
 
 // Unconditional Branch
 uint8 op_bras[]    = { bras(-2) _END };
@@ -103,8 +103,13 @@ uint8 op_move_ir[] = { move_ir(r7, 1, r8) _END };
 uint8 op_move_ii[] = { move_ii(r7, 1, r8, 2) _END };
 uint8 op_move_mr[] = { move_mr(r8) _END };
 uint8 op_move_mi[] = { move_mi(r8, 2) _END };
+uint8 op_move_dr[] = { move_dr(0xF00D, 1, r8) _END };
+uint8 op_move_di[] = { move_di(0xF00D, 1, r8, 2) _END };
+
 uint8 op_pushr[]   = { pushr(r7, r8) _END };
 uint8 op_popr[]    = { popr(r7, r8) _END };
+uint8 op_push_i[]  = { push_i(r7, 1) _END };
+uint8 op_pop_i[]   = { pop_i(r8, 2) _END };
 uint8 op_asf[]     = { asf(r8, 240) _END };
 uint8 op_fsf[]     = { fsf(r8, 240) _END };
 
@@ -323,7 +328,7 @@ uint8 op_lsr_ir[] = { lsr_ir(r7,1,r8) _END };
 uint8 op_lsr_ii[] = { lsr_ii(r7,1,r8,2) _END };
 
 uint8* opcode_tests[] = {
-  op_nop,
+  op_halt,
   op_bras,     op_bra,  op_tjmps,  op_tjmp,
   op_bcall,    op_call, op_call_r, op_call_i, op_call_h,
   op_ret,
@@ -338,8 +343,8 @@ uint8* opcode_tests[] = {
   op_fbgt_rr,  op_fbgt_ri,  op_fbgt_ir, op_fbgt_ii,
   op_vbeq_ii,  op_vbeq_ia,
   op_vbne_ii,  op_vbne_ia,
-  op_move_lr,  op_move_li,  op_move_rr,  op_move_ri,  op_move_ir,  op_move_ii, op_move_mr, op_move_mi,
-  op_pushr,    op_popr,     op_asf,      op_fsf,
+  op_move_lr,  op_move_li,  op_move_rr,  op_move_ri,  op_move_ir,  op_move_ii, op_move_mr, op_move_mi, op_move_dr, op_move_di,
+  op_pushr,    op_popr,     op_push_i,   op_pop_i,    op_asf,      op_fsf,
   op_vspl_li,  op_vspl_ri,  op_vspl_ii,  op_vspl_la,  op_vspl_ra,  op_vspl_ia,
   op_vmve_ii,  op_vmve_ia,  op_vmve_ai,
   op_neg_rr,   op_neg_ri,   op_neg_ir,   op_neg_ii,
@@ -375,7 +380,7 @@ uint8* opcode_tests[] = {
 };
 
 const char* assembler[] = {
-  "nop",
+  "halt",
   "bras -2",
   "bra -2",
   "tjmps r8, 4, -2, -3, -4, -5",
@@ -426,8 +431,12 @@ const char* assembler[] = {
   "move 1(r7), 2(r8)",
   "move m, r8",
   "move m, 2(r8)",
+  "move 1(0xF00D), r8",
+  "move 1(0xFOOD), 2(r8)",
   "pushr r7-r8",
   "popr r7-r8",
+  "push 1(r7)",
+  "pop  2(r8)",
   "asf r8, 240",
   "fsf r8, 240",
   "vspl 3, 2(r8)",
@@ -586,28 +595,21 @@ int main() {
   const int declaredSize = sizeof(opcode_tests)/sizeof(uint8*);
 
   std::printf(
-    "opcode_control.hpp\n"
-    "\tNOP     : %d\n"
-    "\tVBNE_IA : %d\n"
-    "opcode_data_move.hpp\n"
-    "\tMOVE_LR : %d\n"
-    "\tVMVE_AI : %d\n"
-    "opcode_arithmetic.hpp\n"
-    "\tNEG_RR : %d\n"
-    "\tVNRM_A : %d\n"
-    "opcode_logic.hpp\n"
-    "\tAND_RR : %d\n"
-    "\tLSR_II : %d\n"
-    "MAX      : %d\n"
-    "Declared : %d\n",
-    (int)Opcode::_NOP,
-    (int)Opcode::_VBNE_IA,
-    (int)Opcode::_MOVE_LR,
-    (int)Opcode::_VMVE_AI,
-    (int)Opcode::_NEG_RR,
-    (int)Opcode::_VNRM_A,
-    (int)Opcode::_AND_RR,
-    (int)Opcode::_LSR_II,
+    "Enumerated opcodes:\n"
+    "\topcode_control.hpp\n"
+    "\tDeclared : %d\n"
+    "\topcode_data_move.hpp\n"
+    "\tDeclared : %d\n"
+    "\topcode_arithmetic.hpp\n"
+    "\tDeclared : %d\n"
+    "\topcode_logic.hpp\n"
+    "\tDeclared : %d\n"
+    "\tMAX      : %d\n"
+    "\tDeclared : %d\n",
+    (int)Opcode::_VBNE_IA - (int)Opcode::_HALT,
+    (int)Opcode::_VMVE_AI - (int)Opcode::_MOVE_LR,
+    (int)Opcode::_VNRM_A -  (int)Opcode::_NEG_RR,
+    (int)Opcode::_LSR_II -  (int)Opcode::_AND_RR,
     (int)Opcode::_MAX,
     declaredSize
   );

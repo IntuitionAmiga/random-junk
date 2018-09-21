@@ -46,8 +46,9 @@ namespace GVM {
       // General Purpose Registers
       Register reg[NUM_REG];
 
-      // Vector3 Accumulator and Magnitude
-      float32  vacc[4];
+      // Vector3 Scratch and Magnitude
+      float32  reg_vs[3];
+      float32  reg_m;
 
       // Program counter
       const uint8*  pc;
@@ -78,7 +79,7 @@ namespace GVM {
       void execute();
 
     private:
-      int call(uint16 symbol);
+      int     call(uint16 symbol);
   };
 
 };
