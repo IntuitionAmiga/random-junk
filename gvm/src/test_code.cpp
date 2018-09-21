@@ -172,6 +172,20 @@ uint8 op_mod_ri[]   = { mod_ri(r7, r8, 2) _END };
 uint8 op_mod_ir[]   = { mod_ir(r7, 1, r8) _END };
 uint8 op_mod_ii[]   = { mod_ii(r7, 1, r8, 2) _END };
 
+// Integer min
+uint8 op_min_lr[]   = { min_lr(3, r8) _END };
+uint8 op_min_rr[]   = { min_rr(r7, r8) _END };
+
+// Integer max
+uint8 op_max_lr[]   = { max_lr(3, r8) _END };
+uint8 op_max_rr[]   = { max_rr(r7, r8) _END };
+
+// Float negate
+uint8 op_fabs_rr[]  = { fabs_rr(r7, r8) _END };
+uint8 op_fabs_ri[]  = { fabs_ri(r7, r8, 2) _END };
+uint8 op_fabs_ir[]  = { fabs_ir(r7, 1, r8) _END };
+uint8 op_fabs_ii[]  = { fabs_ii(r7, 1, r8, 2) _END };
+
 // Float negate
 uint8 op_fneg_rr[]  = { fneg_rr(r7, r8) _END };
 uint8 op_fneg_ri[]  = { fneg_ri(r7, r8, 2) _END };
@@ -207,6 +221,12 @@ uint8 op_fmod_rr[]  = { fmod_rr(r7, r8) _END };
 uint8 op_fmod_ri[]  = { fmod_ri(r7, r8, 2) _END };
 uint8 op_fmod_ir[]  = { fmod_ir(r7, 1, r8) _END };
 uint8 op_fmod_ii[]  = { fmod_ii(r7, 1, r8, 2) _END };
+
+// Float min
+uint8 op_fmin_rr[]   = { fmin_rr(r7, r8) _END };
+
+// Float max
+uint8 op_fmax_rr[]   = { fmax_rr(r7, r8) _END };
 
 // Float sqrt
 uint8 op_fsqrt_rr[]  = { fsqrt_rr(r7, r8) _END };
@@ -353,12 +373,17 @@ uint8* opcode_tests[] = {
   op_mul_lr,   op_mul_li,   op_mul_rr,   op_mul_ri,   op_mul_ir,   op_mul_ii,
   op_div_lr,   op_div_li,   op_div_rr,   op_div_ri,   op_div_ir,   op_div_ii,
   op_mod_lr,   op_mod_li,   op_mod_rr,   op_mod_ri,   op_mod_ir,   op_mod_ii,
+  op_min_lr,   op_min_rr,
+  op_max_lr,   op_max_rr,
+  op_fabs_rr,  op_fabs_ri,  op_fabs_ir,  op_fabs_ii,
   op_fneg_rr,  op_fneg_ri,  op_fneg_ir,  op_fneg_ii,
   op_fadd_rr,  op_fadd_ri,  op_fadd_ir,  op_fadd_ii,
   op_fsub_rr,  op_fsub_ri,  op_fsub_ir,  op_fsub_ii,
   op_fmul_rr,  op_fmul_ri,  op_fmul_ir,  op_fmul_ii,
   op_fdiv_rr,  op_fdiv_ri,  op_fdiv_ir,  op_fdiv_ii,
   op_fmod_rr,  op_fmod_ri,  op_fmod_ir,  op_fmod_ii,
+  op_fmin_rr,
+  op_fmax_rr,
   op_fsqrt_rr, op_fsqrt_ri, op_fsqrt_ir, op_fsqrt_ii,
   op_fsin_rr,  op_fsin_ri,  op_fsin_ir,  op_fsin_ii,
   op_fcos_rr,  op_fcos_ri,  op_fcos_ir,  op_fcos_ii,
@@ -482,6 +507,14 @@ const char* assembler[] = {
   "mod r7, 2(r8)",
   "mod 1(r7), r8",
   "mod 1(r7), 2(r8)",
+  "min 3, r8",
+  "min r7, r8",
+  "max 3, r8",
+  "max r7, r8",
+  "fabs r7, r8",
+  "fabs r7, 2(r8)",
+  "fabs 1(r7), r8",
+  "fabs 1(r7), 2(r8)",
   "fneg r7, r8",
   "fneg r7, 2(r8)",
   "fneg 1(r7), r8",
@@ -506,6 +539,8 @@ const char* assembler[] = {
   "fmod r7, 2(r8)",
   "fmod 1(r7), r8",
   "fmod 1(r7), 2(r8)",
+  "fmin r7, r8",
+  "fmax r7, r8",
   "fsqrt r7, r8",
   "fsqrt r7, 2(r8)",
   "fsqrt 1(r7), r8",

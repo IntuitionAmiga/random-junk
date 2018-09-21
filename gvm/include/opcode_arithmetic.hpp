@@ -48,6 +48,20 @@
   _MOD_IR,
   _MOD_II,
 
+  // Integer min
+  _MIN_LR,
+  _MIN_RR,
+
+  // Integer max
+  _MAX_LR,
+  _MAX_RR,
+
+  // Float Absolute
+  _FABS_RR,
+  _FABS_RI,
+  _FABS_IR,
+  _FABS_II,
+
   // Float Negate
   _FNEG_RR,
   _FNEG_RI,
@@ -83,6 +97,12 @@
   _FMOD_RI,
   _FMOD_IR,
   _FMOD_II,
+
+  // Float min
+  _FMIN_RR,
+
+  // Float max
+  _FMAX_RR,
 
   // Float Square Root
   _FSQRT_RR,
@@ -213,6 +233,20 @@
   #define mod_ir(rs,so,rd)       _OP(MOD_IR), _SD(rs,rd), _D8(so),
   #define mod_ii(rs,so,rd,do)    _OP(MOD_II), _SD(rs,rd), _D8(so), _D8(do),
 
+  // Integer min
+  #define min_lr(sl,rd)          _OP(MIN_LR), _SD(sl,rd),
+  #define min_rr(rs,rd)          _OP(MIN_RR), _SD(rs,rd),
+
+  // Integer max
+  #define max_lr(sl,rd)          _OP(MAX_LR), _SD(sl,rd),
+  #define max_rr(rs,rd)          _OP(MAX_RR), _SD(rs,rd),
+
+  // Float Absolute
+  #define fabs_rr(rs,rd)         _OP(FABS_RR), _SD(rs,rd),
+  #define fabs_ri(rs,rd,do)      _OP(FABS_RI), _SD(rs,rd), _D8(do),
+  #define fabs_ir(rs,so,rd)      _OP(FABS_IR), _SD(rs,rd), _D8(so),
+  #define fabs_ii(rs,so,rd,do)   _OP(FABS_II), _SD(rs,rd), _D8(so), _D8(do),
+
   // Float Negate
   #define fneg_rr(rs,rd)         _OP(FNEG_RR), _SD(rs,rd),
   #define fneg_ri(rs,rd,do)      _OP(FNEG_RI), _SD(rs,rd), _D8(do),
@@ -248,6 +282,12 @@
   #define fmod_ir(rs,so,rd)      _OP(FMOD_IR), _SD(rs,rd), _D8(so),
   #define fmod_ri(rs,rd,do)      _OP(FMOD_RI), _SD(rs,rd), _D8(do),
   #define fmod_ii(rs,so,rd,do)   _OP(FMOD_II), _SD(rs,rd), _D8(so), _D8(do),
+
+  // Float min
+  #define fmin_rr(rs,rd)          _OP(FMIN_RR), _SD(rs,rd),
+
+  // Float max
+  #define fmax_rr(rs,rd)          _OP(FMAX_RR), _SD(rs,rd),
 
   // Float Square Root
   #define fsqrt_rr(rs,rd)        _OP(FSQRT_RR), _SD(rs,rd),
@@ -646,6 +686,77 @@
     }
   }
 
+  // Integer minimum
+  IS(MIN_LR) {
+    // [opcode:8] [sl:4 dst:4]
+    int32 v = reg[dst].i;
+    if (src < v) {
+      reg[dst].i = src;
+    }
+    NEXT;
+  }
+
+  IS(MIN_RR) {
+    // [opcode:8] [src:4 dst:4]
+    int32 v1 = reg[src].i;
+    int32 v2 = reg[dst].i;
+    if (v1 < v2) {
+      reg[dst].i = v1;
+    }
+    NEXT;
+  }
+
+  // Integer maximum
+  IS(MAX_LR) {
+    // [opcode:8] [sl:4 dst:4]
+    int32 v = reg[dst].i;
+    if (src > v) {
+      reg[dst].i = src;
+    }
+    NEXT;
+  }
+
+  IS(MAX_RR) {
+    // [opcode:8] [src:4 dst:4]
+    int32 v1 = reg[src].i;
+    int32 v2 = reg[dst].i;
+    if (v1 > v2) {
+      reg[dst].i = v1;
+    }
+    NEXT;
+  }
+
+  // Absolute float register to register
+  IS(FABS_RR) {
+    // [opcode:8] [src:4 dst:4]
+    reg[dst].w = reg[src].w & 0x7FFFFFFF;
+    NEXT;
+  }
+
+  // Absolute float register to indirect
+  IS(FABS_RI) {
+    // [opcode:8] [src:4 dst:4] [dst_index:8]
+    tmp1 = *pc++;
+    reg[dst].pw[tmp1] = reg[src].w & 0x7FFFFFFF;
+    NEXT;
+  }
+
+  // Absolute float indirect to register
+  IS(FABS_IR) {
+    // [opcode:8] [src:4 dst:4] [src_index:8]
+    tmp1 = *pc++;
+    reg[dst].w = -reg[src].pw[tmp1] & 0x7FFFFFFF;
+    NEXT;
+  }
+
+  // Absolute float indirect to indirect
+  IS(FABS_II) {
+    // [opcode:8] [src:4 dst:4] [src_index:8] [dst_index:8]
+    tmp1 = *pc++;
+    tmp2 = *pc++;
+    reg[dst].pw[tmp2] = -reg[src].pw[tmp1] & 0x7FFFFFFF;
+    NEXT;
+  }
 
   // Negate float register to register
   IS(FNEG_RR) {
@@ -840,6 +951,27 @@
     NEXT;
   }
 
+  // Modulus float register to register
+  IS(FMIN_RR) {
+    // [opcode:8] [src:4 dst:4]
+    float32 v1 = reg[src].f;
+    float32 v2 = reg[dst].f;
+    if (v1 < v2) {
+      reg[dst].f = v1;
+    }
+    NEXT;
+  }
+
+  // Modulus float register to register
+  IS(FMAX_RR) {
+    // [opcode:8] [src:4 dst:4]
+    float32 v1 = reg[src].f;
+    float32 v2 = reg[dst].f;
+    if (v1 > v2) {
+      reg[dst].f = v1;
+    }
+    NEXT;
+  }
 
   // Square root float register to register
   IS(FSQRT_RR) {
