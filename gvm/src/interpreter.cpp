@@ -7,8 +7,6 @@
 
 using namespace GVM;
 
-//
-
 #define DISPATCH(o) switch(o)
 #define IS(o)   case Opcode::_##o:
 #define NEXT    goto forever
@@ -60,3 +58,14 @@ int Interpreter::callSymbol(uint16 symbol) {
   }
 }
 
+Interpreter::Interpreter(uint32 dStackSize, uint32 cStackSize) {
+  dataStackBase = dataStack = new uint32[dStackSize];
+  callStackBase = callStack = new const uint8*[cStackSize];
+  dataStackTop  = dataStackBase + dStackSize;
+  callStackTop  = callStackBase + cStackSize;
+}
+
+Interpreter::~Interpreter() {
+  delete[] dataStack;
+  delete[] callStack;
+}
