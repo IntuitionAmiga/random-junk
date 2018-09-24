@@ -303,7 +303,7 @@
 
     HostCall f = hostCodeSymbol[symbol];
     if (f) {
-      f(this);
+      f();
       NEXT;
     } else {
       status = CALL_EMPTY_HOST;

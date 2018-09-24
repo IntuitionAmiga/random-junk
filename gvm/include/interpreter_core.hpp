@@ -3,9 +3,10 @@
 
 namespace GVM {
 
-  class InterpreterCore {
-
-    friend class HostInterface;
+  /**
+   * Static realisation of GVM interpreter
+   */
+  class Interpreter {
 
     public:
       enum {
@@ -41,44 +42,47 @@ namespace GVM {
         uint32  w, *pw;
       };
 
-      typedef void (*HostCall)(InterpreterCore* vm);
+      typedef void (*HostCall)();
+
+      static uint32 init(uint32 callStackSize, uint32 dataStackSize);
+      static void   done();
+      static uint32 execute();
 
     protected:
       // General Purpose Registers
-      Register reg[NUM_REG];
+      static Register reg[NUM_REG];
 
       // Vector3 Scratch and Magnitude
-      float32  reg_vs[3];
-      float32  reg_m;
+      static float32  reg_vs[3];
+      static float32  reg_m;
 
       // Program counter
-      const uint8*  pc;
+      static const uint8*  pc;
 
       // Status register
-      uint32 status;
+      static uint32 status;
 
       // Stacks
-      const uint8** callStack;
-      uint32*       dataStack;
+      static const uint8** callStack;
+      static uint32*       dataStack;
 
       // Stack limits
-      const uint8** callStackBase;
-      const uint8** callStackTop;
-      uint32*       dataStackBase;
-      uint32*       dataStackTop;
+      static const uint8** callStackBase;
+      static const uint8** callStackTop;
+      static uint32*       dataStackBase;
+      static uint32*       dataStackTop;
 
-      // Synbol Tables
-      const uint8** codeSymbol;
-      HostCall*     hostCodeSymbol;
-      uint32**      dataSymbol;
+      // Symbol Tables
+      static const uint8** codeSymbol;
+      static HostCall*     hostCodeSymbol;
+      static uint32**      dataSymbol;
 
-      uint16        codeSymbolCount;
-      uint16        hostCodeSymbolCount;
-      uint16        dataSymbolCount;
+      static uint16        codeSymbolCount;
+      static uint16        hostCodeSymbolCount;
+      static uint16        dataSymbolCount;
 
-      void initialise();
+      static int  callSymbol(uint16 symbol);
   };
-
 
 };
 

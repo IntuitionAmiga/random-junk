@@ -12,7 +12,7 @@ using namespace GVM;
 
 #include "include/verification/single_opcode_tests.hpp"
 
-class SingleOpcodeInterpreter : public InterpreterCore {
+class SingleOpcodeInterpreter : public Interpreter {
 
   public:
     void step(const uint8* code);
