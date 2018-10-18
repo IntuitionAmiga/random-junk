@@ -13,7 +13,7 @@ namespace Opcode {
     _HCALL,   // Call a host function
     _RET,     // Return from the current function
 
-    _LIBNN,    // Load indirect to indirection register and branch if not null
+    _LLBNN,    // Load indirect to indirection register and branch if not null
 
     // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////////////
 
