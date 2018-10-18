@@ -1,6 +1,6 @@
 #include <cstdio>
 namespace Opcode {
-enum {
+  enum {
     // Untyped instructions ////////////////////////////////////////////////////////////////////////////////////////////
 
     _HCF = 0, // Halt and catch fire
@@ -15,35 +15,56 @@ enum {
 
     _LIBNN,    // Load indirect to indirection register and branch if not null
 
-
     // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////////////
+
+    _BEZ_L,    // Branch to a signed 16-bit offset if local is equal to zero
+    _BEZ_I,    // Branch to a signed 16-bit offset if indirect is equal to zero
+    _BNZ_L,    // Branch to a signed 16-bit offset if local is not equal to zero
+    _BNZ_I,    // Branch to a signed 16-bit offset if indirect is not equal to zero
+    _BEQ_LL,   // Branch to a signed 16-bit offset if two local values are equal
+    _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
+    _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
+
     _LOAD_D_L, // Load data symbol to local
     _LOAD_D_I, // Load data symbol to indirect
     _LOAD_C_L, // Load code synbol to local
     _LOAD_C_I, // Load code symbol to indirect
     _LOAD_L_I, // Load local reference to indirection register
+    _SAVE_I_L, // Save indirection register to local
 
     _COPY_LL,  // Copy a local scalar to a local scalar
     _COPY_IL,  // Copy an indirect scalar to a local
     _COPY_LI,  // Copy a local scalar to an indirect
     _COPY_II,  // Copy an indirect scalar to another indirect
 
-    _BEZ_L,    // Branch to a signed 16-bit offset if local is equal to zero
-    _BEZ_I,    // Branch to a signed 16-bit offset if indirect is equal to zero
-    _BNZ_L,    // Branch to a signed 16-bit offset if local is not equal to zero
-    _BNZ_I,    // Branch to a signed 16-bit offset if indirect is not equal to zero
-
-    _BEQ_LL,   // Branch to a signed 16-bit offset if two local values are equal
-    _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
-    _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
+    _ITOF_LL,  // Cast float to integer
+    _FTOI_LL,  // Cast integer to float
 
     // Integer specific instructions ///////////////////////////////////////////////////////////////////////////////////
+
+    // Two operand branch if greater or equal
+    _BGE_LL,
+    _BGE_IL,
+    _BGE_LI,
+    _BGE_II,
+
+    // Two operand branch if greater than
+    _BGT_LL,
+    _BGT_IL,
+    _BGT_LI,
+    _BGT_II,
 
     _DBNZ_L,   // Decrement local and branch if not zero
 
     // Load small literal integer
     _LOAD_SL,
     _LOAD_SI,
+
+    // Two operand logical negate
+    _NOT_LL,
+    _NOT_IL,
+    _NOT_LI,
+    _NOT_II,
 
     // Two operand integer negate
     _NEG_LL,
@@ -52,10 +73,6 @@ enum {
     _NEG_II,
 
     // Three operand integer addition
-    _ADD_LSL, // Add small signed literal (-128 - 127)
-    _ADD_ISL,
-    _ADD_LSI,
-    _ADD_ISI,
     _ADD_LLL, // Commutative, 5 unique variants
     _ADD_ILL,
     _ADD_LLI,
@@ -73,10 +90,6 @@ enum {
     _SUB_III,
 
     // Three operand integer multiplication
-    _MUL_LSL, // Multiply by small unsigned literal (2 - 257)
-    _MUL_ISL,
-    _MUL_LSI,
-    _MUL_ISI,
     _MUL_LLL, // Commutative, 5 unique variants
     _MUL_ILL,
     _MUL_LLI,
@@ -84,10 +97,6 @@ enum {
     _MUL_III,
 
     // Three operand integer division
-    _DIV_LSL, // Divide by small unsigned literal (2 - 257)
-    _DIV_ISL,
-    _DIV_LSI,
-    _DIV_ISI,
     _DIV_LLL, // Noncommutative, all 8 variants needed
     _DIV_ILL,
     _DIV_LLI,
@@ -98,10 +107,6 @@ enum {
     _DIV_III,
 
     // Three operand integer modulo
-    _MOD_LSL, // Modulo by small unsigned literal (2 - 257)
-    _MOD_ISL,
-    _MOD_LSI,
-    _MOD_ISI,
     _MOD_LLL, // Noncommutative, all 8 variants needed
     _MOD_ILL,
     _MOD_LLI,
@@ -110,12 +115,6 @@ enum {
     _MOD_IIL,
     _MOD_LII,
     _MOD_III,
-
-    // Two operand logical negate
-    _NOT_LL,
-    _NOT_IL,
-    _NOT_LI,
-    _NOT_II,
 
     // Three operand logical AND
     _AND_LLL, // Commutative, 5 unique variants
@@ -139,10 +138,6 @@ enum {
     _XOR_III,
 
     // Three operand logical shift left
-    _LSL_LSL,
-    _LSL_ISL,
-    _LSL_LSI,
-    _LSL_ISI,
     _LSL_LLL, // Noncommutative
     _LSL_ILL,
     _LSL_LLI,
@@ -153,10 +148,6 @@ enum {
     _LSL_III,
 
     // Three operand logical shift right
-    _LSR_LSL,
-    _LSR_ISL,
-    _LSR_LSI,
-    _LSR_ISI,
     _LSR_LLL, // Noncommutative
     _LSR_ILL,
     _LSR_LLI,
@@ -166,19 +157,43 @@ enum {
     _LSR_LII,
     _LSR_III,
 
-    // Two operand branch if greater or equal
-    _BGE_LL,
-    _BGE_IL,
-    _BGE_LI,
-    _BGE_II,
+    _MAX_LLL, // Commutative, 5 unique variants
+    _MAX_ILL,
+    _MAX_LLI,
+    _MAX_ILI,
+    _MAX_III,
 
-    // Two operand branch if greater than
-    _BGT_LL,
-    _BGT_IL,
-    _BGT_LI,
-    _BGT_II,
+    _MIN_LLL, // Commutative, 5 unique variants
+    _MIN_ILL,
+    _MIN_LLI,
+    _MIN_ILI,
+    _MIN_III,
 
     // Floating point specific instructions ////////////////////////////////////////////////////////////////////////////
+
+    // Two operand branch if greater or equal
+    _FBGE_LL,
+    _FBGE_IL,
+    _FBGE_LI,
+    _FBGE_II,
+
+    // Two operand branch if greater than
+    _FBGT_LL,
+    _FBGT_IL,
+    _FBGT_LI,
+    _FBGT_II,
+
+    _FLOAD_CL, // Load floating point constant to local
+
+    // Two operand, local to local handy maths functions
+    _FINV_LL,  // Reciprocal
+    _FSQRT_LL, // Square root
+    _FSIN_LL,  // Sine
+    _FCOS_LL,  // Cosine
+    _FTAN_LL,  // Tangent
+    _FASIN_LL, // Arcsine
+    _FACOS_LL, // Arccosine
+    _FATAN_LL, // Arctangent
 
     // Two operand float negate
     _FNEG_LL,
@@ -242,25 +257,17 @@ enum {
     _FMIN_ILI,
     _FMIN_III,
 
-    // Two operand float square root
-    _FSQRT_LL,
-    _FSQRT_IL,
-    _FSQRT_LI,
-    _FSQRT_II,
-
-    // Two operand branch if greater or equal
-    _FBGE_LL,
-    _FBGE_IL,
-    _FBGE_LI,
-    _FBGE_II,
-
-    // Two operand branch if greater than
-    _FBGT_LL,
-    _FBGT_IL,
-    _FBGT_LI,
-    _FBGT_II,
-
     // Vector specific instructions ////////////////////////////////////////////////////////////////////////////////////
+
+    // Vector branch if equal
+    _VBEQ_LL,
+    _VBEQ_IL,
+    _VBEQ_II,
+
+    // Vector branch if not equal
+    _VBNE_LL,
+    _VBNE_IL,
+    _VBNE_II,
 
     // Two operand Vector instructions
     _VCOPY_LL,
@@ -285,16 +292,6 @@ enum {
     _VMAG_IL,
     _VMAG_LI,
     _VMAG_II,
-
-    // Vector branch if equal
-    _VBEQ_LL,
-    _VBEQ_IL,
-    _VBEQ_II,
-
-    // Vector branch if not equal
-    _VBNE_LL,
-    _VBNE_IL,
-    _VBNE_II,
 
     // Three operand vector instructions
 
@@ -343,7 +340,8 @@ enum {
     _VFMUL_III,
 
     _MAX
-};
+  };
+
 };
 int main() {
   std::printf("Total definitions %d\n", Opcode::_MAX);
