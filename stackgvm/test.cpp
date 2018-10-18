@@ -194,6 +194,9 @@ namespace Opcode {
     _FASIN_LL, // Arcsine
     _FACOS_LL, // Arccosine
     _FATAN_LL, // Arctangent
+    _FPOW_LL,  // Power
+    _FLOG_LL,  // Natural Log
+    _FEXP_LL,  // Exponentiation
 
     // Two operand float negate
     _FNEG_LL,
