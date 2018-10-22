@@ -25,12 +25,18 @@ namespace Opcode {
     _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
     _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
 
-    _LOAD_D_L, // Load data symbol to local
-    _LOAD_D_I, // Load data symbol to indirect
-    _LOAD_C_L, // Load code synbol to local
-    _LOAD_C_I, // Load code symbol to indirect
+    _LOAD_D_L, // Load data symbol to local variable
+    _LOAD_D_I, // Load data symbol to indirect variable
+    _LOAD_C_L, // Load code synbol to local variable
+    _LOAD_C_I, // Load code symbol to indirect variable
+
+    _ADDR_L_L, // Get address of local variable into local variable
+    _ADDR_L_I, // Get address of local variable into indirect variable
+
     _LOAD_L_I, // Load local reference to indirection register
     _SAVE_I_L, // Save indirection register to local
+
+    _LOADH_L,  // Load host lookup to local
 
     _COPY_LL,  // Copy a local scalar to a local scalar
     _COPY_IL,  // Copy an indirect scalar to a local
@@ -142,20 +148,20 @@ namespace Opcode {
     _LSL_ILL,
     _LSL_LLI,
     _LSL_ILI,
-    _LSL_LIL,
-    _LSL_IIL,
-    _LSL_LII,
-    _LSL_III,
 
     // Three operand logical shift right
     _LSR_LLL, // Noncommutative
     _LSR_ILL,
     _LSR_LLI,
     _LSR_ILI,
-    _LSR_LIL,
-    _LSR_IIL,
-    _LSR_LII,
-    _LSR_III,
+
+    // Bitfield operations. Extract or insert a field of up to 8-bits within an integer
+    _BFX_LSL, // Extract an bitfield
+    _BFX_ISL, // Extract an bitfield
+    _BFX_LSI, // Extract an bitfield
+    _BFI_LSL, // Insert an bitfield
+    _BFI_ISL, // Insert an bitfield
+    _BFI_LSI, // Insert an bitfield
 
     _MAX_LLL, // Commutative, 5 unique variants
     _MAX_ILL,
@@ -183,20 +189,15 @@ namespace Opcode {
     _FBGT_LI,
     _FBGT_II,
 
-    _FLOAD_CL, // Load floating point constant to local
-
     // Two operand, local to local handy maths functions
     _FINV_LL,  // Reciprocal
     _FSQRT_LL, // Square root
+    _INVSQ_LL, // Inverse square
     _FSIN_LL,  // Sine
     _FCOS_LL,  // Cosine
-    _FTAN_LL,  // Tangent
-    _FASIN_LL, // Arcsine
     _FACOS_LL, // Arccosine
-    _FATAN_LL, // Arctangent
     _FPOW_LL,  // Power
-    _FLOG_LL,  // Natural Log
-    _FEXP_LL,  // Exponentiation
+
 
     // Two operand float negate
     _FNEG_LL,
