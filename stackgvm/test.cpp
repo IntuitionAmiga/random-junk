@@ -26,12 +26,13 @@ namespace Opcode {
     _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
 
 
-    _LADDR_CL, // Load code synbol to local variable
-    _LADDR_CI, // Load code symbol to indirect variable
-    _LADDR_LL, // Get address of local variable into local variable
-    _LADDR_DL, // Load the address of a global data symbol to a local variable
-    _LADDR_DI, // Load the address of a global data symbol to an indirect variable
-    _LADDR_DX, // Load the address of a global data synbol directly into an index register
+    _ADDR_LL, // Get address of local variable into local variable
+    _ADDR_IL,
+    _ADDR_DL, // Load the address of a global data symbol to a local variable
+    _ADDR_DI, // Load the address of a global data symbol to an indirect variable
+    _ADDR_DX, // Load the address of a global data synbol directly into an index register
+    _ADDR_CL, // Load code synbol to local variable
+    _ADDR_CI, // Load code symbol to indirect variable
 
     _LOAD_LX, // Load local reference to index register
     _SAVE_XL, // Save indirection index to local
