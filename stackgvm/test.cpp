@@ -25,18 +25,18 @@ namespace Opcode {
     _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
     _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
 
-    _LOAD_D_L, // Load data symbol to local variable
-    _LOAD_D_I, // Load data symbol to indirect variable
-    _LOAD_C_L, // Load code synbol to local variable
-    _LOAD_C_I, // Load code symbol to indirect variable
 
-    _ADDR_L_L, // Get address of local variable into local variable
-    _ADDR_L_I, // Get address of local variable into indirect variable
+    _LADDR_CL, // Load code synbol to local variable
+    _LADDR_CI, // Load code symbol to indirect variable
+    _LADDR_LL, // Get address of local variable into local variable
+    _LADDR_DL, // Load the address of a global data symbol to a local variable
+    _LADDR_DI, // Load the address of a global data symbol to an indirect variable
+    _LADDR_DX, // Load the address of a global data synbol directly into an index register
 
-    _LOAD_L_I, // Load local reference to indirection register
-    _SAVE_I_L, // Save indirection register to local
+    _LOAD_LX, // Load local reference to index register
+    _SAVE_XL, // Save indirection index to local
 
-    _LOADH_L,  // Load host lookup to local
+    _LOAD_HL,  // Load host lookup to local
 
     _COPY_LL,  // Copy a local scalar to a local scalar
     _COPY_IL,  // Copy an indirect scalar to a local
@@ -65,6 +65,17 @@ namespace Opcode {
     // Load small literal integer
     _LOAD_SL,
     _LOAD_SI,
+
+    // Single bit operations
+    _BSET_SL, // Set bit in local
+    _BSET_SI, // Set bit in indirect
+    _BCLR_SL, // Clear bit in local
+    _BCLR_SI, // Clear bit in indirect
+    _BBS_LS,  // Branch if bit is set (local)
+    _BBS_IS,  // Branch if bit is set (indirect)
+    _BBC_LS,  // Branch if bit is clear (local)
+    _BBC_IS,  // Branch if bit os clear (indirect)
+
 
     // Two operand logical negate
     _NOT_LL,
@@ -156,12 +167,12 @@ namespace Opcode {
     _LSR_ILI,
 
     // Bitfield operations. Extract or insert a field of up to 8-bits within an integer
-    _BFX_LSL, // Extract an bitfield
-    _BFX_ISL, // Extract an bitfield
-    _BFX_LSI, // Extract an bitfield
-    _BFI_LSL, // Insert an bitfield
-    _BFI_ISL, // Insert an bitfield
-    _BFI_LSI, // Insert an bitfield
+    _BFX_LSL, // Extract n bitfield
+    _BFX_ISL, // Extract a bitfield
+    _BFX_LSI, // Extract a bitfield
+    _BFI_LSL, // Insert a bitfield
+    _BFI_ISL, // Insert a bitfield
+    _BFI_LSI, // Insert a bitfield
 
     _MAX_LLL, // Commutative, 5 unique variants
     _MAX_ILL,
