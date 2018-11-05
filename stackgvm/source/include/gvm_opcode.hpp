@@ -1,7 +1,7 @@
 /**
- * TYTLGVM
+ * TOYTL - GVM
  *
- * Twenty Years Too Late Game Virtual Machine
+ * Twenty Odd Years Too Late Game Virtual Machine
  */
 
 #ifndef _GVM_OPCODE_HPP_
