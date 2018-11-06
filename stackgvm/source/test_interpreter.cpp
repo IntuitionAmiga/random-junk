@@ -15,7 +15,7 @@ uint8 _gvm_add[] = {
 };
 
 
-Function functionTable[] = {
+FuncInfo functionTable[] = {
   { 0, 0, 0, 0, 0 },           // index 0 must be null
   { _gvm_add, 3, 1, 2, 0 },
   { 0, 0, 0, 0, 0 }            // Null termimated set
