@@ -55,34 +55,39 @@ namespace GVM {
         float32 f;
     };
 
+    /**
+     * Interpreter
+     *
+     * Main execution engine.
+     */
     class Interpreter {
-    public:
-        enum {
-            MIN_CALL_DEPTH = 8,
-            MAX_CALL_DEPTH = 256,
-            MIN_STACK_SIZE = FuncInfo::MAX_FRAME_SIZE,
-            MAX_STACK_SIZE = FuncInfo::MAX_FRAME_SIZE * MAX_CALL_DEPTH,
-            REDZONE_BUFFER = 128
-        };
-        static bool init(size_t rSize, size_t fSize, const FuncInfo* table);
-        static bool execute(uint16 functionId);
-        static void done();
+        public:
+            enum {
+                MIN_CALL_DEPTH = 8,
+                MAX_CALL_DEPTH = 256,
+                MIN_STACK_SIZE = FuncInfo::MAX_FRAME_SIZE,
+                MAX_STACK_SIZE = FuncInfo::MAX_FRAME_SIZE * MAX_CALL_DEPTH,
+                REDZONE_BUFFER = 128
+            };
+            static bool init(size_t rSize, size_t fSize, const FuncInfo* table);
+            static bool execute(uint16 functionId);
+            static void done();
 
-    private:
-        static void*           workingSet;
+        private:
+            static void*           workingSet;
 
-        static const CallInfo* callStack;
-        static const CallInfo* callStackBase;
-        static const CallInfo* callStackTop;
-        static Scalar*         frameStack;
-        static Scalar*         frameStackBase;
-        static Scalar*         frameStackTop;
-        static Scalar*         indirect[3];
-        static const uint8*    programCounter;
+            static const CallInfo* callStack;
+            static const CallInfo* callStackBase;
+            static const CallInfo* callStackTop;
+            static Scalar*         frameStack;
+            static Scalar*         frameStackBase;
+            static Scalar*         frameStackTop;
+            static Scalar*         indirect[3];
+            static const uint8*    programCounter;
 
-        static const FuncInfo* functionTable;
-        static uint32          functionTableSize;
-        static bool validateFunctionTable(const FuncInfo* table);
+            static const FuncInfo* functionTable;
+            static uint32          functionTableSize;
+            static bool validateFunctionTable(const FuncInfo* table);
     };
 
 };

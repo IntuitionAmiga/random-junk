@@ -9,22 +9,27 @@
 
 namespace GVM {
 
+    /**
+     * FloatClock
+     *
+     * Measures wall time in 32-bit floating point seconds.
+     */
     class FloatClock {
-    private:
-        static struct timezone  tz;
-        timeval mark;
+        private:
+            static struct timezone  tz;
+            timeval mark;
 
-    public:
-        void set() {
-            gettimeofday(&mark, &tz);
-        }
+        public:
+            void set() {
+                gettimeofday(&mark, &tz);
+            }
 
-        float32 elapsed();
+            float32 elapsed();
 
-    public:
-        FloatClock() {
-            set();
-        }
+        public:
+            FloatClock() {
+                set();
+            }
     };
 
 }
