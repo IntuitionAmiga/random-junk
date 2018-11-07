@@ -1,7 +1,7 @@
 # Project: TOYTL - GVM
 
 # Target
-BIN      = bin/gamevm_x86
+BIN      = bin/gamevm_x86_exe
 
 # Compiler settings
 CXXFLAGS = -O3 -Wall -W -m32 -march=native -mfpmath=sse -fomit-frame-pointer -fno-exceptions -fexpensive-optimizations -D_VM_HOST_OS=_VM_HOST_LINUX_INTEL_32
