@@ -9,23 +9,23 @@
 
 namespace GVM {
 
-  class FloatClock {
+    class FloatClock {
     private:
-      static struct timezone  tz;
-      timeval mark;
+        static struct timezone  tz;
+        timeval mark;
 
     public:
-      void set() {
-         gettimeofday(&mark, &tz);
-      }
+        void set() {
+            gettimeofday(&mark, &tz);
+        }
 
-      float32 elapsed();
+        float32 elapsed();
 
     public:
-      FloatClock() {
-        set();
-      }
-  };
+        FloatClock() {
+            set();
+        }
+    };
 
 }
 
