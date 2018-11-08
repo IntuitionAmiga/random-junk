@@ -15,13 +15,10 @@ void*           Interpreter::workingSet        = 0;
 const CallInfo* Interpreter::callStack         = 0;
 const CallInfo* Interpreter::callStackBase     = 0;
 const CallInfo* Interpreter::callStackTop      = 0;
-
 Scalar*         Interpreter::frameStack        = 0;
 Scalar*         Interpreter::frameStackBase    = 0;
 Scalar*         Interpreter::frameStackTop     = 0;
-
 const uint8*    Interpreter::programCounter    = 0;
-Scalar*         Interpreter::indirect[3]       = { 0, 0, 0 };
 const FuncInfo* Interpreter::functionTable     = 0;
 uint32          Interpreter::functionTableSize = 0;
 

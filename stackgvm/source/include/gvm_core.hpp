@@ -83,9 +83,7 @@ namespace GVM {
             static Scalar*         frameStack;
             static Scalar*         frameStackBase;
             static Scalar*         frameStackTop;
-            static Scalar*         indirect[3];
             static const uint8*    programCounter;
-
             static const FuncInfo* functionTable;
             static uint32          functionTableSize;
             static bool validateFunctionTable(const FuncInfo* table);
