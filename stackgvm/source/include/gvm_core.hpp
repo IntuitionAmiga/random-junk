@@ -12,6 +12,17 @@
 namespace GVM {
 
     /**
+     * Scalar
+     *
+     * Basic machine datatype.
+     */
+    union Scalar {
+        int32   i;
+        uint32  u;
+        float32 f;
+    };
+
+    /**
      * FuncInfo
      *
      * Describes the runtime resolved properties of an enumerated, callable function.
@@ -39,20 +50,10 @@ namespace GVM {
      */
     struct CallInfo {
         const uint8* returnAddress;
+        Scalar*      indirection[2];
         uint16       functionId;
         uint8        frameSize;
         uint8        reserved;
-    };
-
-    /**
-     * Scalar
-     *
-     * Basic machine datatype.
-     */
-    union Scalar {
-        int32   i;
-        uint32  u;
-        float32 f;
     };
 
     /**

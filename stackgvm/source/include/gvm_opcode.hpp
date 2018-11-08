@@ -34,7 +34,6 @@ namespace GVM {
             _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
             _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
 
-
             _ADDR_LL, // Get address of local variable into local variable
             _ADDR_IL,
             _ADDR_DL, // Load the address of a global data symbol to a local variable
@@ -86,7 +85,6 @@ namespace GVM {
             _BBC_LS,  // Branch if bit is clear (local)
             _BBC_IS,  // Branch if bit os clear (indirect)
 
-
             // Two operand logical negate
             _NOT_LL,
             _NOT_IL,
@@ -99,79 +97,71 @@ namespace GVM {
             _NEG_LI,
             _NEG_II,
 
-            // Three operand integer addition
-            _ADD_LLL, // Commutative, 5 unique variants
+            // Three operand integer addition: Commutative, 4 unique variants
+            _ADD_LLL,
             _ADD_ILL,
             _ADD_LLI,
             _ADD_ILI,
-            _ADD_III,
 
-            // Three operand integer subtraction
-            _SUB_LLL, // Noncommutative, all 8 variants needed
+            // Three operand integer subtraction: Noncommutative, 7 unique variants
+            _SUB_LLL,
             _SUB_ILL,
             _SUB_LLI,
             _SUB_ILI,
             _SUB_LIL,
             _SUB_IIL,
             _SUB_LII,
-            _SUB_III,
 
-            // Three operand integer multiplication
-            _MUL_LLL, // Commutative, 5 unique variants
+            // Three operand integer multiplication: Commutative, 4 unique variants
+            _MUL_LLL,
             _MUL_ILL,
             _MUL_LLI,
             _MUL_ILI,
-            _MUL_III,
 
-            // Three operand integer division
-            _DIV_LLL, // Noncommutative, all 8 variants needed
+            // Three operand integer division: Noncommutative, 7 unique variants
+            _DIV_LLL,
             _DIV_ILL,
             _DIV_LLI,
             _DIV_ILI,
             _DIV_LIL,
             _DIV_IIL,
             _DIV_LII,
-            _DIV_III,
 
-            // Three operand integer modulo
-            _MOD_LLL, // Noncommutative, all 8 variants needed
+            // Three operand integer modulo: Noncommutative, 7 unique variants
+            _MOD_LLL,
             _MOD_ILL,
             _MOD_LLI,
             _MOD_ILI,
             _MOD_LIL,
             _MOD_IIL,
             _MOD_LII,
-            _MOD_III,
 
-            // Three operand logical AND
-            _AND_LLL, // Commutative, 5 unique variants
+            // Three operand logical AND: Commutative, 4 unique variants
+            _AND_LLL,
             _AND_ILL,
             _AND_LLI,
             _AND_ILI,
-            _AND_III,
 
-            // Three operand logical OR
-            _OR_LLL, // Commutative, 5 unique variants
+            // Three operand logical OR: Commutative, 4 unique variants
+            _OR_LLL,
             _OR_ILL,
             _OR_LLI,
             _OR_ILI,
-            _OR_III,
 
-            // Three operand logical XOR
-            _XOR_LLL, // Commutative, 5 unique variants
+            // Three operand logical XOR: Commutative, 4 unique variants
+            _XOR_LLLs,
             _XOR_ILL,
             _XOR_LLI,
             _XOR_ILI,
-            _XOR_III,
 
-            // Three operand logical shift left
-            _LSL_LLL, // Noncommutative
+            // Three operand logical shift left: Noncommutative, 4 supported variants
+            _LSL_LLL,
             _LSL_ILL,
             _LSL_LLI,
             _LSL_ILI,
 
-            // Three operand logical shift right
-            _LSR_LLL, // Noncommutative
+            // Three operand logical shift right: Noncommutative, 4 supported variants
+            _LSR_LLL,
             _LSR_ILL,
             _LSR_LLI,
             _LSR_ILI,
@@ -184,17 +174,17 @@ namespace GVM {
             _BFI_ISL, // Insert a bitfield
             _BFI_LSI, // Insert a bitfield
 
-            _MAX_LLL, // Commutative, 5 unique variants
+            // Integer Maximum: Commutative, 4 unique variants
+            _MAX_LLL,
             _MAX_ILL,
             _MAX_LLI,
             _MAX_ILI,
-            _MAX_III,
 
-            _MIN_LLL, // Commutative, 5 unique variants
+            // Integer Minumum: Commutative, 4 unique variants
+            _MIN_LLL,
             _MIN_ILL,
             _MIN_LLI,
             _MIN_ILI,
-            _MIN_III,
 
             // Floating point specific instructions ////////////////////////////////////////////////////////////////////
 
@@ -226,61 +216,56 @@ namespace GVM {
             _FNEG_LI,
             _FNEG_II,
 
-            // Three operand float addition
-            _FADD_LLL, // Commutative, 5 unique variants
+            // Three operand float addition: Commutative, 4 unique variants
+            _FADD_LLL,
             _FADD_ILL,
             _FADD_LLI,
             _FADD_ILI,
-            _FADD_III,
 
-            // Three operand float subtraction
-            _FSUB_LLL, // Noncommutative
+            // Three operand float subtraction: Noncommutative, 7 unique variants
+            _FSUB_LLL,
             _FSUB_ILL,
             _FSUB_LLI,
             _FSUB_ILI,
             _FSUB_LIL,
             _FSUB_IIL,
             _FSUB_LII,
-            _FSUB_III,
 
-            // Three operand float multiplication
-            _FMUL_LLL, // Commutative, 5 unique variants
+            // Three operand float multiplication: Commutative, 4 unique variants
+            _FMUL_LLL,
             _FMUL_ILL,
             _FMUL_LLI,
             _FMUL_ILI,
-            _FMUL_III,
 
-            // Three operand float division
-            _FDIV_LLL, // Noncommutative
+            // Three operand float division: Noncommutative, 7 unique variants
+            _FDIV_LLL,
             _FDIV_ILL,
             _FDIV_LLI,
             _FDIV_ILI,
             _FDIV_LIL,
             _FDIV_IIL,
             _FDIV_LII,
-            _FDIV_III,
 
-            // Three operand float modulo
-            _FMOD_LLL, // Noncommutative
+            // Three operand float modulo: Noncommutative, 7 unique variants
+            _FMOD_LLL,
             _FMOD_ILL,
             _FMOD_LLI,
             _FMOD_ILI,
             _FMOD_LIL,
             _FMOD_IIL,
             _FMOD_LII,
-            _FMOD_III,
 
-            _FMAX_LLL, // Commutative, 5 unique variants
+            // Floating Point Maximum: Commutative, 4 unique variants
+            _FMAX_LLL,
             _FMAX_ILL,
             _FMAX_LLI,
             _FMAX_ILI,
-            _FMAX_III,
 
-            _FMIN_LLL, // Commutative, 5 unique variants
+            // Floating Point Minimum: Commutative, 4 unique variants
+            _FMIN_LLL,
             _FMIN_ILL,
             _FMIN_LLI,
             _FMIN_ILI,
-            _FMIN_III,
 
             // Vector specific instructions ////////////////////////////////////////////////////////////////////////////
 
@@ -320,49 +305,44 @@ namespace GVM {
 
             // Three operand vector instructions
 
-            // Vector addition
-            _VADD_LLL, // Commutative
+            // Vector addition: Commutative, 4 unique variants
+            _VADD_LLL,
             _VADD_ILL,
             _VADD_LLI,
             _VADD_ILI,
-            _VADD_III,
 
-            // Vector subtraction
-            _VSUB_LLL, // Noncommutative
+            // Vector subtraction: Noncommutative, 7 unique variants
+            _VSUB_LLL,
             _VSUB_ILL,
             _VSUB_LLI,
             _VSUB_ILI,
             _VSUB_LIL,
             _VSUB_IIL,
             _VSUB_LII,
-            _VSUB_III,
 
-            // Dot product (scalar result)
-            _VDOT_LLL, // Commutative
+            // Dot product (scalar result): Commutative, 4 unique variants
+            _VDOT_LLL,
             _VDOT_ILL,
             _VDOT_LLI,
             _VDOT_ILI,
-            _VDOT_III,
 
-            // Cross product (vector result)
-            _VCROSS_LLL, // Noncommutative
+            // Cross product (vector result): Noncommutative, 7 unique variants
+            _VCROSS_LLL,
             _VCROSS_ILL,
             _VCROSS_LLI,
             _VCROSS_ILI,
             _VCROSS_LIL,
             _VCROSS_IIL,
             _VCROSS_LII,
-            _VCROSS_III,
 
-            // Vector multiply by float
-            _VFMUL_LLL, // Commutative, but different input operand types
+            // Vector multiply by float: Commutative, 7 variants due to different input operand types
+            _VFMUL_LLL,
             _VFMUL_ILL,
             _VFMUL_LLI,
             _VFMUL_ILI,
             _VFMUL_LIL,
             _VFMUL_IIL,
             _VFMUL_LII,
-            _VFMUL_III,
 
             _MAX
         };
