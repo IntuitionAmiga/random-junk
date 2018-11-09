@@ -22,6 +22,8 @@ const uint8*    Interpreter::programCounter    = 0;
 const FuncInfo* Interpreter::functionTable     = 0;
 uint32          Interpreter::functionTableSize = 0;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Interpreter::Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
     if (!table) {
         std::fprintf(stderr, "GVM::Interpreter::init()\n\tFuncInfo table cannot be null\n");
@@ -106,6 +108,8 @@ Interpreter::Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo
     return SUCCESS;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Interpreter::done() {
     if (workingSet) {
         std::fprintf(stderr, "GVM::Interpreter::done()\n\tReleased working set\n");
@@ -113,6 +117,8 @@ void Interpreter::done() {
         workingSet = 0;
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Interpreter::Result Interpreter::validateFunctionTable(const FuncInfo* table) {
 
@@ -159,13 +165,28 @@ Interpreter::Result Interpreter::validateFunctionTable(const FuncInfo* table) {
     }
 
     functionTable     = table;
-    functionTableSize = id - 1;
+    functionTableSize = id;
 
-    std::fprintf(stderr, "GVM::Interpreter::validateFunctionTable()\n\tFunction table has %d callable entries\n", (int)functionTableSize);
+    std::fprintf(
+        stderr,
+        "GVM::Interpreter::validateFunctionTable()\n\tFunction table has %d callable entries\n",
+        (int)functionTableSize - 1
+    );
 
     return SUCCESS;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Interpreter::Result Interpreter::execute(uint16 functionId) {
+    if (functionId == 0 || functionId > functionTableSize) {
+        return EXEC_ILLEGAL_CALL_ID;
+    }
+
+    initCallInfo(0, functionId, functionTable[functionId].frameSize);
+
     return SUCCESS;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
