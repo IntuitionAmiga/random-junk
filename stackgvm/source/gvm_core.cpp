@@ -10,27 +10,33 @@
 
 using namespace GVM;
 
-void*           Interpreter::workingSet        = 0;
+void*     Interpreter::workingSet        = 0;
+CallInfo* Interpreter::callStack         = 0;
+CallInfo* Interpreter::callStackBase     = 0;
+CallInfo* Interpreter::callStackTop      = 0;
+Scalar*   Interpreter::frameStack        = 0;
+Scalar*   Interpreter::frameStackBase    = 0;
+Scalar*   Interpreter::frameStackTop     = 0;
 
-const CallInfo* Interpreter::callStack         = 0;
-const CallInfo* Interpreter::callStackBase     = 0;
-const CallInfo* Interpreter::callStackTop      = 0;
-Scalar*         Interpreter::frameStack        = 0;
-Scalar*         Interpreter::frameStackBase    = 0;
-Scalar*         Interpreter::frameStackTop     = 0;
 const uint8*    Interpreter::programCounter    = 0;
 const FuncInfo* Interpreter::functionTable     = 0;
 uint32          Interpreter::functionTableSize = 0;
 
-bool Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
+Interpreter::Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
     if (!table) {
         std::fprintf(stderr, "GVM::Interpreter::init()\n\tFuncInfo table cannot be null\n");
-        return false;
+        return MISC_ILLEGAL_VALUE;
     }
 
     if (rSize < MIN_CALL_DEPTH || rSize > MAX_CALL_DEPTH) {
-        std::fprintf(stderr, "GVM::Interpreter::init()\n\tReturn Stack Size %d is not in range %d - %d\n", (int)rSize, MIN_CALL_DEPTH, MAX_CALL_DEPTH);
-        return false;
+        std::fprintf(
+            stderr,
+            "GVM::Interpreter::init()\n\tReturn Stack Size %d is not in range %d - %d\n",
+            (int)rSize,
+            MIN_CALL_DEPTH,
+            MAX_CALL_DEPTH
+        );
+        return MISC_ILLEGAL_VALUE;
     }
 
     if (fSize == 0) {
@@ -38,8 +44,14 @@ bool Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
     }
 
     if (fSize < MIN_STACK_SIZE || fSize > MAX_STACK_SIZE) {
-        std::fprintf(stderr, "GVM::Interpreter::init()\n\tFrame Stack Size %d is not in range %d - %d\n", (int)fSize, MIN_STACK_SIZE, MAX_STACK_SIZE);
-        return false;
+        std::fprintf(
+            stderr,
+            "GVM::Interpreter::init()\n\tFrame Stack Size %d is not in range %d - %d\n",
+            (int)fSize,
+            MIN_STACK_SIZE,
+            MAX_STACK_SIZE
+        );
+        return MISC_ILLEGAL_VALUE;
     }
 
     size_t callStackSize   = rSize * sizeof(CallInfo);
@@ -61,17 +73,19 @@ bool Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
     uint8* readySet = (uint8*)std::calloc(totalAllocation, sizeof(uint8));
     if (!readySet) {
         std::fprintf(stderr, "GVM::Interpreter::init()\n\tCould not allocate working set\n");
-        return false;
+        return INIT_OUT_OF_MEMORY;
     }
 
-    if (!validateFunctionTable(table)) {
+    Result result = validateFunctionTable(table);
+
+    if (result != SUCCESS) {
         std::free(readySet);
-        return false;
+        return result;
     }
 
     workingSet = readySet;
 
-    callStackBase      = callStack = (const CallInfo*)readySet;
+    callStackBase      = callStack = ( CallInfo*)readySet;
     callStackTop       = &callStackBase[rSize-1];
 
     frameStackBase     = frameStack = (Scalar*)(readySet + callStackSize) + REDZONE_BUFFER;
@@ -89,7 +103,7 @@ bool Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
         frameStackTop,
         functionTable
     );
-    return true;
+    return SUCCESS;
 }
 
 void Interpreter::done() {
@@ -100,11 +114,11 @@ void Interpreter::done() {
     }
 }
 
-bool Interpreter::validateFunctionTable(const FuncInfo* table) {
+Interpreter::Result Interpreter::validateFunctionTable(const FuncInfo* table) {
 
     if (table[0].entryPoint) {
         std::fprintf(stderr, "Function table entry zero must be empty\n");
-        return false;
+        return INIT_INVALID_FRAME_DEF;
     }
 
     const char* illegalSizeMessageTemplate =
@@ -119,27 +133,27 @@ bool Interpreter::validateFunctionTable(const FuncInfo* table) {
                 "GVM::Interpreter::validateFunctionTable()\n\tFunction table too long, exceeded %d entries\n",
                 FuncInfo::MAX_ID
             );
-            return false;
+            return INIT_TABLE_TOO_BIG;
         }
         if (table[id].frameSize > FuncInfo::MAX_LOCAL_SIZE) {
             std::fprintf(stderr, illegalSizeMessageTemplate, id, "illegal frame", (int)table[id].frameSize);
-            return false;
+            return INIT_INVALID_FRAME_DEF;
         }
         if (table[id].returnSize > FuncInfo::MAX_RETURN_SIZE) {
             std::fprintf(stderr, illegalSizeMessageTemplate, id, "illegal return", (int)table[id].returnSize);
-            return false;
+            return INIT_INVALID_FRAME_DEF;
         }
         if (table[id].paramSize > FuncInfo::MAX_PARAM_SIZE) {
             std::fprintf(stderr, illegalSizeMessageTemplate, id, "illegal param", (int)table[id].paramSize);
-            return false;
+            return INIT_INVALID_FRAME_DEF;
         }
         if (table[id].localSize > FuncInfo::MAX_LOCAL_SIZE) {
             std::fprintf(stderr, illegalSizeMessageTemplate, id, "illegal local", (int)table[id].localSize);
-            return false;
+            return INIT_INVALID_FRAME_DEF;
         }
         if (table[id].frameSize != (table[id].returnSize + table[id].paramSize + table[id].localSize)) {
             std::fprintf(stderr, illegalSizeMessageTemplate, id, "inconsistent frame", (int)table[id].frameSize);
-            return false;
+            return INIT_INVALID_FRAME_DEF;
         }
         ++id;
     }
@@ -149,9 +163,9 @@ bool Interpreter::validateFunctionTable(const FuncInfo* table) {
 
     std::fprintf(stderr, "GVM::Interpreter::validateFunctionTable()\n\tFunction table has %d callable entries\n", (int)functionTableSize);
 
-    return true;
+    return SUCCESS;
 }
 
-bool Interpreter::execute(uint16 functionId) {
-    return false;
+Interpreter::Result Interpreter::execute(uint16 functionId) {
+    return SUCCESS;
 }
