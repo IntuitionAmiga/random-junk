@@ -111,6 +111,9 @@ namespace GVM {
                 callStack->frameSize     = fs;
             }
 
+            static Result enterFunction(const uint8* returnAddress, uint16 functionId, uint8 frameSize = 0);
+            static Result exitFunction();
+
             static Result validateFunctionTable(const FuncInfo* table);
     };
 

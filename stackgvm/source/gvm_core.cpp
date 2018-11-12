@@ -56,7 +56,7 @@ Interpreter::Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo
         return MISC_ILLEGAL_VALUE;
     }
 
-    size_t callStackSize   = rSize * sizeof(CallInfo);
+    size_t callStackSize   = (1 + rSize) * sizeof(CallInfo);
     size_t frameStackSize  = (fSize + REDZONE_BUFFER * 2) * sizeof(Scalar);
     size_t totalAllocation = callStackSize + frameStackSize;
 
@@ -64,7 +64,7 @@ Interpreter::Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo
         stderr,
         "GVM::Interpreter::init()\n"
         "\tRequire %d bytes for working set:\n"
-        "\t%d bytes for call stack  (%d of %d bytes each)\n"
+        "\t%d bytes for call stack  (%d [+1 redzone] of %d bytes each)\n"
         "\t%d bytes for frame stack (%d of %d bytes each, including start and end red zones of %d entries each)\n",
         (int)totalAllocation,
         (int)callStackSize, (int)rSize, (int)sizeof(CallInfo),
@@ -87,7 +87,10 @@ Interpreter::Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo
 
     workingSet = readySet;
 
-    callStackBase      = callStack = ( CallInfo*)readySet;
+    // Bookend entry so that we don't have to edge case checks for the first entry point
+    readySet += sizeof(CallInfo);
+
+    callStackBase      = callStack = (CallInfo*)readySet;
     callStackTop       = &callStackBase[rSize-1];
 
     frameStackBase     = frameStack = (Scalar*)(readySet + callStackSize) + REDZONE_BUFFER;
@@ -179,14 +182,35 @@ Interpreter::Result Interpreter::validateFunctionTable(const FuncInfo* table) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Interpreter::Result Interpreter::execute(uint16 functionId) {
-    if (functionId == 0 || functionId > functionTableSize) {
+    if (functionId == 0) {
         return EXEC_ILLEGAL_CALL_ID;
     }
+    Result result = enterFunction(0, functionId);
 
-    initCallInfo(0, functionId, functionTable[functionId].frameSize);
-
-    return SUCCESS;
+    return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+Interpreter::Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId, uint8 frameSize) {
+    if (functionId > functionTableSize) {
+        return EXEC_ILLEGAL_CALL_ID;
+    }
+    if (callStack < callStackTop) {
+        uint32 currentFrameSize = callStack->frameSize;
+        if (frameStack + currentFrameSize > frameStackTop) {
+            return EXEC_FRAME_STACK_OVERFLOW;
+        }
+        frameStack += currentFrameSize;
+        ++callStack;
+        callStack->returnAddress = returnAddress;
+        callStack->functionId    = functionId;
+        callStack->frameSize     = frameSize ? frameSize : functionTable[functionId].frameSize;
+        return SUCCESS;
+    }
+    return EXEC_CALL_STACK_OVERFLOW;
+}
+
+Interpreter::Result Interpreter::exitFunction() {
+
+}
