@@ -272,10 +272,3 @@ Interpreter::Result Interpreter::exitFunction() {
     }
     return EXEC_CALL_STACK_UNDERFLOW;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Interpreter::Result Interpreter::run() {
-    frameStack[0].i = frameStack[1].i + frameStack[2].i;
-    return exitFunction();
-}
