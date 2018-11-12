@@ -72,23 +72,36 @@ namespace GVM {
             };
 
             typedef enum {
-                SUCCESS                   = 0,
-                EXEC_HALT_AND_CATCH_FIRE  = 1,
-                EXEC_CALL_STACK_OVERFLOW  = 2,
-                EXEC_FRAME_STACK_OVERFLOW = 3,
-                EXEC_ILLEGAL_CALL_ID      = 4,
-                EXEC_ILLEGAL_HOST_ID      = 5,
-                EXEC_ILLEGAL_DATA_ID      = 6,
-                INIT_OUT_OF_MEMORY        = 100,
-                INIT_TABLE_TOO_BIG        = 101,
-                INIT_INVALID_FRAME_DEF    = 102,
-                MISC_ILLEGAL_VALUE        = 1000
+                SUCCESS                    = 0,
+
+                // Runtime execution result statuses
+                EXEC_RETURN_TO_HOST        = 1,
+                EXEC_HALT_AND_CATCH_FIRE   = 2,
+                EXEC_CALL_STACK_OVERFLOW   = 3,
+                EXEC_CALL_STACK_UNDERFLOW  = 4,
+                EXEC_FRAME_STACK_OVERFLOW  = 5,
+                EXEC_FRAME_STACK_UNDERFLOW = 6,
+                EXEC_ILLEGAL_CALL_ID       = 7,
+                EXEC_ILLEGAL_HOST_ID       = 8,
+                EXEC_ILLEGAL_DATA_ID       = 9,
+
+                // Initialisation failures
+                INIT_OUT_OF_MEMORY         = 100,
+                INIT_TABLE_TOO_BIG         = 101,
+                INIT_INVALID_FRAME_DEF     = 102,
+
+                // Miscellaneous failures
+                MISC_ILLEGAL_VALUE         = 1000
 
             } Result;
 
-            static Result init(size_t rSize, size_t fSize, const FuncInfo* table);
-            static Result execute(uint16 functionId);
-            static void   done();
+            static Result  init(size_t rSize, size_t fSize, const FuncInfo* table);
+            static Result  invoke(uint16 functionId);
+            static void    done();
+
+            static Scalar* stack() {
+                return frameStack;
+            }
 
         private:
             // Primary allocation for all stack data
@@ -105,15 +118,9 @@ namespace GVM {
             static const FuncInfo* functionTable;
             static uint32          functionTableSize;
 
-            static void initCallInfo(const uint8* ret, uint16 id, uint8 fs) {
-                callStack->returnAddress = ret;
-                callStack->functionId    = id;
-                callStack->frameSize     = fs;
-            }
-
             static Result enterFunction(const uint8* returnAddress, uint16 functionId, uint8 frameSize = 0);
             static Result exitFunction();
-
+            static Result run();
             static Result validateFunctionTable(const FuncInfo* table);
     };
 

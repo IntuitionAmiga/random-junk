@@ -23,7 +23,29 @@ FuncInfo functionTable[] = {
 int main() {
     std::printf("Max Opcode %d\n", Opcode::_MAX);
     Interpreter::init(100, 0, functionTable);
-    Interpreter::execute(1);
+    Scalar* stack = Interpreter::stack();
+    stack[0].i = 0;
+    stack[1].i = 1;
+    stack[2].i = 2;
+
+    std::printf(
+        "\nBefore\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n",
+        stack[0].i,
+        stack[1].i,
+        stack[2].i
+    );
+
+    Interpreter::Result result = Interpreter::invoke(1);
+
+    std::printf(
+        "\nAfter\n\tResult = %d\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n",
+        result,
+        stack[0].i,
+        stack[1].i,
+        stack[2].i
+    );
+
     Interpreter::done();
+
     return 0;
 }
