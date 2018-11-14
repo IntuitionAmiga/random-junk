@@ -183,7 +183,7 @@ forever:
 
         IS(ADD_ILI) {
             // Indirect + Local -> Indirect
-            IOP(IX1, 2).i = LOP(0).i + IOP(IX0, 1).i;
+            IOP(IX1, 2).i = IOP(IX0, 0).i + LOP(1).i;
             STEP(3);
             NEXT;
         }
@@ -262,7 +262,7 @@ forever:
 
         IS(MUL_ILI) {
             // Indirect * Local -> Indirect
-            IOP(IX1, 2).i = LOP(0).i * IOP(IX0, 1).i;
+            IOP(IX1, 2).i = IOP(IX0, 0).i * LOP(1).i;
             STEP(3);
             NEXT;
         }
@@ -634,39 +634,111 @@ forever:
 
         // Three operand float addition) Commutative) 4 unique variants
         IS(FADD_LLL) {
+            // Local + Local -> Local
             LOP(2).f = LOP(0).f + LOP(1).f;
             STEP(3);
             NEXT;
         }
 
-        IS(FADD_ILL)
-        IS(FADD_LLI)
-        IS(FADD_ILI)
+        IS(FADD_ILL) {
+            // Indirect + Local -> Local
+            LOP(2).f = IOP(IX0, 0).f + LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FADD_LLI) {
+            // Local + Local -> Indirect
+            IOP(IX0, 2).f = LOP(0).f + LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FADD_ILI) {
+            // Indirect + Local -> Indirect
+            IOP(IX1, 2).f = IOP(IX0, 0).f + LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
 
         // Three operand float subtraction) Noncommutative) 7 unique variants
         IS(FSUB_LLL) {
+            // Local - Local -> Local
             LOP(2).f = LOP(0).f - LOP(1).f;
             STEP(3);
             NEXT;
         }
 
-        IS(FSUB_ILL)
-        IS(FSUB_LLI)
-        IS(FSUB_ILI)
-        IS(FSUB_LIL)
-        IS(FSUB_IIL)
-        IS(FSUB_LII)
+        IS(FSUB_ILL) {
+            // Indirect - Local -> Local
+            LOP(2).f = IOP(IX0, 0).f - LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FSUB_LLI) {
+            // Local - Local -> Indirect
+            IOP(IX0, 2).f = LOP(0).f - LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FSUB_ILI) {
+            // Indirect - Local -> Indirect
+            IOP(IX1, 2).f = IOP(IX0, 0).f - LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FSUB_LIL) {
+            // Local - Indirect -> Local
+            LOP(2).f = LOP(0).f - IOP(IX0, 0).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FSUB_IIL) {
+            // Indirect - Indirect -> Local
+            LOP(2).f = IOP(IX0, 0).f - IOP(IX1, 1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FSUB_LII) {
+            // Local - Indirect -> Indirect
+            IOP(IX1, 2).f = LOP(0).f - IOP(IX0, 1).f;
+            STEP(3);
+            NEXT;
+        }
 
         // Three operand float multiplication) Commutative) 4 unique variants
         IS(FMUL_LLL) {
+            // Local * Local -> Local
             LOP(2).f = LOP(0).f * LOP(1).f;
             STEP(3);
             NEXT;
         }
 
-        IS(FMUL_ILL)
-        IS(FMUL_LLI)
-        IS(FMUL_ILI)
+        IS(FMUL_ILL) {
+            // Indirect * Local -> Local
+            LOP(2).f = IOP(IX0, 0).f * LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FMUL_LLI) {
+            // Local * Local -> Indirect
+            IOP(IX0, 2).f = LOP(0).f * LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FMUL_ILI) {
+            // Indirect * Local -> Indirect
+            IOP(IX1, 2).f = IOP(IX0, 0).f * LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
 
         // Three operand float division) Noncommutative) 7 unique variants
         IS(FDIV_LLL) {
@@ -675,29 +747,99 @@ forever:
             NEXT;
         }
 
-        IS(FDIV_ILL)
-        IS(FDIV_LLI)
-        IS(FDIV_ILI)
-        IS(FDIV_LIL)
-        IS(FDIV_IIL)
-        IS(FDIV_LII)
+        IS(FDIV_ILL) {
+            // Indirect / Local -> Local
+            LOP(2).f = IOP(IX0, 0).f / LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FDIV_LLI) {
+            // Local / Local -> Indirect
+            IOP(IX0, 2).f = LOP(0).f / LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FDIV_ILI) {
+            // Indirect / Local -> Indirect
+            IOP(IX1, 2).f = IOP(IX0, 0).f / LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FDIV_LIL) {
+            // Local / Indirect -> Local
+            LOP(2).f = IOP(IX0, 0).f / LOP(1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FDIV_IIL) {
+            // Indirect / Indirect -> Local
+            LOP(2).f = IOP(IX0, 0).f / IOP(IX1, 1).f;
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FDIV_LII) {
+            // Local / Indirect -> Indirect
+            IOP(IX1, 2).f = LOP(0).f / IOP(IX0, 1).f;
+            STEP(3);
+            NEXT;
+        }
 
         // Three operand float modulo) Noncommutative) 7 unique variants
-        IS(FMOD_LLL)
-        IS(FMOD_ILL)
-        IS(FMOD_LLI)
-        IS(FMOD_ILI)
-        IS(FMOD_LIL)
-        IS(FMOD_IIL)
-        IS(FMOD_LII)
-
-        // Floating Point Maximum) Commutative) 4 unique variants
-        IS(FMAX_LLL) {
+        IS(FMOD_LLL) {
             LOP(2).f = std::fmod(LOP(0).f, LOP(1).f);
             STEP(3);
             NEXT;
         }
 
+        IS(FMOD_ILL) {
+            // Indirect % Local -> Local
+            LOP(2).f = std::fmod(IOP(IX0, 0).f, LOP(1).f);
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FMOD_LLI) {
+            // Local % Local -> Indirect
+            IOP(IX0, 2).f = std::fmod(LOP(0).f, LOP(1).f);
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FMOD_ILI) {
+            // Indirect % Local -> Indirect
+            IOP(IX1, 2).f = std::fmod(IOP(IX0, 0).f, LOP(1).f);
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FMOD_LIL) {
+            // Local % Indirect -> Local
+            LOP(2).f = std::fmod(IOP(IX0, 0).f, LOP(1).f);
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FMOD_IIL) {
+            // Indirect % Indirect -> Local
+            LOP(2).f = std::fmod(IOP(IX0, 0).f, IOP(IX1, 1).f);
+            STEP(3);
+            NEXT;
+        }
+
+        IS(FMOD_LII) {
+            // Local % Indirect -> Indirect
+            IOP(IX1, 2).f = std::fmod(LOP(0).f, IOP(IX0, 1).f);
+            STEP(3);
+            NEXT;
+        }
+
+        // Floating Point Maximum) Commutative) 4 unique variants
+        IS(FMAX_LLL)
         IS(FMAX_ILL)
         IS(FMAX_LLI)
         IS(FMAX_ILI)
