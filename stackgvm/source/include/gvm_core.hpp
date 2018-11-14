@@ -84,6 +84,7 @@ namespace GVM {
                 EXEC_ILLEGAL_CALL_ID       = 7,
                 EXEC_ILLEGAL_HOST_ID       = 8,
                 EXEC_ILLEGAL_DATA_ID       = 9,
+                EXEC_DIVISION_BY_ZERO      = 10,
 
                 // Initialisation failures
                 INIT_OUT_OF_MEMORY         = 100,

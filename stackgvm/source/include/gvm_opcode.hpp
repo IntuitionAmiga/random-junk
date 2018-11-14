@@ -149,7 +149,7 @@ namespace GVM {
             _OR_ILI,
 
             // Three operand logical XOR: Commutative, 4 unique variants
-            _XOR_LLLs,
+            _XOR_LLL,
             _XOR_ILL,
             _XOR_LLI,
             _XOR_ILI,
