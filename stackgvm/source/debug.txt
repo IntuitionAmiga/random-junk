@@ -1,0 +1,12 @@
+Max Opcode 230
+
+Before
+	stack[0] = 0
+	stack[1] = 1
+	stack[2] = 2
+
+After
+	Result = 1
+	stack[0] = 24
+	stack[1] = 1
+	stack[2] = 2

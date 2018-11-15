@@ -202,7 +202,7 @@ Interpreter::Result Interpreter::enterFunction(const uint8* returnAddress, uint1
     if (functionId > functionTableSize) {
         std::fprintf(
             stderr,
-            "GVM::Interpreter::enterFunction()\n\tFunction Id %d is out of range 1-%d.\n",
+            "GVM::Interpreter::enterFunction(%d)\n\tID is out of range 1-%d.\n",
             (int)functionId,
             (int)functionTableSize
         );
@@ -213,7 +213,8 @@ Interpreter::Result Interpreter::enterFunction(const uint8* returnAddress, uint1
         if (frameStack + currentFrameSize > frameStackTop) {
             std::fprintf(
                 stderr,
-                "GVM::Interpreter::enterFunction()\n\tFrame Stack Overflow.\n"
+                "GVM::Interpreter::enterFunction(%d)\n\tFrame Stack Overflow.\n",
+                (int)functionId
             );
             return EXEC_FRAME_STACK_OVERFLOW;
         }
@@ -226,12 +227,12 @@ Interpreter::Result Interpreter::enterFunction(const uint8* returnAddress, uint1
 
         std::fprintf(
             stderr,
-            "GVM::Interpreter::enterFunction()\n\tFunction Id:%d, Frame Address %p [size: %d], Return Address: %p, PC %p.\n",
-             (int)functionId,
-             frameStack,
-             (int)callStack->frameSize,
-             returnAddress,
-             programCounter
+            "GVM::Interpreter::enterFunction(%d) {\n\tAddress: %p\n\tSize: %d\n\tReturn Address: %p\n\tPC Entry: %p\n}\n",
+            (int)functionId,
+            frameStack,
+            (int)callStack->frameSize,
+            returnAddress,
+            programCounter
         );
 
         return SUCCESS;
@@ -239,7 +240,8 @@ Interpreter::Result Interpreter::enterFunction(const uint8* returnAddress, uint1
 
     std::fprintf(
         stderr,
-        "GVM::Interpreter::enterFunction()\n\tCall Stack overflowed.\n"
+        "GVM::Interpreter::enterFunction(%d)\n\tCall Stack overflowed.\n",
+        (int)functionId
     );
     return EXEC_CALL_STACK_OVERFLOW;
 }
@@ -250,11 +252,12 @@ Interpreter::Result Interpreter::exitFunction() {
 
     if (callStack > callStackBase) {
         const uint8* returnTo = callStack->returnAddress;
+        int currentId = callStack->functionId;
         --callStack;
         if (frameStack - callStack->frameSize < frameStackBase) {
             std::fprintf(
                 stderr,
-                "GVM::Interpreter::enterFunction()\n\tFrame Stack Underflow.\n"
+                "GVM::Interpreter::exitFunction()\n\tFrame Stack Underflow.\n"
             );
             return EXEC_FRAME_STACK_UNDERFLOW;
         }
@@ -262,11 +265,10 @@ Interpreter::Result Interpreter::exitFunction() {
         programCounter = returnTo;
         std::fprintf(
             stderr,
-            "GVM::Interpreter::exitFunction()\n\tFunction Id:%d, Frame Address %p [size: %d], PC %p.\n",
-             (int)callStack->functionId,
-             frameStack,
-             (int)callStack->frameSize,
-             programCounter
+            "GVM::Interpreter::exitFunction(%d) {\n\tReturn to function:%d\n\tPC Resume: %p\n}\n",
+            currentId,
+            (int)callStack->functionId,
+            programCounter
         );
         return returnTo ? SUCCESS : EXEC_RETURN_TO_HOST;
     }

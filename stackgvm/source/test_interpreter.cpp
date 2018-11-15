@@ -9,15 +9,23 @@
 
 using namespace GVM;
 
-uint8 _gvm_test[] = {
-    Opcode::_ADD_LLL, 1, 2, 0, // fs[0] = fs[1] + fs[2]
-    Opcode::_LSL_LLL, 0, 0, 0, // fs[0] = fs[0] << fs[0]
+uint8 _gvm_test1[] = {
+    Opcode::_ADD_LLL, 1, 2, 3, // fs[3] = fs[1] + fs[2]
+    Opcode::_CALL,    0, 2,
+    Opcode::_COPY_LL, 3, 0,    // fs[0] = fs[3]
     Opcode::_RET
 };
 
+uint8 _gvm_test2[] = {
+    Opcode::_LSL_LLL, 0, 0, 0, // fs[0] = fs[1] << fs[1]
+    Opcode::_RET
+};
+
+
 FuncInfo functionTable[] = {
     { 0, 0, 0, 0, 0 },           // index 0 must be null
-    { _gvm_test, 3, 1, 2, 0 },
+    { _gvm_test1, 3, 1, 2, 0 },
+    { _gvm_test2, 1, 1, 0, 0 },
     { 0, 0, 0, 0, 0 }            // Null termimated set
 };
 

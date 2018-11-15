@@ -19,18 +19,23 @@ using namespace GVM;
 
 // Local Operand, dereferences a Scalar on the stack frame by the signed 8-bit operand.
 // Parameter is the operand byte number.
-#define LOP(operand)   (frameStack[(int8)programCounter[(operand)]])
+#define LOC(operand)   ( frameStack[(int8)programCounter[(operand)]] )
 
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
-// First parameter is the indirection pointer to use
-// Second parameter is the operand byte number
-#define IOP(idx, operand)  (callStack->indirection[(idx)][programCounter[(operand)]])
-#define IX0 0
-#define IX1 1
+#define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand)]] )
+#define IX0(operand)     ( callStack->indirection[0][programCounter[(operand)]] )
+#define IX1(operand)     ( callStack->indirection[1][programCounter[(operand)]] )
+
+// Jump displaceents
+#define J16(operand)  (int16)(((uint16)programCounter[(operand)] << 8) | programCounter[(operand)+1])
+#define J8(operand)   (int8)programCounter[(operand)]
+
+// Symbol ID
+#define SYM(operand)  (((uint16)programCounter[(operand)] << 8) | programCounter[(operand)+1])
+
+#define RTA(operand)  (programCounter + (operand))
 
 Interpreter::Result Interpreter::run() {
-    //frameStack[0].i = frameStack[1].i + frameStack[2].i;
-    //return exitFunction();
 
 forever:
     uint8 opcode = *programCounter++;
@@ -42,14 +47,13 @@ forever:
 
         IS(BRAS) {
             // Branch to a signed 8-bit offset
-            programCounter += (int8)*programCounter;
+            STEP(J8(0));
             NEXT;
         }
 
         IS(BRA) {
             // Branch to a signed 16-bit offset
-            uint16 offset = ((uint16)programCounter[0] << 8) | programCounter[1];
-            programCounter += (int16)offset;
+            STEP(J16(0));
             NEXT;
         }
 
@@ -59,6 +63,11 @@ forever:
 
         IS(CALL) {
             // Call a named function by ID
+            Result result = enterFunction(RTA(2), SYM(0));
+            if (result != SUCCESS) {
+                EXIT(result);
+            }
+            NEXT;
         }
 
         IS(ICALL_L) {
@@ -88,13 +97,75 @@ forever:
 
         // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////
 
-        IS(BEZ_L)    // Branch to a signed 16-bit offset if local is equal to zero
-        IS(BEZ_I)    // Branch to a signed 16-bit offset if indirect is equal to zero
-        IS(BNZ_L)    // Branch to a signed 16-bit offset if local is not equal to zero
-        IS(BNZ_I)    // Branch to a signed 16-bit offset if indirect is not equal to zero
-        IS(BEQ_LL)   // Branch to a signed 16-bit offset if two local values are equal
-        IS(BEQ_LI)   // Branch to a signed 16-bit offset if local and indirect values are equal
-        IS(BEQ_II)   // Branch to a signed 16-bit offset if two indirect values are equal
+        IS(BEZ_L) {
+            // Branch to a signed 16-bit offset if local is equal to zero
+            if (0 == LOC(0).u) {
+                STEP(J16(1));
+                NEXT;
+            }
+            STEP(3);
+            NEXT;
+        }
+
+        IS(BEZ_I) {
+            // Branch to a signed 16-bit offset if indirect is equal to zero
+            if (0 == IX(0, 1).u) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
+        }
+
+        IS(BNZ_L) {
+            // Branch to a signed 16-bit offset if local is equal to zero
+            if (0 != LOC(0).u) {
+                STEP(J16(1));
+                NEXT;
+            }
+            STEP(3);
+            NEXT;
+        }
+
+        IS(BNZ_I) {
+            // Branch to a signed 16-bit offset if indirect is not equal to zero
+            if (0 != IX(0, 1).u) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
+        }
+
+        IS(BEQ_LL) {
+            // Branch to a signed 16-bit offset if two local values are equal
+            if (LOC(1).u == LOC(0).u) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
+        }
+
+        IS(BEQ_LI) {
+            // Branch to a signed 16-bit offset if local and indirect values are equal
+            if (IX0(1).u == LOC(0).u) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
+        }
+
+        IS(BEQ_II) {
+            // Branch to a signed 16-bit offset if two indirect values are equal
+            if (IX0(0).u == IX1(1).u) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
+        }
 
         IS(ADDR_LL) // Get address of local variable into local variable
         IS(ADDR_IL)
@@ -109,7 +180,13 @@ forever:
 
         IS(LOAD_HL)  // Load host lookup to local
 
-        IS(COPY_LL)  // Copy a local scalar to a local scalar
+        IS(COPY_LL) {
+            // Copy a local scalar to a local scalar
+            LOC(1).u = LOC(0).u;
+            STEP(2);
+            NEXT;
+        }
+
         IS(COPY_IL)  // Copy an indirect scalar to a local
         IS(COPY_LI)  // Copy a local scalar to an indirect
         IS(COPY_II)  // Copy an indirect scalar to another indirect
@@ -162,28 +239,28 @@ forever:
         // Three operand integer addition) Commutative) 4 unique variants
         IS(ADD_LLL) {
             // Local + Local -> Local
-            LOP(2).i = LOP(0).i + LOP(1).i;
+            LOC(2).i = LOC(0).i + LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(ADD_ILL) {
             // Indirect + Local -> Local
-            LOP(2).i = IOP(IX0, 0).i + LOP(1).i;
+            LOC(2).i = IX0(0).i + LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(ADD_LLI) {
             // Local + Local -> Indirect
-            IOP(IX0, 2).i = LOP(0).i + LOP(1).i;
+            IX0(2).i = LOC(0).i + LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(ADD_ILI) {
             // Indirect + Local -> Indirect
-            IOP(IX1, 2).i = IOP(IX0, 0).i + LOP(1).i;
+            IX1(2).i = IX0(0).i + LOC(1).i;
             STEP(3);
             NEXT;
         }
@@ -191,49 +268,49 @@ forever:
         // Three operand integer subtraction) Noncommutative) 7 unique variants
         IS(SUB_LLL) {
             // Local - Local -> Local
-            LOP(2).i = LOP(0).i - LOP(1).i;
+            LOC(2).i = LOC(0).i - LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(SUB_ILL) {
             // Indirect - Local -> Local
-            LOP(2).i = IOP(IX0, 0).i - LOP(1).i;
+            LOC(2).i = IX0(0).i - LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(SUB_LLI) {
             // Local - Local -> Indirect
-            IOP(IX0, 2).i = LOP(0).i - LOP(1).i;
+            IX0(2).i = LOC(0).i - LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(SUB_ILI) {
             // Indirect - Local -> Indirect
-            IOP(IX1, 2).i = IOP(IX0, 0).i - LOP(1).i;
+            IX1(2).i = IX0(0).i - LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(SUB_LIL) {
             // Local - Indirect -> Local
-            LOP(2).i = LOP(0).i - IOP(IX0, 0).i;
+            LOC(2).i = LOC(0).i - IX0(0).i;
             STEP(3);
             NEXT;
         }
 
         IS(SUB_IIL) {
             // Indirect - Indirect -> Local
-            LOP(2).i = IOP(IX0, 0).i - IOP(IX1, 1).i;
+            LOC(2).i = IX0(0).i - IX1(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(SUB_LII) {
             // Local - Indirect -> Indirect
-            IOP(IX1, 2).i = LOP(0).i - IOP(IX0, 1).i;
+            IX1(2).i = LOC(0).i - IX0(1).i;
             STEP(3);
             NEXT;
         }
@@ -241,28 +318,28 @@ forever:
         // Three operand integer multiplication) Commutative) 4 unique variants
         IS(MUL_LLL) {
             // Local * Local -> Local
-            LOP(2).i = LOP(0).i * LOP(1).i;
+            LOC(2).i = LOC(0).i * LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(MUL_ILL) {
             // Indirect * Local -> Local
-            LOP(2).i = IOP(IX0, 0).i * LOP(1).i;
+            LOC(2).i = IX0(0).i * LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(MUL_LLI) {
             // Local * Local -> Indirect
-            IOP(IX0, 2).i = LOP(0).i * LOP(1).i;
+            IX0(2).i = LOC(0).i * LOC(1).i;
             STEP(3);
             NEXT;
         }
 
         IS(MUL_ILI) {
             // Indirect * Local -> Indirect
-            IOP(IX1, 2).i = IOP(IX0, 0).i * LOP(1).i;
+            IX1(2).i = IX0(0).i * LOC(1).i;
             STEP(3);
             NEXT;
         }
@@ -270,84 +347,84 @@ forever:
         // Three operand integer division) Noncommutative) 7 unique variants
         IS(DIV_LLL) {
             // Local / Local -> Local
-            int32 numerator   = LOP(0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator / denominator;
+            LOC(2).i = numerator / denominator;
             STEP(3);
             NEXT;
         }
 
         IS(DIV_ILL) {
             // Indirect / Local -> Local
-            int32 numerator   = IOP(IX0, 0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = IX0(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator / denominator;
+            LOC(2).i = numerator / denominator;
             STEP(3);
             NEXT;
         }
 
         IS(DIV_LLI) {
             // Local / Local -> Indirect
-            int32 numerator   = LOP(0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            IOP(IX0, 2).i = numerator / denominator;
+            IX0(2).i = numerator / denominator;
             STEP(3);
             NEXT;
         }
 
         IS(DIV_ILI) {
             // Indirect / Local -> Indirect
-            int32 numerator   = IOP(IX0, 0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = IX0(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            IOP(IX1, 2).i = numerator / denominator;
+            IX1(2).i = numerator / denominator;
             STEP(3);
             NEXT;
         }
 
         IS(DIV_LIL) {
             // Local / Indirect -> Local
-            int32 numerator   = LOP(0).i;
-            int32 denominator = IOP(IX0, 1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = IX0(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator / denominator;
+            LOC(2).i = numerator / denominator;
             STEP(3);
             NEXT;
         }
 
         IS(DIV_IIL) {
             // Indirect / Indirect -> Local
-            int32 numerator   = IOP(IX0, 0).i;
-            int32 denominator = IOP(IX1, 1).i;
+            int32 numerator   = IX0(0).i;
+            int32 denominator = IX1(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator / denominator;
+            LOC(2).i = numerator / denominator;
             STEP(3);
             NEXT;
         }
 
         IS(DIV_LII) {
             // Local / Indirect -> Indirect
-            int32 numerator   = LOP(0).i;
-            int32 denominator = IOP(IX0, 1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = IX0(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            IOP(IX1, 2).i = numerator / denominator;
+            IX1(2).i = numerator / denominator;
             STEP(3);
             NEXT;
         }
@@ -355,84 +432,84 @@ forever:
         // Three operand integer modulo) Noncommutative) 7 unique variants
         IS(MOD_LLL) {
             // Local % Local -> Local
-            int32 numerator   = LOP(0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator % denominator;
+            LOC(2).i = numerator % denominator;
             STEP(3);
             NEXT;
         }
 
         IS(MOD_ILL) {
             // Indirect % Local -> Local
-            int32 numerator   = IOP(IX0, 0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = IX0(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator % denominator;
+            LOC(2).i = numerator % denominator;
             STEP(3);
             NEXT;
         }
 
         IS(MOD_LLI) {
             // Local % Local -> Indirect
-            int32 numerator   = LOP(0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            IOP(IX0, 2).i = numerator % denominator;
+            IX0(2).i = numerator % denominator;
             STEP(3);
             NEXT;
         }
 
         IS(MOD_ILI) {
             // Indirect % Local -> Indirect
-            int32 numerator   = IOP(IX0, 0).i;
-            int32 denominator = LOP(1).i;
+            int32 numerator   = IX0(0).i;
+            int32 denominator = LOC(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            IOP(IX1, 2).i = numerator % denominator;
+            IX1(2).i = numerator % denominator;
             STEP(3);
             NEXT;
         }
 
         IS(MOD_LIL) {
             // Local % Indirect -> Local
-            int32 numerator   = LOP(0).i;
-            int32 denominator = IOP(IX0, 1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = IX0(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator % denominator;
+            LOC(2).i = numerator % denominator;
             STEP(3);
             NEXT;
         }
 
         IS(MOD_IIL) {
             // Indirect % Indirect -> Local
-            int32 numerator   = IOP(IX0, 0).i;
-            int32 denominator = IOP(IX1, 1).i;
+            int32 numerator   = IX0(0).i;
+            int32 denominator = IX1(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            LOP(2).i = numerator % denominator;
+            LOC(2).i = numerator % denominator;
             STEP(3);
             NEXT;
         }
 
         IS(MOD_LII) {
             // Local % Indirect -> Indirect
-            int32 numerator   = LOP(0).i;
-            int32 denominator = IOP(IX0, 1).i;
+            int32 numerator   = LOC(0).i;
+            int32 denominator = IX0(1).i;
             if (!denominator) {
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
-            IOP(IX1, 2).i = numerator % denominator;
+            IX1(2).i = numerator % denominator;
             STEP(3);
             NEXT;
         }
@@ -440,28 +517,28 @@ forever:
         // Three operand logical AND) Commutative) 4 unique variants
         IS(AND_LLL) {
             // Local & Local -> Local
-            LOP(2).u = LOP(0).u & LOP(1).u;
+            LOC(2).u = LOC(0).u & LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(AND_ILL) {
             // Indirect & Local -> Local
-            LOP(2).u = IOP(IX0, 0).u & LOP(1).u;
+            LOC(2).u = IX0(0).u & LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(AND_LLI) {
             // Local & Local -> Indirect
-            IOP(IX0, 2).u = LOP(0).u & LOP(1).u;
+            IX0(2).u = LOC(0).u & LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(AND_ILI) {
             // Indirect & Local -> Indirect
-            IOP(IX1, 2).u = IOP(IX0, 0).u & LOP(1).u;
+            IX1(2).u = IX0(0).u & LOC(1).u;
             STEP(3);
             NEXT;
         }
@@ -469,28 +546,28 @@ forever:
         // Three operand logical OR) Commutative) 4 unique variants
         IS(OR_LLL) {
             // Local | Local -> Local
-            LOP(2).u = LOP(0).u | LOP(1).u;
+            LOC(2).u = LOC(0).u | LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(OR_ILL) {
             // Indirect | Local -> Local
-            LOP(2).u = IOP(IX0, 0).u | LOP(1).u;
+            LOC(2).u = IX0(0).u | LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(OR_LLI) {
             // Local | Local -> Indirect
-            IOP(IX0, 2).u = LOP(0).u | LOP(1).u;
+            IX0(2).u = LOC(0).u | LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(OR_ILI) {
             // Indirect | Local -> Indirect
-            IOP(IX1, 2).u = IOP(IX0, 0).u | LOP(1).u;
+            IX1(2).u = IX0(0).u | LOC(1).u;
             STEP(3);
             NEXT;
         }
@@ -498,28 +575,28 @@ forever:
         // Three operand logical XOR) Commutative) 4 unique variants
         IS(XOR_LLL) {
             // Local ^ Local -> Local
-            LOP(2).u = LOP(0).u ^ LOP(1).u;
+            LOC(2).u = LOC(0).u ^ LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(XOR_ILL) {
             // Indirect ^ Local -> Local
-            LOP(2).u = IOP(IX0, 0).u ^ LOP(1).u;
+            LOC(2).u = IX0(0).u ^ LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(XOR_LLI) {
             // Local ^ Local -> Indirect
-            IOP(IX0, 2).u = LOP(0).u ^ LOP(1).u;
+            IX0(2).u = LOC(0).u ^ LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(XOR_ILI) {
             // Indirect ^ Local -> Indirect
-            IOP(IX1, 2).u = IOP(IX0, 0).u ^ LOP(1).u;
+            IX1(2).u = IX0(0).u ^ LOC(1).u;
             STEP(3);
             NEXT;
         }
@@ -527,28 +604,28 @@ forever:
         // Three operand logical shift left) Noncommutative) 4 supported variants
         IS(LSL_LLL) {
             // Local << Local -> Local
-            LOP(2).u = LOP(0).u << LOP(1).u;
+            LOC(2).u = LOC(0).u << LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(LSL_ILL) {
             // Indirect << Local -> Local
-            LOP(2).u = IOP(IX0, 0).u << LOP(1).u;
+            LOC(2).u = IX0(0).u << LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(LSL_LLI) {
             // Local << Local -> Indirect
-            IOP(IX0, 2).u = LOP(0).u << LOP(1).u;
+            IX0(2).u = LOC(0).u << LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(LSL_ILI) {
             // Indirect << Local -> Indirect
-            IOP(IX1, 2).u = IOP(IX0, 0).u << LOP(1).u;
+            IX1(2).u = IX0(0).u << LOC(1).u;
             STEP(3);
             NEXT;
         }
@@ -556,28 +633,28 @@ forever:
         // Three operand logical shift right) Noncommutative) 4 supported variants
         IS(LSR_LLL) {
             // Local >> Local -> Local
-            LOP(2).u = LOP(0).u >> LOP(1).u;
+            LOC(2).u = LOC(0).u >> LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(LSR_ILL) {
             // Indirect >> Local -> Local
-            LOP(2).u = IOP(IX0, 0).u >> LOP(1).u;
+            LOC(2).u = IX0(0).u >> LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(LSR_LLI) {
             // Local >> Local -> Indirect
-            IOP(IX0, 2).u = LOP(0).u >> LOP(1).u;
+            IX0(2).u = LOC(0).u >> LOC(1).u;
             STEP(3);
             NEXT;
         }
 
         IS(LSR_ILI) {
             // Indirect >> Local -> Indirect
-            IOP(IX1, 2).u = IOP(IX0, 0).u >> LOP(1).u;
+            IX1(2).u = IX0(0).u >> LOC(1).u;
             STEP(3);
             NEXT;
         }
@@ -635,28 +712,28 @@ forever:
         // Three operand float addition) Commutative) 4 unique variants
         IS(FADD_LLL) {
             // Local + Local -> Local
-            LOP(2).f = LOP(0).f + LOP(1).f;
+            LOC(2).f = LOC(0).f + LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FADD_ILL) {
             // Indirect + Local -> Local
-            LOP(2).f = IOP(IX0, 0).f + LOP(1).f;
+            LOC(2).f = IX0(0).f + LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FADD_LLI) {
             // Local + Local -> Indirect
-            IOP(IX0, 2).f = LOP(0).f + LOP(1).f;
+            IX0(2).f = LOC(0).f + LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FADD_ILI) {
             // Indirect + Local -> Indirect
-            IOP(IX1, 2).f = IOP(IX0, 0).f + LOP(1).f;
+            IX1(2).f = IX0(0).f + LOC(1).f;
             STEP(3);
             NEXT;
         }
@@ -664,49 +741,49 @@ forever:
         // Three operand float subtraction) Noncommutative) 7 unique variants
         IS(FSUB_LLL) {
             // Local - Local -> Local
-            LOP(2).f = LOP(0).f - LOP(1).f;
+            LOC(2).f = LOC(0).f - LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FSUB_ILL) {
             // Indirect - Local -> Local
-            LOP(2).f = IOP(IX0, 0).f - LOP(1).f;
+            LOC(2).f = IX0(0).f - LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FSUB_LLI) {
             // Local - Local -> Indirect
-            IOP(IX0, 2).f = LOP(0).f - LOP(1).f;
+            IX0(2).f = LOC(0).f - LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FSUB_ILI) {
             // Indirect - Local -> Indirect
-            IOP(IX1, 2).f = IOP(IX0, 0).f - LOP(1).f;
+            IX1(2).f = IX0(0).f - LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FSUB_LIL) {
             // Local - Indirect -> Local
-            LOP(2).f = LOP(0).f - IOP(IX0, 0).f;
+            LOC(2).f = LOC(0).f - IX0(0).f;
             STEP(3);
             NEXT;
         }
 
         IS(FSUB_IIL) {
             // Indirect - Indirect -> Local
-            LOP(2).f = IOP(IX0, 0).f - IOP(IX1, 1).f;
+            LOC(2).f = IX0(0).f - IX1(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FSUB_LII) {
             // Local - Indirect -> Indirect
-            IOP(IX1, 2).f = LOP(0).f - IOP(IX0, 1).f;
+            IX1(2).f = LOC(0).f - IX0(1).f;
             STEP(3);
             NEXT;
         }
@@ -714,126 +791,126 @@ forever:
         // Three operand float multiplication) Commutative) 4 unique variants
         IS(FMUL_LLL) {
             // Local * Local -> Local
-            LOP(2).f = LOP(0).f * LOP(1).f;
+            LOC(2).f = LOC(0).f * LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FMUL_ILL) {
             // Indirect * Local -> Local
-            LOP(2).f = IOP(IX0, 0).f * LOP(1).f;
+            LOC(2).f = IX0(0).f * LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FMUL_LLI) {
             // Local * Local -> Indirect
-            IOP(IX0, 2).f = LOP(0).f * LOP(1).f;
+            IX0(2).f = LOC(0).f * LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FMUL_ILI) {
             // Indirect * Local -> Indirect
-            IOP(IX1, 2).f = IOP(IX0, 0).f * LOP(1).f;
+            IX1(2).f = IX0(0).f * LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         // Three operand float division) Noncommutative) 7 unique variants
         IS(FDIV_LLL) {
-            LOP(2).f = LOP(0).f / LOP(1).f;
+            LOC(2).f = LOC(0).f / LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FDIV_ILL) {
             // Indirect / Local -> Local
-            LOP(2).f = IOP(IX0, 0).f / LOP(1).f;
+            LOC(2).f = IX0(0).f / LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FDIV_LLI) {
             // Local / Local -> Indirect
-            IOP(IX0, 2).f = LOP(0).f / LOP(1).f;
+            IX0(2).f = LOC(0).f / LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FDIV_ILI) {
             // Indirect / Local -> Indirect
-            IOP(IX1, 2).f = IOP(IX0, 0).f / LOP(1).f;
+            IX1(2).f = IX0(0).f / LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FDIV_LIL) {
             // Local / Indirect -> Local
-            LOP(2).f = IOP(IX0, 0).f / LOP(1).f;
+            LOC(2).f = IX0(0).f / LOC(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FDIV_IIL) {
             // Indirect / Indirect -> Local
-            LOP(2).f = IOP(IX0, 0).f / IOP(IX1, 1).f;
+            LOC(2).f = IX0(0).f / IX1(1).f;
             STEP(3);
             NEXT;
         }
 
         IS(FDIV_LII) {
             // Local / Indirect -> Indirect
-            IOP(IX1, 2).f = LOP(0).f / IOP(IX0, 1).f;
+            IX1(2).f = LOC(0).f / IX0(1).f;
             STEP(3);
             NEXT;
         }
 
         // Three operand float modulo) Noncommutative) 7 unique variants
         IS(FMOD_LLL) {
-            LOP(2).f = std::fmod(LOP(0).f, LOP(1).f);
+            LOC(2).f = std::fmod(LOC(0).f, LOC(1).f);
             STEP(3);
             NEXT;
         }
 
         IS(FMOD_ILL) {
             // Indirect % Local -> Local
-            LOP(2).f = std::fmod(IOP(IX0, 0).f, LOP(1).f);
+            LOC(2).f = std::fmod(IX0(0).f, LOC(1).f);
             STEP(3);
             NEXT;
         }
 
         IS(FMOD_LLI) {
             // Local % Local -> Indirect
-            IOP(IX0, 2).f = std::fmod(LOP(0).f, LOP(1).f);
+            IX0(2).f = std::fmod(LOC(0).f, LOC(1).f);
             STEP(3);
             NEXT;
         }
 
         IS(FMOD_ILI) {
             // Indirect % Local -> Indirect
-            IOP(IX1, 2).f = std::fmod(IOP(IX0, 0).f, LOP(1).f);
+            IX1(2).f = std::fmod(IX0(0).f, LOC(1).f);
             STEP(3);
             NEXT;
         }
 
         IS(FMOD_LIL) {
             // Local % Indirect -> Local
-            LOP(2).f = std::fmod(IOP(IX0, 0).f, LOP(1).f);
+            LOC(2).f = std::fmod(IX0(0).f, LOC(1).f);
             STEP(3);
             NEXT;
         }
 
         IS(FMOD_IIL) {
             // Indirect % Indirect -> Local
-            LOP(2).f = std::fmod(IOP(IX0, 0).f, IOP(IX1, 1).f);
+            LOC(2).f = std::fmod(IX0(0).f, IX1(1).f);
             STEP(3);
             NEXT;
         }
 
         IS(FMOD_LII) {
             // Local % Indirect -> Indirect
-            IOP(IX1, 2).f = std::fmod(LOP(0).f, IOP(IX0, 1).f);
+            IX1(2).f = std::fmod(LOC(0).f, IX0(1).f);
             STEP(3);
             NEXT;
         }
