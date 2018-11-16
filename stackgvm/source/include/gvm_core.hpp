@@ -119,7 +119,8 @@ namespace GVM {
             static const FuncInfo* functionTable;
             static uint32          functionTableSize;
 
-            static Result enterFunction(const uint8* returnAddress, uint16 functionId, uint8 frameSize = 0);
+            static Result enterFunction(const uint8* returnAddress, uint16 functionId);
+            static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
             static Result exitFunction();
             static Result run();
             static Result validateFunctionTable(const FuncInfo* table);

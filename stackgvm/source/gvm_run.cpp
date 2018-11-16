@@ -66,6 +66,11 @@ forever:
 
         IS(BCALL) {
             // Call an anonymous local function
+            Result result = enterClosure(RTA(3), J16(1), U8(0));
+            if (result != SUCCESS) {
+                EXIT(result);
+            }
+            NEXT;
         }
 
         IS(CALL) {
@@ -79,10 +84,20 @@ forever:
 
         IS(ICALL_L) {
             // Call a named function by ID stored in local refrence
+            Result result = enterFunction(RTA(1), LOC(0).u);
+            if (result != SUCCESS) {
+                EXIT(result);
+            }
+            NEXT;
         }
 
         IS(ICALL_I) {
             // Call a named function by ID stored in an indirect reference
+            Result result = enterFunction(RTA(2), IX(0, 1).u);
+            if (result != SUCCESS) {
+                EXIT(result);
+            }
+            NEXT;
         }
 
         IS(HCALL) {
@@ -334,6 +349,12 @@ forever:
 
         IS(DBNZ_L) {
             // Decrement local and branch if not zero
+            if (--LOC(0).u) {
+                STEP(3);
+                NEXT;
+            }
+            STEP(J16(1));
+            NEXT;
         }
 
         // Load small literal integer
