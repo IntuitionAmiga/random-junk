@@ -21,10 +21,17 @@ using namespace GVM;
 // Parameter is the operand byte number.
 #define LOC(operand)   ( frameStack[(int8)programCounter[(operand)]] )
 
+// Vector local operand, returns a float32 pointer to the zeroth element of the vector
+#define VLOC(operand)  ( (float32*)&LOC(operand) )
+
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
 #define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand)]] )
 #define IX0(operand)     ( callStack->indirection[0][programCounter[(operand)]] )
 #define IX1(operand)     ( callStack->indirection[1][programCounter[(operand)]] )
+
+// Vector Indirect Operand,
+#define VIX0(operand)    ((float32*)&IX0(operand))
+#define VIX1(operand)    ((float32*)&IX1(operand))
 
 // Jump displaceents
 #define J16(operand)  (int16)(((uint16)programCounter[(operand)] << 8) | programCounter[(operand)+1])
@@ -1433,48 +1440,125 @@ forever:
 
         // Vector addition) Commutative) 4 unique variants
         IS(VADD_LLL) {
-
+            float32* vs1 = VLOC(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VLOC(2);
+            vd[0] = vs1[0] + vs2[0];
+            vd[1] = vs1[1] + vs2[1];
+            vd[2] = vs1[2] + vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VADD_ILL) {
-
+            float32* vs1 = VIX0(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VLOC(2);
+            vd[0] = vs1[0] + vs2[0];
+            vd[1] = vs1[1] + vs2[1];
+            vd[2] = vs1[2] + vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VADD_LLI) {
-
+            float32* vs1 = VLOC(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VIX0(2);
+            vd[0] = vs1[0] + vs2[0];
+            vd[1] = vs1[1] + vs2[1];
+            vd[2] = vs1[2] + vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VADD_ILI) {
-
+            float32* vs1 = VIX0(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VIX1(2);
+            vd[0] = vs1[0] + vs2[0];
+            vd[1] = vs1[1] + vs2[1];
+            vd[2] = vs1[2] + vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         // Vector subtraction) Noncommutative) 7 unique variants
         IS(VSUB_LLL) {
-
+            float32* vs1 = VLOC(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VLOC(2);
+            vd[0] = vs1[0] - vs2[0];
+            vd[1] = vs1[1] - vs2[1];
+            vd[2] = vs1[2] - vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VSUB_ILL) {
-
+            float32* vs1 = VIX0(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VLOC(2);
+            vd[0] = vs1[0] - vs2[0];
+            vd[1] = vs1[1] - vs2[1];
+            vd[2] = vs1[2] - vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VSUB_LLI) {
-
+            float32* vs1 = VLOC(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VIX0(2);
+            vd[0] = vs1[0] - vs2[0];
+            vd[1] = vs1[1] - vs2[1];
+            vd[2] = vs1[2] - vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VSUB_ILI) {
-
+            float32* vs1 = VIX0(0);
+            float32* vs2 = VLOC(1);
+            float32* vd  = VIX1(2);
+            vd[0] = vs1[0] - vs2[0];
+            vd[1] = vs1[1] - vs2[1];
+            vd[2] = vs1[2] - vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VSUB_LIL) {
-
+            float32* vs1 = VLOC(0);
+            float32* vs2 = VIX0(1);
+            float32* vd  = VLOC(2);
+            vd[0] = vs1[0] - vs2[0];
+            vd[1] = vs1[1] - vs2[1];
+            vd[2] = vs1[2] - vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VSUB_IIL) {
-
+            float32* vs1 = VIX0(0);
+            float32* vs2 = VIX1(1);
+            float32* vd  = VLOC(2);
+            vd[0] = vs1[0] - vs2[0];
+            vd[1] = vs1[1] - vs2[1];
+            vd[2] = vs1[2] - vs2[2];
+            STEP(3);
+            NEXT;
         }
 
         IS(VSUB_LII) {
-
+            float32* vs1 = VLOC(0);
+            float32* vs2 = VIX0(1);
+            float32* vd  = VIX1(2);
+            vd[0] = vs1[0] - vs2[0];
+            vd[1] = vs1[1] - vs2[1];
+            vd[2] = vs1[2] - vs2[2];
+            STEP(3);
+            NEXT;
         }
 
 
