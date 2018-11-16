@@ -199,7 +199,6 @@ namespace GVM {
             _FSIN_LL,  // Sine
             _FCOS_LL,  // Cosine
             _FACOS_LL, // Arccosine
-            _FPOW_LL,  // Power
 
 
             // Two operand float negate

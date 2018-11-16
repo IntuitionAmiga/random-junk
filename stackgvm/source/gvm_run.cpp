@@ -952,85 +952,147 @@ forever:
 
         // Two operand branch if greater or equal
         IS(FBGE_LL) {
-
+            if (LOC(0).f >= LOC(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
 
         IS(FBGE_IL) {
-
+            if (IX0(0).f >= LOC(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
 
         IS(FBGE_LI) {
-
+            if (LOC(0).f >= IX0(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
 
         IS(FBGE_II) {
-
+            if (IX0(0).f >= IX1(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
-
 
         // Two operand branch if greater than
         IS(FBGT_LL) {
-
+            if (LOC(0).f > LOC(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
 
         IS(FBGT_IL) {
-
+            if (IX0(0).f > LOC(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
 
         IS(FBGT_LI) {
-
+            if (LOC(0).f > IX0(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
 
         IS(FBGT_II) {
-
+            if (IX0(0).f > IX1(1).f) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(4);
+            NEXT;
         }
 
         // Two operand) local to local handy maths functions
         IS(FINV_LL) {
             // Reciprocal
+            LOC(1).f = 1.0f / LOC(0).f;
+            STEP(2);
+            NEXT;
         }
 
         IS(FSQRT_LL) {
             // Square root
+            LOC(1).f = std::sqrt(LOC(0).f);
+            STEP(2);
+            NEXT;
         }
 
         IS(INVSQ_LL) {
             // Inverse square
+            float32 sqr = LOC(0).f;
+            sqr *= sqr;
+            LOC(1).f = 1.0f / sqr;
+            STEP(2);
+            NEXT;
         }
 
         IS(FSIN_LL) {
             // Sine
+            LOC(1).f = std::sin(LOC(0).f);
+            STEP(2);
+            NEXT;
         }
 
         IS(FCOS_LL) {
             // Cosine
+            LOC(1).f = std::cos(LOC(0).f);
+            STEP(2);
+            NEXT;
         }
 
         IS(FACOS_LL) {
             // Arccosine
-        }
-
-        IS(FPOW_LL) {
-            // Power
+            LOC(1).f = std::acos(LOC(0).f);
+            STEP(2);
+            NEXT;
         }
 
         // Two operand float negate
         IS(FNEG_LL) {
-
+            LOC(1).f = -LOC(0).f;
+            STEP(2);
+            NEXT;
         }
 
         IS(FNEG_IL) {
-
+            LOC(1).f = -IX0(0).f;
+            STEP(2);
+            NEXT;
         }
 
         IS(FNEG_LI) {
-
+            IX0(1).f = -LOC(0).f;
+            STEP(2);
+            NEXT;
         }
 
         IS(FNEG_II) {
-
+            IX1(1).f = -IX0(0).f;
+            STEP(2);
+            NEXT;
         }
-
 
         // Three operand float addition) Commutative) 4 unique variants
         IS(FADD_LLL) {
