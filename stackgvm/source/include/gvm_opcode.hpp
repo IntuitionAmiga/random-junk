@@ -80,10 +80,10 @@ namespace GVM {
             _BSET_SI, // Set bit in indirect
             _BCLR_SL, // Clear bit in local
             _BCLR_SI, // Clear bit in indirect
-            _BBS_LS,  // Branch if bit is set (local)
-            _BBS_IS,  // Branch if bit is set (indirect)
-            _BBC_LS,  // Branch if bit is clear (local)
-            _BBC_IS,  // Branch if bit os clear (indirect)
+            _BBS_SL,  // Branch if bit is set (local)
+            _BBS_SI,  // Branch if bit is set (indirect)
+            _BBC_SL,  // Branch if bit is clear (local)
+            _BBC_SI,  // Branch if bit os clear (indirect)
 
             // Two operand logical negate
             _NOT_LL,
@@ -165,14 +165,6 @@ namespace GVM {
             _LSR_ILL,
             _LSR_LLI,
             _LSR_ILI,
-
-            // Bitfield operations. Extract or insert a field of up to 8-bits within an integer
-            _BFX_LSL, // Extract n bitfield
-            _BFX_ISL, // Extract a bitfield
-            _BFX_LSI, // Extract a bitfield
-            _BFI_LSL, // Insert a bitfield
-            _BFI_ISL, // Insert a bitfield
-            _BFI_LSI, // Insert a bitfield
 
             // Integer Maximum: Commutative, 4 unique variants
             _MAX_LLL,
