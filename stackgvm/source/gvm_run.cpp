@@ -28,6 +28,7 @@ using namespace GVM;
 #define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand)]] )
 #define IX0(operand)     ( callStack->indirection[0][programCounter[(operand)]] )
 #define IX1(operand)     ( callStack->indirection[1][programCounter[(operand)]] )
+#define IR(idx) callStack->indirection[(idx)]
 
 // Vector Indirect Operand,
 #define VIX0(operand)    ((float32*)&IX0(operand))
@@ -198,9 +199,13 @@ forever:
 
         IS(ADDR_LL) {
             // Get address of local variable into local variable
+            LOC(1).s = &LOC(0);
+            STEP(2);
+            NEXT;
         }
 
         IS(ADDR_IL) {
+            // Get address of indirect variable into local variable
 
         }
 
@@ -213,11 +218,11 @@ forever:
         }
 
         IS(ADDR_DX) {
-            // Load the address of a global data synbol directly into an index register
+            // Load the address of a global data symbol directly into an index register
         }
 
         IS(ADDR_CL) {
-            // Load code synbol to local variable
+            // Load code symbol to local variable
         }
 
         IS(ADDR_CI) {
@@ -226,6 +231,9 @@ forever:
 
         IS(LOAD_LX) {
             // Load local reference to index register
+            IR(1) = &LOC(0);
+            STEP(2);
+            NEXT;
         }
 
         IS(SAVE_XL) {
