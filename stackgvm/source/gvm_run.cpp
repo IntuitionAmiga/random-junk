@@ -1424,21 +1424,41 @@ forever:
 
         // Two operand Vector instructions
         IS(VCOPY_LL) {
+            float32* vs = VLOC(0);
+            float32* vd = VLOC(1);
+            vd[0] = vs[0];
+            vd[1] = vs[1];
+            vd[2] = vs[2];
             STEP(3);
             NEXT;
         }
 
         IS(VCOPY_IL) {
+            float32* vs = VIX0(0);
+            float32* vd = VLOC(1);
+            vd[0] = vs[0];
+            vd[1] = vs[1];
+            vd[2] = vs[2];
             STEP(3);
             NEXT;
         }
 
         IS(VCOPY_LI) {
+            float32* vs = VLOC(0);
+            float32* vd = VIX0(1);
+            vd[0] = vs[0];
+            vd[1] = vs[1];
+            vd[2] = vs[2];
             STEP(3);
             NEXT;
         }
 
         IS(VCOPY_II) {
+            float32* vs = VIX0(0);
+            float32* vd = VIX1(1);
+            vd[0] = vs[0];
+            vd[1] = vs[1];
+            vd[2] = vs[2];
             STEP(3);
             NEXT;
         }
