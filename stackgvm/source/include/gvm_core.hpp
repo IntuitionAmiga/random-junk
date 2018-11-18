@@ -20,7 +20,7 @@ namespace GVM {
         int32   i;
         uint32  u;
         float32 f;
-        Scalar* s;
+        Scalar* a;
     };
 
     /**

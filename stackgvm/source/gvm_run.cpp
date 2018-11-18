@@ -19,15 +19,15 @@ using namespace GVM;
 
 // Local Operand, dereferences a Scalar on the stack frame by the signed 8-bit operand.
 // Parameter is the operand byte number.
-#define LOC(operand)   ( frameStack[(int8)programCounter[(operand)]] )
+#define LOC(operand)   ( frameStack[(int8)programCounter[(operand) + 1]] )
 
 // Vector local operand, returns a float32 pointer to the zeroth element of the vector
 #define VLOC(operand)  ( (float32*)&LOC(operand) )
 
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
-#define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand)]] )
-#define IX0(operand)     ( callStack->indirection[0][programCounter[(operand)]] )
-#define IX1(operand)     ( callStack->indirection[1][programCounter[(operand)]] )
+#define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand) + 1]] )
+#define IX0(operand)     ( callStack->indirection[0][programCounter[(operand)] + 1] )
+#define IX1(operand)     ( callStack->indirection[1][programCounter[(operand)] + 1] )
 #define IR(idx) callStack->indirection[(idx)]
 
 // Vector Indirect Operand,
@@ -35,25 +35,25 @@ using namespace GVM;
 #define VIX1(operand)    ((float32*)&IX1(operand))
 
 // Jump displaceents
-#define J16(operand)  (int16)(((uint16)programCounter[(operand)] << 8) | programCounter[(operand)+1])
-#define J8(operand)   (int8)programCounter[(operand)]
+#define J16(operand)  (int16)(((uint16)programCounter[(operand) + 1] << 8) | programCounter[(operand) + 2])
+#define J8(operand)   (int8)programCounter[(operand) + 1]
 
 // Literal values
-#define S8(operand)   (int8)programCounter[(operand)]
-#define U8(operand)   programCounter[(operand)]
-#define S16(operand)  (int16)(((uint16)programCounter[(operand)] << 8) | programCounter[(operand)+1])
-#define U16(operand)  (((uint16)programCounter[(operand)] << 8) | programCounter[(operand)+1])
+#define S8(operand)   (int8)programCounter[(operand) + 1]
+#define U8(operand)   programCounter[(operand) + 1]
+#define S16(operand)  (int16)(((uint16)programCounter[(operand) + 1] << 8) | programCounter[(operand) + 2])
+#define U16(operand)  (((uint16)programCounter[(operand) + 1] << 8) | programCounter[(operand) + 2])
 
 // Symbol ID
-#define SYM(operand)  (((uint16)programCounter[(operand)] << 8) | programCounter[(operand)+1])
+#define SYM(operand)  (((uint16)programCounter[(operand) + 1] << 8) | programCounter[(operand) + 2])
 
 // Return address
-#define RTA(operand)  (programCounter + (operand))
+#define RTA(size)  (programCounter + (size))
 
 Interpreter::Result Interpreter::run() {
 
 forever:
-    uint8 opcode = *programCounter++;
+    uint8 opcode = *programCounter;
     FETCH(opcode) {
         IS(HCF) {
             // Halt and catch fire
@@ -74,7 +74,7 @@ forever:
 
         IS(BCALL) {
             // Call an anonymous local function
-            Result result = enterClosure(RTA(3), J16(1), U8(0));
+            Result result = enterClosure(RTA(4), J16(1), U8(0));
             if (result != SUCCESS) {
                 EXIT(result);
             }
@@ -83,7 +83,7 @@ forever:
 
         IS(CALL) {
             // Call a named function by ID
-            Result result = enterFunction(RTA(2), SYM(0));
+            Result result = enterFunction(RTA(3), SYM(0));
             if (result != SUCCESS) {
                 EXIT(result);
             }
@@ -92,7 +92,7 @@ forever:
 
         IS(ICALL_L) {
             // Call a named function by ID stored in local refrence
-            Result result = enterFunction(RTA(1), LOC(0).u);
+            Result result = enterFunction(RTA(2), LOC(0).u);
             if (result != SUCCESS) {
                 EXIT(result);
             }
@@ -101,7 +101,7 @@ forever:
 
         IS(ICALL_I) {
             // Call a named function by ID stored in an indirect reference
-            Result result = enterFunction(RTA(2), IX(0, 1).u);
+            Result result = enterFunction(RTA(3), IX(0, 1).u);
             if (result != SUCCESS) {
                 EXIT(result);
             }
@@ -110,6 +110,8 @@ forever:
 
         IS(HCALL) {
             // Call a host function
+            STEP(2);
+            NEXT;
         }
 
         IS(RET) {
@@ -123,6 +125,12 @@ forever:
 
         IS(LLBNN) {
             // Load indirect to indirection register and branch if not null
+            if (!(IR(0) = IX(0, 1).a)) {
+                STEP(J16(2));
+                NEXT;
+            }
+            STEP(5);
+            NEXT;
         }
 
         // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////
@@ -133,7 +141,7 @@ forever:
                 STEP(J16(1));
                 NEXT;
             }
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -143,7 +151,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -153,7 +161,7 @@ forever:
                 STEP(J16(1));
                 NEXT;
             }
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -163,7 +171,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -173,7 +181,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -183,7 +191,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -193,96 +201,111 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
         IS(ADDR_LL) {
             // Get address of local variable into local variable
-            LOC(1).s = &LOC(0);
-            STEP(2);
+            LOC(1).a = &LOC(0);
+            STEP(3);
             NEXT;
         }
 
         IS(ADDR_IL) {
             // Get address of indirect variable into local variable
-
+            STEP(4);
+            NEXT;
         }
 
         IS(ADDR_DL) {
             // Load the address of a global data symbol to a local variable
+            STEP(4);
+            NEXT;
         }
 
         IS(ADDR_DI) {
             // Load the address of a global data symbol to an indirect variable
+            STEP(5);
+            NEXT;
         }
 
         IS(ADDR_DX) {
             // Load the address of a global data symbol directly into an index register
+            STEP(4);
+            NEXT;
         }
 
         IS(ADDR_CL) {
             // Load code symbol to local variable
+            STEP(4);
+            NEXT;
         }
 
         IS(ADDR_CI) {
             // Load code symbol to indirect variable
+            STEP(5);
+            NEXT;
         }
 
         IS(LOAD_LX) {
             // Load local reference to index register
             IR(1) = &LOC(0);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(SAVE_XL) {
             // Save indirection index to local
+            STEP(3);
+            NEXT;
         }
 
         IS(LOAD_HL) {
             // Load host lookup to local
+            STEP(3);
+            NEXT;
         }
 
         IS(COPY_LL) {
             // Copy a local scalar to a local scalar
             LOC(1).u = LOC(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(COPY_IL) {
             // Copy an indirect scalar to a local
             LOC(1).u = IX0(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(COPY_LI) {
             // Copy a local scalar to an indirect
             IX0(1).u = LOC(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(COPY_II) {
             // Copy an indirect scalar to another indirect
             IX1(1).u = IX0(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(ITOF_LL) {
             // Cast float to integer
             LOC(1).i = (int32)LOC(0).f;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FTOI_LL) {
             // Cast integer to float
             LOC(1).f = (float32)LOC(0).i;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -294,7 +317,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -303,7 +326,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -312,7 +335,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -321,7 +344,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -331,7 +354,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -340,7 +363,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -349,7 +372,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -358,14 +381,14 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
         IS(DBNZ_L) {
             // Decrement local and branch if not zero
             if (--LOC(0).u) {
-                STEP(3);
+                STEP(4);
                 NEXT;
             }
             STEP(J16(1));
@@ -375,13 +398,13 @@ forever:
         // Load small literal integer
         IS(LOAD_SL) {
             LOC(1).i = S8(0);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(LOAD_SI) {
             IX0(1).i = S8(0);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -389,28 +412,28 @@ forever:
         IS(BSET_SL) {
             // Set bit in local
             LOC(1).u |= 1 << U8(0);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(BSET_SI) {
             // Set bit in indirect
             IX0(1).u |= 1 << U8(0);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(BCLR_SL) {
             // Clear bit in local
             LOC(1).u &= ~(1 << U8(0));
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(BCLR_SI) {
             // Clear bit in indirect
             IX0(1).u &= ~(1 << U8(0));
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -420,7 +443,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -430,7 +453,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -440,7 +463,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -450,57 +473,57 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         // Two operand logical negate
         IS(NOT_LL) {
             LOC(1).u = ~LOC(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(NOT_IL) {
             LOC(1).u = ~IX0(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(NOT_LI) {
             IX0(1).u = ~LOC(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(NOT_II) {
             IX1(1).u = ~IX0(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         // Two operand integer negate
         IS(NEG_LL) {
             LOC(1).u = -LOC(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(NEG_IL) {
             LOC(1).u = -IX0(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(NEG_LI) {
             IX0(1).u = -LOC(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(NEG_II) {
             IX1(1).u = -IX0(0).u;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -508,28 +531,28 @@ forever:
         IS(ADD_LLL) {
             // Local + Local -> Local
             LOC(2).i = LOC(0).i + LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(ADD_ILL) {
             // Indirect + Local -> Local
             LOC(2).i = IX0(0).i + LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(ADD_LLI) {
             // Local + Local -> Indirect
             IX0(2).i = LOC(0).i + LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(ADD_ILI) {
             // Indirect + Local -> Indirect
             IX1(2).i = IX0(0).i + LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -537,49 +560,49 @@ forever:
         IS(SUB_LLL) {
             // Local - Local -> Local
             LOC(2).i = LOC(0).i - LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(SUB_ILL) {
             // Indirect - Local -> Local
             LOC(2).i = IX0(0).i - LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(SUB_LLI) {
             // Local - Local -> Indirect
             IX0(2).i = LOC(0).i - LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(SUB_ILI) {
             // Indirect - Local -> Indirect
             IX1(2).i = IX0(0).i - LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(SUB_LIL) {
             // Local - Indirect -> Local
             LOC(2).i = LOC(0).i - IX0(0).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(SUB_IIL) {
             // Indirect - Indirect -> Local
             LOC(2).i = IX0(0).i - IX1(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(SUB_LII) {
             // Local - Indirect -> Indirect
             IX1(2).i = LOC(0).i - IX0(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -587,28 +610,28 @@ forever:
         IS(MUL_LLL) {
             // Local * Local -> Local
             LOC(2).i = LOC(0).i * LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(MUL_ILL) {
             // Indirect * Local -> Local
             LOC(2).i = IX0(0).i * LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(MUL_LLI) {
             // Local * Local -> Indirect
             IX0(2).i = LOC(0).i * LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(MUL_ILI) {
             // Indirect * Local -> Indirect
             IX1(2).i = IX0(0).i * LOC(1).i;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -621,7 +644,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator / denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -633,7 +656,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator / denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -645,7 +668,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             IX0(2).i = numerator / denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -657,7 +680,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             IX1(2).i = numerator / denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -669,7 +692,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator / denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -681,7 +704,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator / denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -693,7 +716,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             IX1(2).i = numerator / denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -706,7 +729,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator % denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -718,7 +741,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator % denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -730,7 +753,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             IX0(2).i = numerator % denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -742,7 +765,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             IX1(2).i = numerator % denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -754,7 +777,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator % denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -766,7 +789,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             LOC(2).i = numerator % denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -778,7 +801,7 @@ forever:
                 EXIT(EXEC_DIVISION_BY_ZERO);
             }
             IX1(2).i = numerator % denominator;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -786,28 +809,28 @@ forever:
         IS(AND_LLL) {
             // Local & Local -> Local
             LOC(2).u = LOC(0).u & LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(AND_ILL) {
             // Indirect & Local -> Local
             LOC(2).u = IX0(0).u & LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(AND_LLI) {
             // Local & Local -> Indirect
             IX0(2).u = LOC(0).u & LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(AND_ILI) {
             // Indirect & Local -> Indirect
             IX1(2).u = IX0(0).u & LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -815,28 +838,28 @@ forever:
         IS(OR_LLL) {
             // Local | Local -> Local
             LOC(2).u = LOC(0).u | LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(OR_ILL) {
             // Indirect | Local -> Local
             LOC(2).u = IX0(0).u | LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(OR_LLI) {
             // Local | Local -> Indirect
             IX0(2).u = LOC(0).u | LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(OR_ILI) {
             // Indirect | Local -> Indirect
             IX1(2).u = IX0(0).u | LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -844,28 +867,28 @@ forever:
         IS(XOR_LLL) {
             // Local ^ Local -> Local
             LOC(2).u = LOC(0).u ^ LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(XOR_ILL) {
             // Indirect ^ Local -> Local
             LOC(2).u = IX0(0).u ^ LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(XOR_LLI) {
             // Local ^ Local -> Indirect
             IX0(2).u = LOC(0).u ^ LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(XOR_ILI) {
             // Indirect ^ Local -> Indirect
             IX1(2).u = IX0(0).u ^ LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -873,28 +896,28 @@ forever:
         IS(LSL_LLL) {
             // Local << Local -> Local
             LOC(2).u = LOC(0).u << LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(LSL_ILL) {
             // Indirect << Local -> Local
             LOC(2).u = IX0(0).u << LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(LSL_LLI) {
             // Local << Local -> Indirect
             IX0(2).u = LOC(0).u << LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(LSL_ILI) {
             // Indirect << Local -> Indirect
             IX1(2).u = IX0(0).u << LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -902,64 +925,72 @@ forever:
         IS(LSR_LLL) {
             // Local >> Local -> Local
             LOC(2).u = LOC(0).u >> LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(LSR_ILL) {
             // Indirect >> Local -> Local
             LOC(2).u = IX0(0).u >> LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(LSR_LLI) {
             // Local >> Local -> Indirect
             IX0(2).u = LOC(0).u >> LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(LSR_ILI) {
             // Indirect >> Local -> Indirect
             IX1(2).u = IX0(0).u >> LOC(1).u;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         // Integer Maximum) Commutative) 4 unique variants
         IS(MAX_LLL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(MAX_ILL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(MAX_LLI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(MAX_ILI) {
-
+            STEP(4);
+            NEXT;
         }
 
 
         // Integer Minumum) Commutative) 4 unique variants
         IS(MIN_LLL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(MIN_ILL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(MIN_LLI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(MIN_ILI) {
-
+            STEP(4);
+            NEXT;
         }
 
 
@@ -971,7 +1002,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -980,7 +1011,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -989,7 +1020,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -998,7 +1029,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -1008,7 +1039,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -1017,7 +1048,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -1026,7 +1057,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -1035,7 +1066,7 @@ forever:
                 STEP(J16(2));
                 NEXT;
             }
-            STEP(4);
+            STEP(5);
             NEXT;
         }
 
@@ -1043,14 +1074,14 @@ forever:
         IS(FINV_LL) {
             // Reciprocal
             LOC(1).f = 1.0f / LOC(0).f;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FSQRT_LL) {
             // Square root
             LOC(1).f = std::sqrt(LOC(0).f);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -1059,53 +1090,53 @@ forever:
             float32 sqr = LOC(0).f;
             sqr *= sqr;
             LOC(1).f = 1.0f / sqr;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FSIN_LL) {
             // Sine
             LOC(1).f = std::sin(LOC(0).f);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FCOS_LL) {
             // Cosine
             LOC(1).f = std::cos(LOC(0).f);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FACOS_LL) {
             // Arccosine
             LOC(1).f = std::acos(LOC(0).f);
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         // Two operand float negate
         IS(FNEG_LL) {
             LOC(1).f = -LOC(0).f;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FNEG_IL) {
             LOC(1).f = -IX0(0).f;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FNEG_LI) {
             IX0(1).f = -LOC(0).f;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
         IS(FNEG_II) {
             IX1(1).f = -IX0(0).f;
-            STEP(2);
+            STEP(3);
             NEXT;
         }
 
@@ -1113,28 +1144,28 @@ forever:
         IS(FADD_LLL) {
             // Local + Local -> Local
             LOC(2).f = LOC(0).f + LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FADD_ILL) {
             // Indirect + Local -> Local
             LOC(2).f = IX0(0).f + LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FADD_LLI) {
             // Local + Local -> Indirect
             IX0(2).f = LOC(0).f + LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FADD_ILI) {
             // Indirect + Local -> Indirect
             IX1(2).f = IX0(0).f + LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1142,49 +1173,49 @@ forever:
         IS(FSUB_LLL) {
             // Local - Local -> Local
             LOC(2).f = LOC(0).f - LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FSUB_ILL) {
             // Indirect - Local -> Local
             LOC(2).f = IX0(0).f - LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FSUB_LLI) {
             // Local - Local -> Indirect
             IX0(2).f = LOC(0).f - LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FSUB_ILI) {
             // Indirect - Local -> Indirect
             IX1(2).f = IX0(0).f - LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FSUB_LIL) {
             // Local - Indirect -> Local
             LOC(2).f = LOC(0).f - IX0(0).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FSUB_IIL) {
             // Indirect - Indirect -> Local
             LOC(2).f = IX0(0).f - IX1(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FSUB_LII) {
             // Local - Indirect -> Indirect
             IX1(2).f = LOC(0).f - IX0(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1192,257 +1223,288 @@ forever:
         IS(FMUL_LLL) {
             // Local * Local -> Local
             LOC(2).f = LOC(0).f * LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMUL_ILL) {
             // Indirect * Local -> Local
             LOC(2).f = IX0(0).f * LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMUL_LLI) {
             // Local * Local -> Indirect
             IX0(2).f = LOC(0).f * LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMUL_ILI) {
             // Indirect * Local -> Indirect
             IX1(2).f = IX0(0).f * LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         // Three operand float division) Noncommutative) 7 unique variants
         IS(FDIV_LLL) {
             LOC(2).f = LOC(0).f / LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FDIV_ILL) {
             // Indirect / Local -> Local
             LOC(2).f = IX0(0).f / LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FDIV_LLI) {
             // Local / Local -> Indirect
             IX0(2).f = LOC(0).f / LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FDIV_ILI) {
             // Indirect / Local -> Indirect
             IX1(2).f = IX0(0).f / LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FDIV_LIL) {
             // Local / Indirect -> Local
             LOC(2).f = IX0(0).f / LOC(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FDIV_IIL) {
             // Indirect / Indirect -> Local
             LOC(2).f = IX0(0).f / IX1(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FDIV_LII) {
             // Local / Indirect -> Indirect
             IX1(2).f = LOC(0).f / IX0(1).f;
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         // Three operand float modulo) Noncommutative) 7 unique variants
         IS(FMOD_LLL) {
             LOC(2).f = std::fmod(LOC(0).f, LOC(1).f);
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMOD_ILL) {
             // Indirect % Local -> Local
             LOC(2).f = std::fmod(IX0(0).f, LOC(1).f);
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMOD_LLI) {
             // Local % Local -> Indirect
             IX0(2).f = std::fmod(LOC(0).f, LOC(1).f);
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMOD_ILI) {
             // Indirect % Local -> Indirect
             IX1(2).f = std::fmod(IX0(0).f, LOC(1).f);
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMOD_LIL) {
             // Local % Indirect -> Local
             LOC(2).f = std::fmod(IX0(0).f, LOC(1).f);
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMOD_IIL) {
             // Indirect % Indirect -> Local
             LOC(2).f = std::fmod(IX0(0).f, IX1(1).f);
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         IS(FMOD_LII) {
             // Local % Indirect -> Indirect
             IX1(2).f = std::fmod(LOC(0).f, IX0(1).f);
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
         // Floating Point Maximum) Commutative) 4 unique variants
         IS(FMAX_LLL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(FMAX_ILL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(FMAX_LLI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(FMAX_ILI) {
-
+            STEP(4);
+            NEXT;
         }
 
         // Floating Point Minimum) Commutative) 4 unique variants
         IS(FMIN_LLL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(FMIN_ILL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(FMIN_LLI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(FMIN_ILI) {
-
+            STEP(4);
+            NEXT;
         }
 
         // Vector specific instructions ////////////////////////////////////////////////////////////////////////////
 
         // Vector branch if equal
         IS(VBEQ_LL) {
-
+            STEP(5);
+            NEXT;
         }
 
         IS(VBEQ_IL) {
-
+            STEP(5);
+            NEXT;
         }
 
         IS(VBEQ_II) {
-
+            STEP(5);
+            NEXT;
         }
 
         // Vector branch if not equal
         IS(VBNE_LL) {
-
+            STEP(5);
+            NEXT;
         }
 
         IS(VBNE_IL) {
-
+            STEP(5);
+            NEXT;
         }
 
         IS(VBNE_II) {
-
+            STEP(5);
+            NEXT;
         }
 
         // Two operand Vector instructions
         IS(VCOPY_LL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VCOPY_IL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VCOPY_LI) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VCOPY_II) {
-
+            STEP(3);
+            NEXT;
         }
 
         // Vector negate
         IS(VNEG_LL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VNEG_IL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VNEG_LI) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VNEG_II) {
-
+            STEP(3);
+            NEXT;
         }
 
         // Vector normalize
         IS(VNORM_LL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VNORM_IL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VNORM_LI) {
-
+            STEP(3);
+            NEXT;
         }
 
-        IS(VNORM_II)
+        IS(VNORM_II) {
+            STEP(3);
+            NEXT;
+        }
 
         // Vector magnitude (scalar result)
         IS(VMAG_LL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VMAG_IL) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VMAG_LI) {
-
+            STEP(3);
+            NEXT;
         }
 
         IS(VMAG_II) {
-
+            STEP(3);
+            NEXT;
         }
-
 
         // Three operand vector instructions
 
@@ -1454,7 +1516,7 @@ forever:
             vd[0] = vs1[0] + vs2[0];
             vd[1] = vs1[1] + vs2[1];
             vd[2] = vs1[2] + vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1465,7 +1527,7 @@ forever:
             vd[0] = vs1[0] + vs2[0];
             vd[1] = vs1[1] + vs2[1];
             vd[2] = vs1[2] + vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1476,7 +1538,7 @@ forever:
             vd[0] = vs1[0] + vs2[0];
             vd[1] = vs1[1] + vs2[1];
             vd[2] = vs1[2] + vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1487,7 +1549,7 @@ forever:
             vd[0] = vs1[0] + vs2[0];
             vd[1] = vs1[1] + vs2[1];
             vd[2] = vs1[2] + vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1499,7 +1561,7 @@ forever:
             vd[0] = vs1[0] - vs2[0];
             vd[1] = vs1[1] - vs2[1];
             vd[2] = vs1[2] - vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1510,7 +1572,7 @@ forever:
             vd[0] = vs1[0] - vs2[0];
             vd[1] = vs1[1] - vs2[1];
             vd[2] = vs1[2] - vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1521,7 +1583,7 @@ forever:
             vd[0] = vs1[0] - vs2[0];
             vd[1] = vs1[1] - vs2[1];
             vd[2] = vs1[2] - vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1532,7 +1594,7 @@ forever:
             vd[0] = vs1[0] - vs2[0];
             vd[1] = vs1[1] - vs2[1];
             vd[2] = vs1[2] - vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1543,7 +1605,7 @@ forever:
             vd[0] = vs1[0] - vs2[0];
             vd[1] = vs1[1] - vs2[1];
             vd[2] = vs1[2] - vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1554,7 +1616,7 @@ forever:
             vd[0] = vs1[0] - vs2[0];
             vd[1] = vs1[1] - vs2[1];
             vd[2] = vs1[2] - vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
@@ -1565,86 +1627,104 @@ forever:
             vd[0] = vs1[0] - vs2[0];
             vd[1] = vs1[1] - vs2[1];
             vd[2] = vs1[2] - vs2[2];
-            STEP(3);
+            STEP(4);
             NEXT;
         }
 
 
         // Dot product (scalar result)) Commutative) 4 unique variants
         IS(VDOT_LLL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VDOT_ILL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VDOT_LLI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VDOT_ILI) {
-
+            STEP(4);
+            NEXT;
         }
 
 
         // Cross product (vector result)) Noncommutative) 7 unique variants
         IS(VCROSS_LLL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VCROSS_ILL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VCROSS_LLI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VCROSS_ILI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VCROSS_LIL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VCROSS_IIL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VCROSS_LII) {
-
+            STEP(4);
+            NEXT;
         }
 
 
         // Vector multiply by float) Commutative) 7 variants due to different input operand types
         IS(VFMUL_LLL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VFMUL_ILL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VFMUL_LLI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VFMUL_ILI) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VFMUL_LIL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VFMUL_IIL) {
-
+            STEP(4);
+            NEXT;
         }
 
         IS(VFMUL_LII) {
-
+            STEP(4);
+            NEXT;
         }
 
         default:
