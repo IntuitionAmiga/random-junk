@@ -24,6 +24,9 @@ using namespace GVM;
 // Vector local operand, returns a float32 pointer to the zeroth element of the vector
 #define VLOC(operand)  ( (float32*)&LOC(operand) )
 
+// Vector expressed as triplet of unsigned words - for data transfer operations
+#define ULOC(operand)  ( (uint32*)&LOC(operand) )
+
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
 #define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand) + 1]] )
 #define IX0(operand)     ( callStack->indirection[0][programCounter[(operand)] + 1] )
@@ -33,6 +36,10 @@ using namespace GVM;
 // Vector Indirect Operand,
 #define VIX0(operand)    ((float32*)&IX0(operand))
 #define VIX1(operand)    ((float32*)&IX1(operand))
+
+// Vector expressed as triplet of unsigned words - for data transfoer operations
+#define UIX0(operand)    ((uint32*)&IX0(operand))
+#define UIX1(operand)    ((uint32*)&IX1(operand))
 
 // Jump displaceents
 #define J16(operand)  (int16)(((uint16)programCounter[(operand) + 1] << 8) | programCounter[(operand) + 2])

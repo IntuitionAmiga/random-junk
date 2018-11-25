@@ -1,41 +1,105 @@
-// Vector specific instructions ////////////////////////////////////////////////////////////////////////////
 
-// Vector branch if equal
+// Vector specific Instructions ////////////////////////////////////////////////////////////////////////////////////////
+
+// Two Operand Branch If Vector Equal //////////////////////////////////////////////////////////////////////////////////
+
 IS(VBEQ_LL) {
+    uint32* vs = ULOC(0);
+    uint32* vd = ULOC(1);
+    if (
+        vd[0] == vs[0] &&
+        vd[1] == vs[1] &&
+        vd[2] == vs[2]
+    ) {
+        STEP(J16(2));
+        NEXT;
+    }
     STEP(5);
     NEXT;
 }
 
 IS(VBEQ_IL) {
+    uint32* vs = UIX0(0);
+    uint32* vd = ULOC(1);
+    if (
+        vd[0] == vs[0] &&
+        vd[1] == vs[1] &&
+        vd[2] == vs[2]
+    ) {
+        STEP(J16(2));
+        NEXT;
+    }
     STEP(5);
     NEXT;
 }
 
 IS(VBEQ_II) {
+    uint32* vs = UIX0(0);
+    uint32* vd = UIX1(1);
+    if (
+        vd[0] == vs[0] &&
+        vd[1] == vs[1] &&
+        vd[2] == vs[2]
+    ) {
+        STEP(J16(2));
+        NEXT;
+    }
     STEP(5);
     NEXT;
 }
 
-// Vector branch if not equal
+// Two Operand Branch if Vector Not Equal //////////////////////////////////////////////////////////////////////////////
+
 IS(VBNE_LL) {
+    uint32* vs = ULOC(0);
+    uint32* vd = ULOC(1);
+    if (
+        vd[0] != vs[0] &&
+        vd[1] != vs[1] &&
+        vd[2] != vs[2]
+    ) {
+        STEP(J16(2));
+        NEXT;
+    }
     STEP(5);
     NEXT;
 }
 
 IS(VBNE_IL) {
+    uint32* vs = UIX0(0);
+    uint32* vd = ULOC(1);
+    if (
+        vd[0] != vs[0] &&
+        vd[1] != vs[1] &&
+        vd[2] != vs[2]
+    ) {
+        STEP(J16(2));
+        NEXT;
+    }
     STEP(5);
     NEXT;
 }
 
 IS(VBNE_II) {
+    uint32* vs = UIX0(0);
+    uint32* vd = UIX1(1);
+    if (
+        vd[0] != vs[0] &&
+        vd[1] != vs[1] &&
+        vd[2] != vs[2]
+    ) {
+        STEP(J16(2));
+        NEXT;
+    }
     STEP(5);
     NEXT;
 }
 
-// Two operand Vector instructions
+// Two Operand Vector Copy /////////////////////////////////////////////////////////////////////////////////////////////
+
 IS(VCOPY_LL) {
-    float32* vs = VLOC(0);
-    float32* vd = VLOC(1);
+    uint32* vs = ULOC(0);
+    uint32* vd = ULOC(1);
     vd[0] = vs[0];
     vd[1] = vs[1];
     vd[2] = vs[2];
@@ -44,8 +108,8 @@ IS(VCOPY_LL) {
 }
 
 IS(VCOPY_IL) {
-    float32* vs = VIX0(0);
-    float32* vd = VLOC(1);
+    uint32* vs = UIX0(0);
+    uint32* vd = ULOC(1);
     vd[0] = vs[0];
     vd[1] = vs[1];
     vd[2] = vs[2];
@@ -54,8 +118,8 @@ IS(VCOPY_IL) {
 }
 
 IS(VCOPY_LI) {
-    float32* vs = VLOC(0);
-    float32* vd = VIX0(1);
+    uint32* vs = ULOC(0);
+    uint32* vd = UIX0(1);
     vd[0] = vs[0];
     vd[1] = vs[1];
     vd[2] = vs[2];
@@ -64,8 +128,8 @@ IS(VCOPY_LI) {
 }
 
 IS(VCOPY_II) {
-    float32* vs = VIX0(0);
-    float32* vd = VIX1(1);
+    uint32* vs = UIX0(0);
+    uint32* vd = UIX1(1);
     vd[0] = vs[0];
     vd[1] = vs[1];
     vd[2] = vs[2];
@@ -73,72 +137,159 @@ IS(VCOPY_II) {
     NEXT;
 }
 
-// Vector negate
+// Two Operand Vector Negate ///////////////////////////////////////////////////////////////////////////////////////////
+
 IS(VNEG_LL) {
+    float32* vs = VLOC(0);
+    float32* vd = VLOC(1);
+    vd[0] = -vs[0];
+    vd[1] = -vs[1];
+    vd[2] = -vs[2];
     STEP(3);
     NEXT;
 }
 
 IS(VNEG_IL) {
+    float32* vs = VIX0(0);
+    float32* vd = VLOC(1);
+    vd[0] = -vs[0];
+    vd[1] = -vs[1];
+    vd[2] = -vs[2];
     STEP(3);
     NEXT;
 }
 
 IS(VNEG_LI) {
+    float32* vs = VLOC(0);
+    float32* vd = VIX0(1);
+    vd[0] = -vs[0];
+    vd[1] = -vs[1];
+    vd[2] = -vs[2];
     STEP(3);
     NEXT;
 }
 
 IS(VNEG_II) {
+    float32* vs = VIX0(0);
+    float32* vd = VIX1(1);
+    vd[0] = -vs[0];
+    vd[1] = -vs[1];
+    vd[2] = -vs[2];
     STEP(3);
     NEXT;
 }
 
-// Vector normalize
+// Two Operand Vector Normalisation ////////////////////////////////////////////////////////////////////////////////////
+
 IS(VNORM_LL) {
+    float32* vs = VLOC(0);
+    float32* vd = VLOC(1);
+    float32 f = 1.0f / std::sqrt(
+        (vs[0] * vs[0]) +
+        (vs[1] * vs[1]) +
+        (vs[2] * vs[2])
+    );
+    vd[0] = f * vs[0];
+    vd[1] = f * vs[1];
+    vd[2] = f * vs[2];
     STEP(3);
     NEXT;
 }
 
 IS(VNORM_IL) {
+    float32* vs = VIX0(0);
+    float32* vd = VLOC(1);
+    float32 f = 1.0f / std::sqrt(
+        (vs[0] * vs[0]) +
+        (vs[1] * vs[1]) +
+        (vs[2] * vs[2])
+    );
+    vd[0] = f * vs[0];
+    vd[1] = f * vs[1];
+    vd[2] = f * vs[2];
     STEP(3);
     NEXT;
 }
 
 IS(VNORM_LI) {
+    float32* vs = VLOC(0);
+    float32* vd = VIX0(1);
+    float32 f = 1.0f / std::sqrt(
+        (vs[0] * vs[0]) +
+        (vs[1] * vs[1]) +
+        (vs[2] * vs[2])
+    );
+    vd[0] = f * vs[0];
+    vd[1] = f * vs[1];
+    vd[2] = f * vs[2];
     STEP(3);
     NEXT;
 }
 
 IS(VNORM_II) {
+    float32* vs = VIX0(0);
+    float32* vd = VIX1(1);
+    float32 f = 1.0f / std::sqrt(
+        (vs[0] * vs[0]) +
+        (vs[1] * vs[1]) +
+        (vs[2] * vs[2])
+    );
+    vd[0] = f * vs[0];
+    vd[1] = f * vs[1];
+    vd[2] = f * vs[2];
     STEP(3);
     NEXT;
 }
 
-// Vector magnitude (scalar result)
+// Two Operand Vector Magnitude (Float Result) /////////////////////////////////////////////////////////////////////////
+
 IS(VMAG_LL) {
+    float32* v = VLOC(0);
+    LOC(1).f = std::sqrt(
+        (v[0] * v[0]) +
+        (v[1] * v[1]) +
+        (v[2] * v[2])
+    );
     STEP(3);
     NEXT;
 }
 
 IS(VMAG_IL) {
+    float32* v = VIX0(0);
+    LOC(1).f = std::sqrt(
+        (v[0] * v[0]) +
+        (v[1] * v[1]) +
+        (v[2] * v[2])
+    );
     STEP(3);
     NEXT;
 }
 
 IS(VMAG_LI) {
+    float32* v = VLOC(0);
+    IX0(1).f = std::sqrt(
+        (v[0] * v[0]) +
+        (v[1] * v[1]) +
+        (v[2] * v[2])
+    );
     STEP(3);
     NEXT;
 }
 
 IS(VMAG_II) {
+    float32* v = VIX0(0);
+    IX1(1).f = std::sqrt(
+        (v[0] * v[0]) +
+        (v[1] * v[1]) +
+        (v[2] * v[2])
+    );
     STEP(3);
     NEXT;
 }
 
-// Three operand vector instructions
+// Three Operand Vector Instructions ///////////////////////////////////////////////////////////////////////////////////
 
-// Vector addition) Commutative) 4 unique variants
+// Three Operand Vector Addition (Commutative, 4 unique variants) //////////////////////////////////////////////////////
 IS(VADD_LLL) {
     float32* vs1 = VLOC(0);
     float32* vs2 = VLOC(1);
@@ -183,7 +334,8 @@ IS(VADD_ILI) {
     NEXT;
 }
 
-// Vector subtraction) Noncommutative) 7 unique variants
+// Three Operand Vector Subtraction (Noncommutative, 7 unique variants) ////////////////////////////////////////////////
+
 IS(VSUB_LLL) {
     float32* vs1 = VLOC(0);
     float32* vs2 = VLOC(1);
@@ -262,7 +414,8 @@ IS(VSUB_LII) {
 }
 
 
-// Dot product (scalar result)) Commutative) 4 unique variants
+// Three Operand Dot Product (Scalar Float Result) /////////////////////////////////////////////////////////////////////
+
 IS(VDOT_LLL) {
     STEP(4);
     NEXT;
@@ -284,7 +437,7 @@ IS(VDOT_ILI) {
 }
 
 
-// Cross product (vector result)) Noncommutative) 7 unique variants
+// Three Operand Cross Product (Noncommutative, 7 unique variants) /////////////////////////////////////////////////////
 IS(VCROSS_LLL) {
     STEP(4);
     NEXT;
@@ -321,7 +474,7 @@ IS(VCROSS_LII) {
 }
 
 
-// Vector multiply by float) Commutative) 7 variants due to different input operand types
+// Three Operand Vector Scale (Commutative, mixed args, 7 unique variants) /////////////////////////////////////////////
 IS(VFMUL_LLL) {
     STEP(4);
     NEXT;
