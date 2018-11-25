@@ -3,18 +3,47 @@
 #include <cfloat>
 #include "include/stub_types.hpp"
 #include "include/opcode.hpp"
-#include "include/interpreter.hpp"
+#include "include/interpreter_core.hpp"
 
 using namespace GVM;
 
-//
+// General Purpose Registers
+Interpreter::Register Interpreter::reg[NUM_REG];
+
+// Vector3 Scratch and Magnitude
+float32       Interpreter::reg_vs[3];
+float32       Interpreter::reg_m;
+
+// Program counter
+const uint8*  Interpreter::pc = 0;
+
+// Status register
+uint32        Interpreter::status;
+
+// Stacks
+const uint8** Interpreter::callStack = 0;
+uint32*       Interpreter::dataStack = 0;
+
+// Stack limits
+const uint8** Interpreter::callStackBase = 0;
+const uint8** Interpreter::callStackTop  = 0;
+uint32*       Interpreter::dataStackBase = 0;
+uint32*       Interpreter::dataStackTop  = 0;
+
+// Symbol Tables
+const uint8**          Interpreter::codeSymbol     = 0;
+Interpreter::HostCall* Interpreter::hostCodeSymbol = 0;
+uint32**               Interpreter::dataSymbol     = 0;
+uint16                 Interpreter::codeSymbolCount     = 0;
+uint16                 Interpreter::hostCodeSymbolCount = 0;
+uint16                 Interpreter::dataSymbolCount     = 0;
 
 #define DISPATCH(o) switch(o)
 #define IS(o)   case Opcode::_##o:
 #define NEXT    goto forever
 #define EXIT    goto bailout
 
-void Interpreter::execute() {
+uint32 Interpreter::execute() {
 
   status = RUNNING;
 
@@ -41,7 +70,7 @@ forever:
 
 bailout:
 
-  return;
+  return status;
 }
 
 int Interpreter::callSymbol(uint16 symbol) {

@@ -4,7 +4,7 @@
 #include <cstring>
 #include "include/stub_types.hpp"
 #include "include/opcode.hpp"
-#include "include/interpreter.hpp"
+#include "include/interpreter_core.hpp"
 #include "include/opcode_macros.hpp"
 
 
@@ -16,6 +16,7 @@ class SingleOpcodeInterpreter : public Interpreter {
 
   public:
     void step(const uint8* code);
+
 
     void setCallStack(const uint8** location, uint32 size) {
       callStackBase = location;
@@ -43,10 +44,13 @@ class SingleOpcodeInterpreter : public Interpreter {
       dataSymbol      = location;
       dataSymbolCount = count;
     }
+
+  protected:
+    int callSymbol(uint16 symbol);
 };
 
 // Stub
-int Interpreter::callSymbol(uint16 symbol) {
+int SingleOpcodeInterpreter::callSymbol(uint16 symbol) {
   if (!symbol || symbol >= codeSymbolCount) {
     status = UNKNOWN_CODE_SYMBOL;
     return 0;
@@ -93,6 +97,10 @@ void SingleOpcodeInterpreter::step(const uint8* code) {
 
 bailout:
 
+  std::printf(
+    "\tStart PC: %p, End PC: %p\n",
+    code, pc
+  );
   return;
 }
 

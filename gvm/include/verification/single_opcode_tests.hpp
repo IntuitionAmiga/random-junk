@@ -616,3 +616,10 @@ const char* assembler[] = {
   "lsr 1(r7), r8",
   "lsr 1(r7), 2(r8)",
 };
+
+struct OpcodeTest {
+  Opcode::Enumeration opcode;
+  const char*         assembler;
+  const uint8*        code;
+};
+
