@@ -1,7 +1,8 @@
 
-// Floating point specific instructions ////////////////////////////////////////////////////////////////////
+// Floating point specific instructions ////////////////////////////////////////////////////////////////////////////////
 
-// Two operand branch if greater or equal
+// Two Operand Branch If Float Greater Or Equal ////////////////////////////////////////////////////////////////////////
+
 IS(FBGE_LL) {
     if (LOC(0).f >= LOC(1).f) {
         STEP(J16(2));
@@ -38,7 +39,8 @@ IS(FBGE_II) {
     NEXT;
 }
 
-// Two operand branch if greater than
+// Two Operand Branch If Float Greater Than ////////////////////////////////////////////////////////////////////////////
+
 IS(FBGT_LL) {
     if (LOC(0).f > LOC(1).f) {
         STEP(J16(2));
@@ -75,7 +77,8 @@ IS(FBGT_II) {
     NEXT;
 }
 
-// Two operand) local to local handy maths functions
+// Two Operand Float Math Functions (Local to Local) ///////////////////////////////////////////////////////////////////
+
 IS(FINV_LL) {
     // Reciprocal
     LOC(1).f = 1.0f / LOC(0).f;
@@ -120,7 +123,8 @@ IS(FACOS_LL) {
     NEXT;
 }
 
-// Two operand float negate
+// Two Operand Float Negate ////////////////////////////////////////////////////////////////////////////////////////////
+
 IS(FNEG_LL) {
     LOC(1).f = -LOC(0).f;
     STEP(3);
@@ -145,7 +149,8 @@ IS(FNEG_II) {
     NEXT;
 }
 
-// Three operand float addition) Commutative) 4 unique variants
+// Three Operand Float Addition (Commutative, 4 unique variants) ///////////////////////////////////////////////////////
+
 IS(FADD_LLL) {
     // Local + Local -> Local
     LOC(2).f = LOC(0).f + LOC(1).f;
@@ -174,7 +179,8 @@ IS(FADD_ILI) {
     NEXT;
 }
 
-// Three operand float subtraction) Noncommutative) 7 unique variants
+// Three Operand Float Subtraction (Noncommutative, 7 unique variants) /////////////////////////////////////////////////
+
 IS(FSUB_LLL) {
     // Local - Local -> Local
     LOC(2).f = LOC(0).f - LOC(1).f;
@@ -224,7 +230,8 @@ IS(FSUB_LII) {
     NEXT;
 }
 
-// Three operand float multiplication) Commutative) 4 unique variants
+// Three Operand Float Multiplication (Commutative, 4 unique variants) /////////////////////////////////////////////////
+
 IS(FMUL_LLL) {
     // Local * Local -> Local
     LOC(2).f = LOC(0).f * LOC(1).f;
@@ -253,7 +260,8 @@ IS(FMUL_ILI) {
     NEXT;
 }
 
-// Three operand float division) Noncommutative) 7 unique variants
+// Three Operand Float Division (Noncommutative, 7 unique variants) ////////////////////////////////////////////////////
+
 IS(FDIV_LLL) {
     LOC(2).f = LOC(0).f / LOC(1).f;
     STEP(4);
@@ -302,7 +310,8 @@ IS(FDIV_LII) {
     NEXT;
 }
 
-// Three operand float modulo) Noncommutative) 7 unique variants
+// Three Operand Float Modulo (Noncommutative, 7 unique variants) //////////////////////////////////////////////////////
+
 IS(FMOD_LLL) {
     LOC(2).f = std::fmod(LOC(0).f, LOC(1).f);
     STEP(4);
@@ -351,44 +360,78 @@ IS(FMOD_LII) {
     NEXT;
 }
 
-// Floating Point Maximum) Commutative) 4 unique variants
+// Three Operand Float Maximum (Commutative, 4 unique variants) ////////////////////////////////////////////////////////
+
 IS(FMAX_LLL) {
+    // max(Local, Local) -> Local
+    float32 f1 = LOC(0).f;
+    float32 f2 = LOC(1).f;
+    LOC(2).f  = f1 > f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
 
 IS(FMAX_ILL) {
+    // max(Indirect, Local) -> Local
+    float32 f1 = IX0(0).f;
+    float32 f2 = LOC(1).f;
+    LOC(2).f  = f1 > f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
 
 IS(FMAX_LLI) {
+    // max(Local, Local) -> Indirect
+    float32 f1 = LOC(0).f;
+    float32 f2 = LOC(1).f;
+    IX0(0).f  = f1 > f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
 
 IS(FMAX_ILI) {
+    // max(Indirect, Local) -> Indirect
+    float32 f1 = IX0(0).f;
+    float32 f2 = LOC(1).f;
+    IX1(2).f  = f1 > f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
 
-// Floating Point Minimum) Commutative) 4 unique variants
+// Three Operand Flaot Minumum (Commutative, 4 unique variants) ////////////////////////////////////////////////////////
+
 IS(FMIN_LLL) {
+    // max(Local, Local) -> Local
+    float32 f1 = LOC(0).f;
+    float32 f2 = LOC(1).f;
+    LOC(2).f  = f1 < f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
 
 IS(FMIN_ILL) {
+    // min(Indirect, Local) -> Local
+    float32 f1 = IX0(0).f;
+    float32 f2 = LOC(1).f;
+    LOC(2).f  = f1 < f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
 
 IS(FMIN_LLI) {
+    // min(Local, Local) -> Indirect
+    float32 f1 = LOC(0).f;
+    float32 f2 = LOC(1).f;
+    IX0(0).f  = f1 < f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
 
 IS(FMIN_ILI) {
+    // min(Indirect, Local) -> Indirect
+    float32 f1 = IX0(0).f;
+    float32 f2 = LOC(1).f;
+    IX1(2).f  = f1 < f2 ? f1 : f2;
     STEP(4);
     NEXT;
 }
