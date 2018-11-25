@@ -21,8 +21,6 @@
     #define _VM_HOST_MORPHOS_PPC      4
     #define _VM_HOST_LINUX_INTEL_32   5
 
-
-
     // Target sanity checks
     #if (_VM_HOST_OS == _VM_HOST_AMIGAOS3_68K)
         #ifdef __PPC__
