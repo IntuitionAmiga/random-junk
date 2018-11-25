@@ -1,10 +1,12 @@
 
-// Untyped Instructions //////////////////////////////////////////////////////////////////
+// Untyped Instructions ////////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(HCF) {
     // Halt and catch fire
     EXIT(EXEC_HALT_AND_CATCH_FIRE);
 }
+
+// Unconditional Branch (GOTO) /////////////////////////////////////////////////////////////////////////////////////////
 
 IS(BRAS) {
     // Branch to a signed 8-bit offset
@@ -17,6 +19,8 @@ IS(BRA) {
     STEP(J16(0));
     NEXT;
 }
+
+// Function Call ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(BCALL) {
     // Call an anonymous local function
@@ -69,6 +73,8 @@ IS(RET) {
     NEXT;
 }
 
+// Linked List Traversal ///////////////////////////////////////////////////////////////////////////////////////////////
+
 IS(LLBNN) {
     // Load indirect to indirection register and branch if not null
     if (!(IR(0) = IX(0, 1).a)) {
@@ -79,7 +85,9 @@ IS(LLBNN) {
     NEXT;
 }
 
-// Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////
+// Scalar Instructions (Float Or Integer) //////////////////////////////////////////////////////////////////////////////
+
+// Single Operand Branch If Zero ///////////////////////////////////////////////////////////////////////////////////////
 
 IS(BEZ_L) {
     // Branch to a signed 16-bit offset if local is equal to zero
@@ -101,8 +109,10 @@ IS(BEZ_I) {
     NEXT;
 }
 
+// Single Operand Branch If Not Zero //////////////////////////////////////////////////////////////////////////////////
+
 IS(BNZ_L) {
-    // Branch to a signed 16-bit offset if local is equal to zero
+    // Branch to a signed 16-bit offset if local is not equal to zero
     if (0 != LOC(0).u) {
         STEP(J16(1));
         NEXT;
@@ -120,6 +130,8 @@ IS(BNZ_I) {
     STEP(5);
     NEXT;
 }
+
+// Two Operand Branch If Equal /////////////////////////////////////////////////////////////////////////////////////////
 
 IS(BEQ_LL) {
     // Branch to a signed 16-bit offset if two local values are equal
@@ -150,6 +162,8 @@ IS(BEQ_II) {
     STEP(5);
     NEXT;
 }
+
+// Addressing Operations //////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(ADDR_LL) {
     // Get address of local variable into local variable
@@ -194,6 +208,8 @@ IS(ADDR_CI) {
     NEXT;
 }
 
+// Data Movement Operations ////////////////////////////////////////////////////////////////////////////////////////////
+
 IS(LOAD_LX) {
     // Load local reference to index register
     IR(1) = &LOC(0);
@@ -203,6 +219,7 @@ IS(LOAD_LX) {
 
 IS(SAVE_XL) {
     // Save indirection index to local
+    LOC(1).a = IR(0);
     STEP(3);
     NEXT;
 }
@@ -240,6 +257,8 @@ IS(COPY_II) {
     STEP(3);
     NEXT;
 }
+
+// Type Conversion Operations //////////////////////////////////////////////////////////////////////////////////////////
 
 IS(ITOF_LL) {
     // Cast float to integer
