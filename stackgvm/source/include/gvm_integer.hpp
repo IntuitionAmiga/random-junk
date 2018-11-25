@@ -1,7 +1,8 @@
 
-// Integer specific instructions ///////////////////////////////////////////////////////////////////////////
+// Integer specific instructions ///////////////////////////////////////////////////////////////////////////////////////
 
-// Two operand branch if greater or equal
+// Two Operand Branch If Integer Greater Or Equal //////////////////////////////////////////////////////////////////////
+
 IS(BGE_LL) {
     if (LOC(0).i >= LOC(1).i) {
         STEP(J16(2));
@@ -38,7 +39,8 @@ IS(BGE_II) {
     NEXT;
 }
 
-// Two operand branch if greater than
+// Two Operand Branch If Integer Greater Than //////////////////////////////////////////////////////////////////////////
+
 IS(BGT_LL) {
     if (LOC(0).i > LOC(1).i) {
         STEP(J16(2));
@@ -75,6 +77,8 @@ IS(BGT_II) {
     NEXT;
 }
 
+// Decrement Integer And Branch If Not Zero ///////////////////////////////////////////////////////////////////////////s/
+
 IS(DBNZ_L) {
     // Decrement local and branch if not zero
     if (--LOC(0).u) {
@@ -85,7 +89,8 @@ IS(DBNZ_L) {
     NEXT;
 }
 
-// Load small literal integer
+// Load Small Integer Literal //////////////////////////////////////////////////////////////////////////////////////////
+
 IS(LOAD_SL) {
     LOC(1).i = S8(0);
     STEP(3);
@@ -98,7 +103,8 @@ IS(LOAD_SI) {
     NEXT;
 }
 
-// Single bit operations
+// Set Single Bit //////////////////////////////////////////////////////////////////////////////////////////////////////
+
 IS(BSET_SL) {
     // Set bit in local
     LOC(1).u |= 1 << U8(0);
@@ -113,6 +119,8 @@ IS(BSET_SI) {
     NEXT;
 }
 
+// Clear Single Bit ////////////////////////////////////////////////////////////////////////////////////////////////////
+
 IS(BCLR_SL) {
     // Clear bit in local
     LOC(1).u &= ~(1 << U8(0));
@@ -126,6 +134,8 @@ IS(BCLR_SI) {
     STEP(3);
     NEXT;
 }
+
+// Branch If Bit Set ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(BBS_SL) {
     // Branch if bit is set (local)
@@ -147,6 +157,8 @@ IS(BBS_SI) {
     NEXT;
 }
 
+// Branch If Bit Clear /////////////////////////////////////////////////////////////////////////////////////////////////
+
 IS(BBC_SL) {
     // Branch if bit is clear (local)
     if (!(LOC(1).u & (1 << U8(0)))) {
@@ -167,7 +179,8 @@ IS(BBC_SI) {
     NEXT;
 }
 
-// Two operand logical negate
+// Two Operand Logical Inverse /////////////////////////////////////////////////////////////////////////////////////////
+
 IS(NOT_LL) {
     LOC(1).u = ~LOC(0).u;
     STEP(3);
@@ -192,7 +205,8 @@ IS(NOT_II) {
     NEXT;
 }
 
-// Two operand integer negate
+// Two Operand Integer Negate //////////////////////////////////////////////////////////////////////////////////////////
+
 IS(NEG_LL) {
     LOC(1).u = -LOC(0).u;
     STEP(3);
@@ -217,7 +231,8 @@ IS(NEG_II) {
     NEXT;
 }
 
-// Three operand integer addition) Commutative) 4 unique variants
+// Three Operand Integer Addition (Commutative, 4 unique variants) /////////////////////////////////////////////////////
+
 IS(ADD_LLL) {
     // Local + Local -> Local
     LOC(2).i = LOC(0).i + LOC(1).i;
@@ -246,7 +261,8 @@ IS(ADD_ILI) {
     NEXT;
 }
 
-// Three operand integer subtraction) Noncommutative) 7 unique variants
+// Three operand Integer Subtraction (Noncommutative, 7 unique variants) ///////////////////////////////////////////////
+
 IS(SUB_LLL) {
     // Local - Local -> Local
     LOC(2).i = LOC(0).i - LOC(1).i;
@@ -296,7 +312,8 @@ IS(SUB_LII) {
     NEXT;
 }
 
-// Three operand integer multiplication) Commutative) 4 unique variants
+// Three Operand Integer Multiplication (Commutative, 4 unique variants) ///////////////////////////////////////////////
+
 IS(MUL_LLL) {
     // Local * Local -> Local
     LOC(2).i = LOC(0).i * LOC(1).i;
@@ -325,177 +342,167 @@ IS(MUL_ILI) {
     NEXT;
 }
 
-// Three operand integer division) Noncommutative) 7 unique variants
+// Three Operand Integer Division (Noncommutative, 7 unique variants) //////////////////////////////////////////////////
+
 IS(DIV_LLL) {
     // Local / Local -> Local
-    int32 numerator   = LOC(0).i;
+
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator / denominator;
+    LOC(2).i = LOC(0).i / denominator;
     STEP(4);
     NEXT;
 }
 
 IS(DIV_ILL) {
     // Indirect / Local -> Local
-    int32 numerator   = IX0(0).i;
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator / denominator;
+    LOC(2).i = IX0(0).i / denominator;
     STEP(4);
     NEXT;
 }
 
 IS(DIV_LLI) {
     // Local / Local -> Indirect
-    int32 numerator   = LOC(0).i;
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    IX0(2).i = numerator / denominator;
+    IX0(2).i = LOC(0).i / denominator;
     STEP(4);
     NEXT;
 }
 
 IS(DIV_ILI) {
     // Indirect / Local -> Indirect
-    int32 numerator   = IX0(0).i;
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    IX1(2).i = numerator / denominator;
+    IX1(2).i = IX0(0).i / denominator;
     STEP(4);
     NEXT;
 }
 
 IS(DIV_LIL) {
     // Local / Indirect -> Local
-    int32 numerator   = LOC(0).i;
     int32 denominator = IX0(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator / denominator;
+    LOC(2).i = LOC(0).i / denominator;
     STEP(4);
     NEXT;
 }
 
 IS(DIV_IIL) {
     // Indirect / Indirect -> Local
-    int32 numerator   = IX0(0).i;
     int32 denominator = IX1(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator / denominator;
+    LOC(2).i = IX0(0).i / denominator;
     STEP(4);
     NEXT;
 }
 
 IS(DIV_LII) {
     // Local / Indirect -> Indirect
-    int32 numerator   = LOC(0).i;
     int32 denominator = IX0(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    IX1(2).i = numerator / denominator;
+    IX1(2).i = LOC(0).i / denominator;
     STEP(4);
     NEXT;
 }
 
-// Three operand integer modulo) Noncommutative) 7 unique variants
+// Three Operand Integer Modulo (Noncommutative, 7 unique variants) ////////////////////////////////////////////////////
+
 IS(MOD_LLL) {
     // Local % Local -> Local
-    int32 numerator   = LOC(0).i;
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator % denominator;
+    LOC(2).i = LOC(0).i % denominator;
     STEP(4);
     NEXT;
 }
 
 IS(MOD_ILL) {
     // Indirect % Local -> Local
-    int32 numerator   = IX0(0).i;
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator % denominator;
+    LOC(2).i = IX0(0).i % denominator;
     STEP(4);
     NEXT;
 }
 
 IS(MOD_LLI) {
     // Local % Local -> Indirect
-    int32 numerator   = LOC(0).i;
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    IX0(2).i = numerator % denominator;
+    IX0(2).i = LOC(0).i % denominator;
     STEP(4);
     NEXT;
 }
 
 IS(MOD_ILI) {
     // Indirect % Local -> Indirect
-    int32 numerator   = IX0(0).i;
     int32 denominator = LOC(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    IX1(2).i = numerator % denominator;
+    IX1(2).i = IX0(0).i % denominator;
     STEP(4);
     NEXT;
 }
 
 IS(MOD_LIL) {
     // Local % Indirect -> Local
-    int32 numerator   = LOC(0).i;
     int32 denominator = IX0(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator % denominator;
+    LOC(2).i = LOC(0).i % denominator;
     STEP(4);
     NEXT;
 }
 
 IS(MOD_IIL) {
     // Indirect % Indirect -> Local
-    int32 numerator   = IX0(0).i;
     int32 denominator = IX1(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    LOC(2).i = numerator % denominator;
+    LOC(2).i = IX0(0).i % denominator;
     STEP(4);
     NEXT;
 }
 
 IS(MOD_LII) {
     // Local % Indirect -> Indirect
-    int32 numerator   = LOC(0).i;
     int32 denominator = IX0(1).i;
     if (!denominator) {
         EXIT(EXEC_DIVISION_BY_ZERO);
     }
-    IX1(2).i = numerator % denominator;
+    IX1(2).i = LOC(0).i % denominator;
     STEP(4);
     NEXT;
 }
 
-// Three operand logical AND) Commutative) 4 unique variants
+// Three Operand Logical AND (Commutative, 4 unique variants) //////////////////////////////////////////////////////////
+
 IS(AND_LLL) {
     // Local & Local -> Local
     LOC(2).u = LOC(0).u & LOC(1).u;
@@ -524,7 +531,8 @@ IS(AND_ILI) {
     NEXT;
 }
 
-// Three operand logical OR) Commutative) 4 unique variants
+// Three Operand Logical OR (Commutative, 4 unique variants) ///////////////////////////////////////////////////////////
+
 IS(OR_LLL) {
     // Local | Local -> Local
     LOC(2).u = LOC(0).u | LOC(1).u;
@@ -553,7 +561,8 @@ IS(OR_ILI) {
     NEXT;
 }
 
-// Three operand logical XOR) Commutative) 4 unique variants
+// Three Operand Logical XOR (Commutative, 4 unique variants) //////////////////////////////////////////////////////////
+
 IS(XOR_LLL) {
     // Local ^ Local -> Local
     LOC(2).u = LOC(0).u ^ LOC(1).u;
@@ -582,7 +591,8 @@ IS(XOR_ILI) {
     NEXT;
 }
 
-// Three operand logical shift left) Noncommutative) 4 supported variants
+// Three Operand Logical Shift Left (Noncommutative, 4 supported variants) /////////////////////////////////////////////
+
 IS(LSL_LLL) {
     // Local << Local -> Local
     LOC(2).u = LOC(0).u << LOC(1).u;
@@ -611,7 +621,8 @@ IS(LSL_ILI) {
     NEXT;
 }
 
-// Three operand logical shift right) Noncommutative) 4 supported variants
+// Three Operand Logical Shift Right (Noncommutative, 4 supported variants) ////////////////////////////////////////////
+
 IS(LSR_LLL) {
     // Local >> Local -> Local
     LOC(2).u = LOC(0).u >> LOC(1).u;
@@ -640,45 +651,79 @@ IS(LSR_ILI) {
     NEXT;
 }
 
-// Integer Maximum) Commutative) 4 unique variants
+// Three Operand Integer Maximum (Commutative, 4 unique variants) //////////////////////////////////////////////////////
+
 IS(MAX_LLL) {
+    // max(Local, Local) -> Local
+    int32 i1 = LOC(0).i;
+    int32 i2 = LOC(1).i;
+    LOC(2).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
 
 IS(MAX_ILL) {
+    // max(Indirect, Local) -> Local
+    int32 i1 = IX0(0).i;
+    int32 i2 = LOC(1).i;
+    LOC(2).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
 
 IS(MAX_LLI) {
+    // max(Local, Local) -> Indirect
+    int32 i1 = LOC(0).i;
+    int32 i2 = LOC(1).i;
+    IX0(0).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
 
 IS(MAX_ILI) {
+    // max(Indirect, Local) -> Indirect
+    int32 i1 = IX0(0).i;
+    int32 i2 = LOC(1).i;
+    IX1(2).i  = i1 > i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
 
 
-// Integer Minumum) Commutative) 4 unique variants
+// Three Operand Integer Minumum (Commutative, 4 unique variants) //////////////////////////////////////////////////////
+
 IS(MIN_LLL) {
+    // min(Local, Local) -> Local
+    int32 i1 = LOC(0).i;
+    int32 i2 = LOC(1).i;
+    LOC(2).i  = i1 < i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
 
 IS(MIN_ILL) {
+    // min(Indirect, Local) -> Local
+    int32 i1 = IX0(0).i;
+    int32 i2 = LOC(1).i;
+    LOC(2).i  = i1 < i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
 
 IS(MIN_LLI) {
+    // min(Local, Local) -> Indirect
+    int32 i1 = LOC(0).i;
+    int32 i2 = LOC(1).i;
+    IX0(0).i  = i1 < i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
 
 IS(MIN_ILI) {
+    // min(Indirect, Local) -> Indirect
+    int32 i1 = IX0(0).i;
+    int32 i2 = LOC(1).i;
+    IX1(2).i  = i1 < i2 ? i1 : i2;
     STEP(4);
     NEXT;
 }
