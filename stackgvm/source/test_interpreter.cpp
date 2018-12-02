@@ -44,7 +44,7 @@ int main() {
         stack[2].i
     );
 
-    Interpreter::Result result = Interpreter::invoke(1);
+    Result result = Interpreter::invoke(1);
 
     std::printf(
         "\nAfter\n\tResult = %d\n\tstack[0] = %d\n\tstack[1] = %d\n\tstack[2] = %d\n",

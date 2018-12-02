@@ -57,7 +57,7 @@ using namespace GVM;
 // Return address
 #define RTA(size)  (programCounter + (size))
 
-Interpreter::Result Interpreter::run() {
+Result Interpreter::run() {
 
 forever:
     FETCH {

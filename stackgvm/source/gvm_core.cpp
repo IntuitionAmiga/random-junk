@@ -24,7 +24,7 @@ uint32          Interpreter::functionTableSize = 0;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Interpreter::Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
+Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
     if (!table) {
         std::fprintf(stderr, "GVM::Interpreter::init()\n\tFuncInfo table cannot be null\n");
         return MISC_ILLEGAL_VALUE;
@@ -123,7 +123,7 @@ void Interpreter::done() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Interpreter::Result Interpreter::validateFunctionTable(const FuncInfo* table) {
+Result Interpreter::validateFunctionTable(const FuncInfo* table) {
 
     if (table[0].entryPoint) {
         std::fprintf(stderr, "Function table entry zero must be empty\n");
@@ -181,7 +181,7 @@ Interpreter::Result Interpreter::validateFunctionTable(const FuncInfo* table) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Interpreter::Result Interpreter::invoke(uint16 functionId) {
+Result Interpreter::invoke(uint16 functionId) {
     Result result = enterFunction(0, functionId);
     if (result == SUCCESS) {
         result = run();
@@ -191,7 +191,7 @@ Interpreter::Result Interpreter::invoke(uint16 functionId) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Interpreter::Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId) {
+Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId) {
     if (functionId == 0 || functionId > functionTableSize) {
         std::fprintf(
             stderr,
@@ -241,7 +241,7 @@ Interpreter::Result Interpreter::enterFunction(const uint8* returnAddress, uint1
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Interpreter::Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize) {
+Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize) {
     if (callStack < callStackTop) {
         uint32 currentFrameSize = callStack->frameSize;
         if (frameStack + currentFrameSize > frameStackTop) {
@@ -280,7 +280,7 @@ Interpreter::Result Interpreter::enterClosure(const uint8* returnAddress, int16 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Interpreter::Result Interpreter::exitFunction() {
+Result Interpreter::exitFunction() {
 
     if (callStack > callStackBase) {
         const uint8* returnTo = callStack->returnAddress;

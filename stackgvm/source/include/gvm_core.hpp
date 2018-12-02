@@ -44,6 +44,33 @@ namespace GVM {
         };
     };
 
+    typedef enum {
+        SUCCESS                    = 0,
+
+        // Runtime execution result statuses
+        EXEC_RETURN_TO_HOST        = 1,
+        EXEC_HALT_AND_CATCH_FIRE   = 2,
+        EXEC_CALL_STACK_OVERFLOW   = 3,
+        EXEC_CALL_STACK_UNDERFLOW  = 4,
+        EXEC_FRAME_STACK_OVERFLOW  = 5,
+        EXEC_FRAME_STACK_UNDERFLOW = 6,
+        EXEC_ILLEGAL_CALL_ID       = 7,
+        EXEC_ILLEGAL_HOST_ID       = 8,
+        EXEC_ILLEGAL_DATA_ID       = 9,
+        EXEC_DIVISION_BY_ZERO      = 10,
+
+        // Initialisation failures
+        INIT_OUT_OF_MEMORY         = 100,
+        INIT_TABLE_TOO_BIG         = 101,
+        INIT_INVALID_FRAME_DEF     = 102,
+
+        // Miscellaneous failures
+        MISC_ILLEGAL_VALUE         = 1000
+
+    } Result;
+
+    typedef Result (*NativeCall)(Scalar* stackFrame);
+
     /**
      * CallInfo
      *
@@ -71,31 +98,6 @@ namespace GVM {
                 MAX_STACK_SIZE = FuncInfo::MAX_FRAME_SIZE * MAX_CALL_DEPTH,
                 REDZONE_BUFFER = 128
             };
-
-            typedef enum {
-                SUCCESS                    = 0,
-
-                // Runtime execution result statuses
-                EXEC_RETURN_TO_HOST        = 1,
-                EXEC_HALT_AND_CATCH_FIRE   = 2,
-                EXEC_CALL_STACK_OVERFLOW   = 3,
-                EXEC_CALL_STACK_UNDERFLOW  = 4,
-                EXEC_FRAME_STACK_OVERFLOW  = 5,
-                EXEC_FRAME_STACK_UNDERFLOW = 6,
-                EXEC_ILLEGAL_CALL_ID       = 7,
-                EXEC_ILLEGAL_HOST_ID       = 8,
-                EXEC_ILLEGAL_DATA_ID       = 9,
-                EXEC_DIVISION_BY_ZERO      = 10,
-
-                // Initialisation failures
-                INIT_OUT_OF_MEMORY         = 100,
-                INIT_TABLE_TOO_BIG         = 101,
-                INIT_INVALID_FRAME_DEF     = 102,
-
-                // Miscellaneous failures
-                MISC_ILLEGAL_VALUE         = 1000
-
-            } Result;
 
             static Result  init(size_t rSize, size_t fSize, const FuncInfo* table);
             static Result  invoke(uint16 functionId);
