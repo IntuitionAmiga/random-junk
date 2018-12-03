@@ -7,6 +7,8 @@
 #ifndef _GVM_CODEMACROS_HPP_
     #define _GVM_CODEMACROS_HPP_
 
+#define GFUNC(name) uint8 _gvm_##name [] =
+
 #define _OP(x)  (uint8)Opcode::_##x
 #define _D8(x)  (uint8)(x)
 #define _D16(x) (uint8)((x) >> 8), (uint8)((x) & 0xFF)
@@ -209,7 +211,7 @@
 #define fbgt_ii _OP(FBGT_II),
 //
 // // Two operand, local to local handy maths functions
-#define finv_ll   _OP(FINV_LL),  
+#define finv_ll   _OP(FINV_LL),
 #define fsqrt_ll  _OP(FSQRT_LL),
 #define fisqr_ll  _OP(INVSQ_LL),
 #define fsin_ll   _OP(FSIN_LL),

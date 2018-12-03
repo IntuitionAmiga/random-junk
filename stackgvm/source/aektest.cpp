@@ -6,6 +6,7 @@
 
 #include <cstdio>
 #include "include/gvm_core.hpp"
+#include "include/gvm_codemacros.hpp"
 
 using namespace GVM;
 
@@ -123,16 +124,16 @@ enum {
     sample
 };
 
-uint8 _gvm_render[] = {
-    Opcode::_RET,
+GFUNC(render) {
+    ret
 };
 
-uint8 _gvm_trace[] = {
-    Opcode::_RET,
+GFUNC(trace) {
+    ret
 };
 
-uint8 _gvm_sample[] = {
-    Opcode::_RET
+GFUNC(sample) {
+    ret
 };
 
 
