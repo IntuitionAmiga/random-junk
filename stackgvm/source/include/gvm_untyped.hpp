@@ -87,15 +87,26 @@ IS(RET) {
 
 // Linked List Traversal ///////////////////////////////////////////////////////////////////////////////////////////////
 
-IS(LLBNN) {
-    // Load indirect to indirection register and branch if not null
-    if (!(IR(0) = IX(0, 1).a)) {
+IS(LI0BNN) {
+    // Load indirect[0] to indirection register[0] and branch if not null
+    if (!(IR(0) = IX0(0).a)) {
+        STEP(J16(1));
+        NEXT;
+    }
+    STEP(3);
+    NEXT;
+}
+
+IS(LI1BNN) {
+    // Load indirect[1] to indirection register[1] and branch if not null
+    if (!(IR(1) = IX1(0).a)) {
         STEP(J16(2));
         NEXT;
     }
-    STEP(5);
+    STEP(3);
     NEXT;
 }
+
 
 // Scalar Instructions (Float Or Integer) //////////////////////////////////////////////////////////////////////////////
 

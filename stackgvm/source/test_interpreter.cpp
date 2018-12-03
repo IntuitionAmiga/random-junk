@@ -6,6 +6,7 @@
 
 #include <cstdio>
 #include "include/gvm_core.hpp"
+#include "include/gvm_codemacros.hpp"
 
 using namespace GVM;
 
@@ -25,16 +26,16 @@ Result printVector(Scalar* frame) {
 }
 
 uint8 _gvm_test1[] = {
-    Opcode::_ADD_LLL, 1, 2, 3, // fs[3] = fs[1] + fs[2]
-    Opcode::_CALL,    0, 2,
-    Opcode::_HCALL,   0, 1,    // Call host function (1)
-    Opcode::_COPY_LL, 3, 0,    // fs[0] = fs[3]
-    Opcode::_RET
+    add_lll 1, 2, 3,           // fs[3] = fs[1] + fs[2]
+    call    SYM(2),
+    hcall   SYM(1),            // Call host function (1)
+    copy_ll 3, 0,              // fs[0] = fs[3]
+    ret
 };
 
 uint8 _gvm_test2[] = {
-    Opcode::_LSL_LLL, 0, 0, 0, // fs[0] = fs[1] << fs[1]
-    Opcode::_RET
+    lsl_lll 0, 0, 0, // fs[0] = fs[1] << fs[1]
+    ret
 };
 
 
