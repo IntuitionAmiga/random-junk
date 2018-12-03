@@ -36,6 +36,17 @@ namespace GVM {
 
     } Result;
 
+    // Symbol ID values are 16 bit. When an ID is stored into a Scalar for later use, it is combined with a 2-bit
+    // tag value that identifies it as data, code or host. Whenever a Scalar is used to dereference a Symbol ID,
+    // the tag type is checked.
+    typedef enum {
+        TAG_ILLEGAL        = 0,
+        TAG_DATA_REFERENCE = 1 << 30,
+        TAG_CODE_REFERENCE = 2 << 30,
+        TAG_HOST_REFERNECE = 3 << 30,
+        TAG_MASK_REFERENCE = 3 << 30
+    } SymbolIDTypeTag;
+
     /**
      * Scalar
      *
@@ -46,6 +57,8 @@ namespace GVM {
         uint32  u;
         float32 f;
         Scalar* a;
+        explicit Scalar(int32 i)   : i(i) {}
+        Scalar(float32 f) : f(f) {}
     };
 
     /**
@@ -86,7 +99,7 @@ namespace GVM {
                 REDZONE_BUFFER = 128
             };
 
-            static Result  init(size_t rSize, size_t fSize, const FuncInfo* table, const HostCall* host);
+            static Result  init(size_t rSize, size_t fSize, const FuncInfo* func, const HostCall* host, Scalar** data);
             static Result  invoke(uint16 functionId);
             static void    done();
 
@@ -124,12 +137,16 @@ namespace GVM {
             static const HostCall* hostFunctionTable;
             static uint32          hostFunctionTableSize;
 
+            static Scalar**        dataTable;
+            static uint32          dataTableSize;
+
             static Result enterFunction(const uint8* returnAddress, uint16 functionId);
             static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
             static Result exitFunction();
             static Result invokeHostFunction(uint16 functionId);
+
             static Result run();
-            static Result validateFunctionTables(const FuncInfo* table, const HostCall* host);
+            static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
     };
 
 };

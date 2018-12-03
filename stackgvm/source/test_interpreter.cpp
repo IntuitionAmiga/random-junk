@@ -14,6 +14,16 @@ Result printInteger(Scalar* frame) {
     return SUCCESS;
 }
 
+Result printFloat(Scalar* frame) {
+    std::printf("HOST: printFloat() = %f\n", frame[0].f);
+    return SUCCESS;
+}
+
+Result printVector(Scalar* frame) {
+    std::printf("HOST: printVector() = { %f, %f, %f }\n", frame[0].f, frame[1].f, frame[2].f);
+    return SUCCESS;
+}
+
 uint8 _gvm_test1[] = {
     Opcode::_ADD_LLL, 1, 2, 3, // fs[3] = fs[1] + fs[2]
     Opcode::_CALL,    0, 2,
@@ -36,14 +46,27 @@ FuncInfo functionTable[] = {
 };
 
 HostCall hostFunctionTable[] = {
-    0,
+    0,                           // Index 0 must be null
     printInteger,
-    0
+    printFloat,
+    0                            // Null terminated set
+};
+
+Scalar dummyVector[] = {
+    0.25f,
+    0.5f,
+    0.75f
+};
+
+Scalar* globalData[] = {
+    0,                           // Index 0 must be null
+    dummyVector,
+    0                            // Null terminated set
 };
 
 int main() {
     std::printf("Max Opcode %d\n", Opcode::_MAX);
-    Interpreter::init(100, 0, functionTable, hostFunctionTable);
+    Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
     Scalar* stack = Interpreter::stack();
     stack[0].i = 0;
     stack[1].i = 1;

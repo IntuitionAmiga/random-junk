@@ -11,26 +11,26 @@
 
 using namespace GVM;
 
-void*                  Interpreter::workingSet        = 0;
-Interpreter::CallInfo* Interpreter::callStack         = 0;
-Interpreter::CallInfo* Interpreter::callStackBase     = 0;
-Interpreter::CallInfo* Interpreter::callStackTop      = 0;
-Scalar*                Interpreter::frameStack        = 0;
-Scalar*                Interpreter::frameStackBase    = 0;
-Scalar*                Interpreter::frameStackTop     = 0;
-
-const uint8*    Interpreter::programCounter    = 0;
-const FuncInfo* Interpreter::functionTable     = 0;
-uint32          Interpreter::functionTableSize = 0;
-
-const HostCall* Interpreter::hostFunctionTable     = 0;
-uint32          Interpreter::hostFunctionTableSize = 0;
+void*                  Interpreter::workingSet            = 0;
+Interpreter::CallInfo* Interpreter::callStack             = 0;
+Interpreter::CallInfo* Interpreter::callStackBase         = 0;
+Interpreter::CallInfo* Interpreter::callStackTop          = 0;
+Scalar*                Interpreter::frameStack            = 0;
+Scalar*                Interpreter::frameStackBase        = 0;
+Scalar*                Interpreter::frameStackTop         = 0;
+const uint8*           Interpreter::programCounter        = 0;
+const FuncInfo*        Interpreter::functionTable         = 0;
+uint32                 Interpreter::functionTableSize     = 0;
+const HostCall*        Interpreter::hostFunctionTable     = 0;
+uint32                 Interpreter::hostFunctionTableSize = 0;
+Scalar**               Interpreter::dataTable             = 0;
+uint32                 Interpreter::dataTableSize         = 0;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table, const HostCall* hostFuncTable) {
-    if (!table || !hostFuncTable) {
-        gvmDebug("GVM::Interpreter::init()\n\tFunction tables cannot be empty\n");
+Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const HostCall* host, Scalar** data) {
+    if (!func || !host || !data) {
+        gvmDebug("GVM::Interpreter::init()\n\tTables cannot be empty\n");
         return MISC_ILLEGAL_VALUE;
     }
 
@@ -79,7 +79,7 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table, cons
         return INIT_OUT_OF_MEMORY;
     }
 
-    Result result = validateFunctionTables(table, hostFuncTable);
+    Result result = validateTables(func, host, data);
 
     if (result != SUCCESS) {
         std::free(readySet);
@@ -127,11 +127,23 @@ void Interpreter::done() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const HostCall* hostFuncTable) {
+Result Interpreter::validateTables(const FuncInfo* funcTable, const HostCall* hostFuncTable, Scalar** globalData) {
 
-    if (funcTable[0].entryPoint || hostFuncTable[0]) {
+    if (funcTable[0].entryPoint || hostFuncTable[0] || globalData[0]) {
         gvmDebug("Illegal Zero Indexed function\n");
         return INIT_INVALID_FRAME_DEF;
+    }
+
+    int numGlobals = 1;
+    while (globalData[numGlobals]) {
+        if (numGlobals > FuncInfo::MAX_ID) {
+            gvmDebug(
+                "GVM::Interpreter::validateTables()\n\Global data table too long, exceeded %d entries\n",
+                FuncInfo::MAX_ID
+            );
+            return INIT_TABLE_TOO_BIG;
+        }
+        ++numGlobals;
     }
 
     // Host function table is null terminated. Only the overall size is validated.
@@ -141,7 +153,7 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
         // Table Size Check
         if (numHostFunctions > FuncInfo::MAX_ID) {
             gvmDebug(
-                "GVM::Interpreter::validateFunctionTables()\n\tFunction table too long, exceeded %d entries\n",
+                "GVM::Interpreter::validateTables()\n\tFunction table too long, exceeded %d entries\n",
                 FuncInfo::MAX_ID
             );
             return INIT_TABLE_TOO_BIG;
@@ -153,7 +165,7 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
     // additionally that the frame specifcation of each record makes sense.
 
     const char* illegalSizeMessageTemplate =
-        "GVM::Interpreter::validateFunctionTables()\n"
+        "GVM::Interpreter::validateTables()\n"
         "\tFunction funcTable entry %d has %s size %d\n";
 
     int numFunctions = 1;
@@ -161,7 +173,7 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
         // Table Size Check
         if (numFunctions > FuncInfo::MAX_ID) {
             gvmDebug(
-                "GVM::Interpreter::validateFunctionTables()\n\tFunction funcTable too long, exceeded %d entries\n",
+                "GVM::Interpreter::validateTables()\n\tFunction funcTable too long, exceeded %d entries\n",
                 FuncInfo::MAX_ID
             );
             return INIT_TABLE_TOO_BIG;
@@ -234,11 +246,17 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
     functionTableSize     = numFunctions--;
     hostFunctionTable     = hostFuncTable;
     hostFunctionTableSize = numHostFunctions--;
+    dataTable             = globalData;
+    dataTableSize         = numGlobals--;
 
     gvmDebug(
-        "GVM::Interpreter::validateFunctionTables()\n\tFunction table has %d virtual and %d host native entries.\n",
+        "GVM::Interpreter::validateTables()\n"
+        "\tFunction table has %d entries\n"
+        "\tHost function table has %d entries\n"
+        "\tGlobal data table has %d entries\n",
         (int)numFunctions,
-        (int)numHostFunctions
+        (int)numHostFunctions,
+        (int)numGlobals
     );
 
     return SUCCESS;
