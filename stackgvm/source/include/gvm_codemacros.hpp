@@ -177,51 +177,51 @@
 #define lsl_ili _OP(LSL_ILI),
 //
 // // Three operand logical shift right: Noncommutative, 4 supported variants
-// _LSR_LLL,
-// _LSR_ILL,
-// _LSR_LLI,
-// _LSR_ILI,
+#define lsr_lll _OP(LSR_LLL),
+#define lsr_ill _OP(LSR_ILL),
+#define lsr_lli _OP(LSR_LLI),
+#define lsr_ili _OP(LSR_ILI),
 //
 // // Integer Maximum: Commutative, 4 unique variants
-// _MAX_LLL,
-// _MAX_ILL,
-// _MAX_LLI,
-// _MAX_ILI,
+#define max_lll _OP(MAX_LLL),
+#define max_ill _OP(MAX_ILL),
+#define max_lli _OP(MAX_LLI),
+#define max_ili _OP(MAX_ILI),
 //
 // // Integer Minumum: Commutative, 4 unique variants
-// _MIN_LLL,
-// _MIN_ILL,
-// _MIN_LLI,
-// _MIN_ILI,
+#define min_lll_OP(MIN_LLL),
+#define min_ill _OP(MIN_ILL),
+#define min_lli _OP(MIN_LLI),
+#define min_ili _OP(MIN_ILI),
 //
 // // Floating point specific instructions ////////////////////////////////////////////////////////////////////
 //
 // // Two operand branch if greater or equal
-// _FBGE_LL,
-// _FBGE_IL,
-// _FBGE_LI,
-// _FBGE_II,
+#define fbge_ll _OP(FBGE_LL),
+#define fbge_il _OP(FBGE_IL),
+#define fbge_li _OP(FBGE_LI),
+#define fbge_ii _OP(FBGE_II),
 //
 // // Two operand branch if greater than
-// _FBGT_LL,
-// _FBGT_IL,
-// _FBGT_LI,
-// _FBGT_II,
+#define fbgt_ll _OP(FBGT_LL),
+#define fbgt_il _OP(FBGT_IL),
+#define fbgt_li _OP(FBGT_LI),
+#define fbgt_ii _OP(FBGT_II),
 //
 // // Two operand, local to local handy maths functions
-// _FINV_LL,  // Reciprocal
-// _FSQRT_LL, // Square root
-// _INVSQ_LL, // Inverse square
-// _FSIN_LL,  // Sine
-// _FCOS_LL,  // Cosine
-// _FACOS_LL, // Arccosine
+#define finv_ll   _OP(FINV_LL),  
+#define fsqrt_ll  _OP(FSQRT_LL),
+#define fisqr_ll  _OP(INVSQ_LL),
+#define fsin_ll   _OP(FSIN_LL),
+#define fcos_ll   _OP(FCOS_LL),
+#define facos_ll  _OP(FACOS_LL),
 //
 //
 // // Two operand float negate
-// _FNEG_LL,
-// _FNEG_IL,
-// _FNEG_LI,
-// _FNEG_II,
+#define fneg_ll _OP(FNEG_LL),
+#define fneg_il _OP(FNEG_IL),
+#define fneg_li _OP(FNEG_LI),
+#define fneg_ii _OP(FNEG_II),
 //
 // // Three operand float addition: Commutative, 4 unique variants
 // _FADD_LLL,
