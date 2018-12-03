@@ -9,9 +9,15 @@
 
 using namespace GVM;
 
+Result printInteger(Scalar* frame) {
+    std::printf("HOST: printInteger() = %d\n", frame[0].i);
+    return SUCCESS;
+}
+
 uint8 _gvm_test1[] = {
     Opcode::_ADD_LLL, 1, 2, 3, // fs[3] = fs[1] + fs[2]
     Opcode::_CALL,    0, 2,
+    Opcode::_HCALL,   0, 1,    // Call host function (1)
     Opcode::_COPY_LL, 3, 0,    // fs[0] = fs[3]
     Opcode::_RET
 };
@@ -31,6 +37,7 @@ FuncInfo functionTable[] = {
 
 HostCall hostFunctionTable[] = {
     0,
+    printInteger,
     0
 };
 

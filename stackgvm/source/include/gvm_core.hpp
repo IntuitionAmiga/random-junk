@@ -127,6 +127,7 @@ namespace GVM {
             static Result enterFunction(const uint8* returnAddress, uint16 functionId);
             static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
             static Result exitFunction();
+            static Result invokeHostFunction(uint16 functionId);
             static Result run();
             static Result validateFunctionTables(const FuncInfo* table, const HostCall* host);
     };

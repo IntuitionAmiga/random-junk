@@ -59,8 +59,12 @@ IS(ICALL_I) {
 }
 
 IS(HCALL) {
-    // Call a host function
-    STEP(2);
+    // Call a host function by ID
+    Result result = invokeHostFunction(SYM(0));
+    if (result != SUCCESS) {
+        EXIT(result);
+    }
+    STEP(3);
     NEXT;
 }
 

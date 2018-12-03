@@ -99,14 +99,18 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table, cons
 
     gvmDebug(
         "GVM::Interpreter::init()\n"
-        "\tCall Stack     [%p - %p]\n"
-        "\tFrame Stack    [%p - %p]\n"
-        "\tFunction Table [%p]\n",
+        "\tCall Stack          [%p - %p]\n"
+        "\tFrame Stack         [%p - %p]\n"
+        "\tFunction Table      [%p] : %d entries\n"
+        "\tHost Function Table [%p] : %d entries\n",
         callStackBase,
         callStackTop,
         frameStackBase,
         frameStackTop,
-        functionTable
+        functionTable,
+        (int)functionTableSize,
+        hostFunctionTable,
+        (int)hostFunctionTableSize
     );
     return SUCCESS;
 }
@@ -130,8 +134,11 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
         return INIT_INVALID_FRAME_DEF;
     }
 
+    // Host function table is null terminated. Only the overall size is validated.
+
     int numHostFunctions = 1;
     while (hostFuncTable[numHostFunctions]) {
+        // Table Size Check
         if (numHostFunctions > FuncInfo::MAX_ID) {
             gvmDebug(
                 "GVM::Interpreter::validateFunctionTables()\n\tFunction table too long, exceeded %d entries\n",
@@ -142,12 +149,16 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
         ++numHostFunctions;
     }
 
+    // Function table is terminated by a FuncInfo record having a null entry point. We validate the overall size and
+    // additionally that the frame specifcation of each record makes sense.
+
     const char* illegalSizeMessageTemplate =
         "GVM::Interpreter::validateFunctionTables()\n"
         "\tFunction funcTable entry %d has %s size %d\n";
 
     int numFunctions = 1;
     while (funcTable[numFunctions].entryPoint) {
+        // Table Size Check
         if (numFunctions > FuncInfo::MAX_ID) {
             gvmDebug(
                 "GVM::Interpreter::validateFunctionTables()\n\tFunction funcTable too long, exceeded %d entries\n",
@@ -155,6 +166,8 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
             );
             return INIT_TABLE_TOO_BIG;
         }
+
+        // Function Total Frame Size
         if (funcTable[numFunctions].frameSize > FuncInfo::MAX_LOCAL_SIZE) {
             gvmDebug(
                 illegalSizeMessageTemplate,
@@ -164,6 +177,8 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
             );
             return INIT_INVALID_FRAME_DEF;
         }
+
+        // Function Return Size
         if (funcTable[numFunctions].returnSize > FuncInfo::MAX_RETURN_SIZE) {
             gvmDebug(
                 illegalSizeMessageTemplate,
@@ -173,6 +188,8 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
             );
             return INIT_INVALID_FRAME_DEF;
         }
+
+        // Function Parameter Size
         if (funcTable[numFunctions].paramSize > FuncInfo::MAX_PARAM_SIZE) {
             gvmDebug(
                 illegalSizeMessageTemplate,
@@ -182,6 +199,8 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
             );
             return INIT_INVALID_FRAME_DEF;
         }
+
+        // Function Local Data Size
         if (funcTable[numFunctions].localSize > FuncInfo::MAX_LOCAL_SIZE) {
             gvmDebug(
                 illegalSizeMessageTemplate,
@@ -191,6 +210,8 @@ Result Interpreter::validateFunctionTables(const FuncInfo* funcTable, const Host
             );
             return INIT_INVALID_FRAME_DEF;
         }
+
+        // Function Size Sanity Checks
         if (
             funcTable[numFunctions].frameSize != (
                 funcTable[numFunctions].returnSize +
@@ -334,4 +355,41 @@ Result Interpreter::exitFunction() {
         return returnTo ? SUCCESS : EXEC_RETURN_TO_HOST;
     }
     return EXEC_CALL_STACK_UNDERFLOW;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Result Interpreter::invokeHostFunction(uint16 functionId) {
+    if (functionId == 0 || functionId > hostFunctionTableSize) {
+        gvmDebug(
+            "GVM::Interpreter::invokeHostFunction(%d)\n\tID is out of range 1-%d.\n",
+            (int)functionId,
+            (int)hostFunctionTableSize
+        );
+        return EXEC_ILLEGAL_CALL_ID;
+    }
+    if (!hostFunctionTable[functionId]) {
+        gvmDebug(
+            "GVM::Interpreter::invokeHostFunction() hostFunctionTable[%d] does not point at a callable function.\n",
+            (int)functionId
+        );
+        return EXEC_ILLEGAL_CALL_ID;
+    }
+    uint32 currentFrameSize = callStack->frameSize;
+    if (frameStack + currentFrameSize > frameStackTop) {
+        gvmDebug(
+            "GVM::Interpreter::invokeHostFunction(%d)\n\tFrame Stack Overflow.\n",
+            (int)functionId
+        );
+        return EXEC_FRAME_STACK_OVERFLOW;
+    }
+    frameStack += currentFrameSize;
+    gvmDebug(
+        "GVM::Interpreter::invokeHostFunction() id: %d, stack address %p\n",
+        (int)functionId,
+        frameStack
+    );
+    Result result = hostFunctionTable[functionId](frameStack);
+    frameStack -= currentFrameSize;
+    return result;
 }
