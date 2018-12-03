@@ -29,9 +29,14 @@ FuncInfo functionTable[] = {
     { 0, 0, 0, 0, 0 }            // Null termimated set
 };
 
+HostCall hostFunctionTable[] = {
+    0,
+    0
+};
+
 int main() {
     std::printf("Max Opcode %d\n", Opcode::_MAX);
-    Interpreter::init(100, 0, functionTable);
+    Interpreter::init(100, 0, functionTable, hostFunctionTable);
     Scalar* stack = Interpreter::stack();
     stack[0].i = 0;
     stack[1].i = 1;

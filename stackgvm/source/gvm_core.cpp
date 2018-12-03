@@ -22,11 +22,14 @@ const uint8*    Interpreter::programCounter    = 0;
 const FuncInfo* Interpreter::functionTable     = 0;
 uint32          Interpreter::functionTableSize = 0;
 
+const HostCall* Interpreter::hostFunctionTable     = 0;
+uint32          Interpreter::hostFunctionTableSize = 0;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
-    if (!table) {
-        std::fprintf(stderr, "GVM::Interpreter::init()\n\tFuncInfo table cannot be null\n");
+Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table, const HostCall* host) {
+    if (!table || !host) {
+        std::fprintf(stderr, "GVM::Interpreter::init()\n\tFunction tables cannot be empty\n");
         return MISC_ILLEGAL_VALUE;
     }
 
@@ -78,12 +81,14 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* table) {
         return INIT_OUT_OF_MEMORY;
     }
 
-    Result result = validateFunctionTable(table);
+    Result result = validateFunctionTables(table, host);
 
     if (result != SUCCESS) {
         std::free(readySet);
         return result;
     }
+
+
 
     workingSet = readySet;
 
@@ -123,15 +128,15 @@ void Interpreter::done() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Result Interpreter::validateFunctionTable(const FuncInfo* table) {
+Result Interpreter::validateFunctionTables(const FuncInfo* table, const HostCall* host) {
 
-    if (table[0].entryPoint) {
-        std::fprintf(stderr, "Function table entry zero must be empty\n");
+    if (table[0].entryPoint || host[0]) {
+        std::fprintf(stderr, "Illegal Zero Indexed function\n");
         return INIT_INVALID_FRAME_DEF;
     }
 
     const char* illegalSizeMessageTemplate =
-        "GVM::Interpreter::validateFunctionTable()\n"
+        "GVM::Interpreter::validateFunctionTables()\n"
         "\tFunction table entry %d has %s size %d\n";
 
     int id = 1;
@@ -139,7 +144,7 @@ Result Interpreter::validateFunctionTable(const FuncInfo* table) {
         if (id > FuncInfo::MAX_ID) {
             std::fprintf(
                 stderr,
-                "GVM::Interpreter::validateFunctionTable()\n\tFunction table too long, exceeded %d entries\n",
+                "GVM::Interpreter::validateFunctionTables()\n\tFunction table too long, exceeded %d entries\n",
                 FuncInfo::MAX_ID
             );
             return INIT_TABLE_TOO_BIG;
@@ -172,9 +177,24 @@ Result Interpreter::validateFunctionTable(const FuncInfo* table) {
 
     std::fprintf(
         stderr,
-        "GVM::Interpreter::validateFunctionTable()\n\tFunction table has %d callable entries\n",
+        "GVM::Interpreter::validateFunctionTables()\n\tFunction table has %d callable entries\n",
         (int)functionTableSize - 1
     );
+
+    id = 1;
+    while (host[id]) {
+        if (id > FuncInfo::MAX_ID) {
+            std::fprintf(
+                stderr,
+                "GVM::Interpreter::validateFunctionTables()\n\tFunction table too long, exceeded %d entries\n",
+                FuncInfo::MAX_ID
+            );
+            return INIT_TABLE_TOO_BIG;
+        }
+    }
+
+    hostFunctionTable     = host;
+    hostFunctionTableSize = id;
 
     return SUCCESS;
 }

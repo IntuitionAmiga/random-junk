@@ -11,6 +11,31 @@
 
 namespace GVM {
 
+    typedef enum {
+        SUCCESS                    = 0,
+
+        // Runtime execution result statuses
+        EXEC_RETURN_TO_HOST        = 1,
+        EXEC_HALT_AND_CATCH_FIRE   = 2,
+        EXEC_CALL_STACK_OVERFLOW   = 3,
+        EXEC_CALL_STACK_UNDERFLOW  = 4,
+        EXEC_FRAME_STACK_OVERFLOW  = 5,
+        EXEC_FRAME_STACK_UNDERFLOW = 6,
+        EXEC_ILLEGAL_CALL_ID       = 7,
+        EXEC_ILLEGAL_HOST_ID       = 8,
+        EXEC_ILLEGAL_DATA_ID       = 9,
+        EXEC_DIVISION_BY_ZERO      = 10,
+
+        // Initialisation failures
+        INIT_OUT_OF_MEMORY         = 100,
+        INIT_TABLE_TOO_BIG         = 101,
+        INIT_INVALID_FRAME_DEF     = 102,
+
+        // Miscellaneous failures
+        MISC_ILLEGAL_VALUE         = 1000
+
+    } Result;
+
     /**
      * Scalar
      *
@@ -44,33 +69,6 @@ namespace GVM {
         };
     };
 
-    typedef enum {
-        SUCCESS                    = 0,
-
-        // Runtime execution result statuses
-        EXEC_RETURN_TO_HOST        = 1,
-        EXEC_HALT_AND_CATCH_FIRE   = 2,
-        EXEC_CALL_STACK_OVERFLOW   = 3,
-        EXEC_CALL_STACK_UNDERFLOW  = 4,
-        EXEC_FRAME_STACK_OVERFLOW  = 5,
-        EXEC_FRAME_STACK_UNDERFLOW = 6,
-        EXEC_ILLEGAL_CALL_ID       = 7,
-        EXEC_ILLEGAL_HOST_ID       = 8,
-        EXEC_ILLEGAL_DATA_ID       = 9,
-        EXEC_DIVISION_BY_ZERO      = 10,
-
-        // Initialisation failures
-        INIT_OUT_OF_MEMORY         = 100,
-        INIT_TABLE_TOO_BIG         = 101,
-        INIT_INVALID_FRAME_DEF     = 102,
-
-        // Miscellaneous failures
-        MISC_ILLEGAL_VALUE         = 1000
-
-    } Result;
-
-    typedef Result (*NativeCall)(Scalar* stackFrame);
-
     /**
      * CallInfo
      *
@@ -83,6 +81,8 @@ namespace GVM {
         uint8        frameSize;
         uint8        reserved;
     };
+
+    typedef Result (*HostCall)(Scalar* stackFrame);
 
     /**
      * Interpreter
@@ -99,7 +99,7 @@ namespace GVM {
                 REDZONE_BUFFER = 128
             };
 
-            static Result  init(size_t rSize, size_t fSize, const FuncInfo* table);
+            static Result  init(size_t rSize, size_t fSize, const FuncInfo* table, const HostCall* host);
             static Result  invoke(uint16 functionId);
             static void    done();
 
@@ -121,12 +121,14 @@ namespace GVM {
             static const uint8*    programCounter;
             static const FuncInfo* functionTable;
             static uint32          functionTableSize;
+            static const HostCall* hostFunctionTable;
+            static uint32          hostFunctionTableSize;
 
             static Result enterFunction(const uint8* returnAddress, uint16 functionId);
             static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
             static Result exitFunction();
             static Result run();
-            static Result validateFunctionTable(const FuncInfo* table);
+            static Result validateFunctionTables(const FuncInfo* table, const HostCall* host);
     };
 
 };
