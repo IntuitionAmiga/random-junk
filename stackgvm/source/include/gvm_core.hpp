@@ -69,19 +69,6 @@ namespace GVM {
         };
     };
 
-    /**
-     * CallInfo
-     *
-     * Describes the current function under evaluation.
-     */
-    struct CallInfo {
-        const uint8* returnAddress;
-        Scalar*      indirection[2];
-        uint16       functionId;
-        uint8        frameSize;
-        uint8        reserved;
-    };
-
     typedef Result (*HostCall)(Scalar* stackFrame);
 
     /**
@@ -108,6 +95,19 @@ namespace GVM {
             }
 
         private:
+            /**
+             * CallInfo
+             *
+             * Describes the current function under evaluation.
+             */
+            struct CallInfo {
+                const uint8* returnAddress;
+                Scalar*      indirection[2];
+                uint16       functionId;
+                uint8        frameSize;
+                uint8        reserved;
+            };
+
             // Primary allocation for all stack data
             static void*     workingSet;
 
