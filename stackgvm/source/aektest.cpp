@@ -17,13 +17,13 @@ using namespace GVM;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 enum {
-    v_camera_dir  = 0,
-    v_focal_point,
-    v_normal_up,
-    v_sky_rgb,
-    v_floor_red_rgb,
-    v_floor_white_rgb,
-    v_const_ambient_rgb,
+    v_camera_dir          = 0,
+    v_focal_point         = 3,
+    v_normal_up           = 6,
+    v_sky_rgb             = 9,
+    v_floor_red_rgb       = 12,
+    v_floor_white_rgb     = 15,
+    v_const_ambient_rgb   = 18,
 };
 
 #define vec3(x, y, z) Scalar(x), Scalar(y), Scalar(z)
@@ -83,6 +83,12 @@ Scalar* globalData[] = {
     0
 };
 
+enum {
+    gbl_vectors = 1,
+    gbl_bitmap  = 2,
+    gbl_misc    = 3
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Host Functions
@@ -95,12 +101,12 @@ enum {
 };
 
 Result hostPrintHeader(Scalar* frame) {
-    std::printf("P6 %d %d 255 ", frame[0].i, frame[0].i);
+    std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
     return SUCCESS;
 }
 
 Result hostPrintRGB(Scalar* frame) {
-    printf("%c%c%c", (int32)frame[0].f, (int32)frame[1].f, (int32)frame[2].f);
+    printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
     return SUCCESS;
 }
 
@@ -125,6 +131,9 @@ enum {
 };
 
 GFUNC(render) {
+    addr_d  (gbl_misc, 0)
+    copy_il (0, i_image_size, 1)
+    hcall   (print_header)
     ret
 };
 
@@ -139,7 +148,7 @@ GFUNC(sample) {
 
 FuncInfo functionTable[] = {
     { 0, 0, 0, 0, 0 },           // index 0 must be null
-    { _gvm_render, 0, 0, 0, 0 },
+    { _gvm_render, 1, 0, 0, 1 },
     { _gvm_trace, 0, 0, 0, 0 },
     { _gvm_sample, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0 }            // Null termimated set
@@ -148,7 +157,8 @@ FuncInfo functionTable[] = {
 
 int main() {
     Interpreter::init(100, 0, functionTable, hostFunctionTable, globalData);
-    Result result = Interpreter::invoke(render);
+    //Result result =
+    Interpreter::invoke(render);
     Interpreter::done();
     return 0;
 }

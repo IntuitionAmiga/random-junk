@@ -26,16 +26,15 @@ Result printVector(Scalar* frame) {
 }
 
 uint8 _gvm_test1[] = {
-    add_lll 1, 2, 3,       // fs[3] = fs[1] + fs[2]
+    add_lll (1, 2, 3)       // fs[3] = fs[1] + fs[2]
     call    (2)
     hcall   (1)            // Call host function (1)
-    //copy_ll (3, 0)         // fs[0] = fs[3]
-    copy_   (L, 3, L, 4)
+    copy_ll (3, 0)         // fs[0] = fs[3]
     ret
 };
 
 uint8 _gvm_test2[] = {
-    lsl_lll 0, 0, 0, // fs[0] = fs[1] << fs[1]
+    lsl_lll (0, 0, 0) // fs[0] = fs[1] << fs[1]
     ret
 };
 
