@@ -87,7 +87,8 @@ namespace GVM {
 
             // Load small literal integer
             _LOAD_SL,
-            _LOAD_SI,
+            _LOAD_SI0,
+            _LOAD_SI1,
 
             // Single bit operations
             _BSET_SL, // Set bit in local
