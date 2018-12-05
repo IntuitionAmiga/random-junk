@@ -22,7 +22,8 @@ namespace GVM {
             _HCALL,   // Call a host function
             _RET,     // Return from the current function
 
-            _LLBNN,    // Load indirect to indirection register and branch if not null
+            _LI0BNN,    // Load indirect to indirection[0] register and branch if not null
+            _LI1BNN,    // Load indirect to indirection[1] register and branch if not null
 
             // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////
 
@@ -34,22 +35,35 @@ namespace GVM {
             _BEQ_LI,   // Branch to a signed 16-bit offset if local and indirect values are equal
             _BEQ_II,   // Branch to a signed 16-bit offset if two indirect values are equal
 
-            _ADDR_LL, // Get address of local variable into local variable
-            _ADDR_IL,
-            _ADDR_DL, // Load the address of a global data symbol to a local variable
-            _ADDR_DI, // Load the address of a global data symbol to an indirect variable
-            _ADDR_DX, // Load the address of a global data synbol directly into an index register
-            _ADDR_CL, // Load code synbol to local variable
-            _ADDR_CI, // Load code symbol to indirect variable
+            _ADDR_LL,  // Get address of local variable into local variable
+            _ADDR_I0L, // Get the address of an indirect[0] variable into local variable
+            _ADDR_I1L, // Get the address of an indirect[1] variable into a local variable
 
-            _LOAD_LX, // Load local reference to index register
-            _SAVE_XL, // Save indirection index to local
+            _ADDR_DL, // Load the address of a global data symbol to a local variable
+            _ADDR_DI0, // Load the address of a global data symbol to an indirect[0] variable
+            _ADDR_DI1, // Load the address of a global data symbol to an indirect[1] variable
+
+            _ADDR_D0, // Load the address of a global data synbol directly into indirect[0]
+            _ADDR_D1, // Load the address of a global data synbol directly into indirect[1]
+
+            _ADDR_CL, // Load code synbol to local variable
+            _ADDR_CI0, // Load code symbol to an indirect[0] variable
+            _ADDR_CI1, // Load code symbol to an indirect[1] variable
+
+            _LOAD_L0, // Load local reference directly into indirect[0]
+            _LOAD_L1, // Load local reference directly into indirect[1]
+
+            _SAVE_0L, // Save indirect[0] to local reference
+            _SAVE_1L, // Save indirect[1] to local reference
 
             _LOAD_HL,  // Load host lookup to local
 
             _COPY_LL,  // Copy a local scalar to a local scalar
-            _COPY_IL,  // Copy an indirect scalar to a local
-            _COPY_LI,  // Copy a local scalar to an indirect
+            _COPY_I0L,  // Copy an indirect[0] scalar to a local
+            _COPY_I1L,  // Copy an indirect[1] scalar to a local
+
+            _COPY_LI0,  // Copy a local scalar to indirect[0] variable
+            _COPY_LI1,  // Copy a local scalar to indirect[1] variable
             _COPY_II,  // Copy an indirect scalar to another indirect
 
             _ITOF_LL,  // Cast float to integer
@@ -73,7 +87,8 @@ namespace GVM {
 
             // Load small literal integer
             _LOAD_SL,
-            _LOAD_SI,
+            _LOAD_SI0,
+            _LOAD_SI1,
 
             // Single bit operations
             _BSET_SL, // Set bit in local

@@ -1,7 +1,7 @@
 # Project: TOYTL - GVM
 
 # Target
-BIN      = bin/gamevm_x86_exe
+BIN      = bin/gamevm_aek_x86_exe
 
 # Compiler settings
 CXXFLAGS = -O3 -Wall -W -m32 -march=native -mfpmath=sse -fomit-frame-pointer -fno-exceptions -fexpensive-optimizations -D_GVM_HOST_OS=_GVM_HOST_LINUX_INTEL_32 -D_GVM_DEBUGGING_
@@ -10,5 +10,5 @@ CXXFLAGS = -O3 -Wall -W -m32 -march=native -mfpmath=sse -fomit-frame-pointer -fn
 ARCH     = x86_linux
 MEXT     = $(ARCH)
 
-include interpreter.make
+include aek_test.make
 

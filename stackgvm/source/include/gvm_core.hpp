@@ -11,6 +11,42 @@
 
 namespace GVM {
 
+    typedef enum {
+        SUCCESS                    = 0,
+
+        // Runtime execution result statuses
+        EXEC_RETURN_TO_HOST        = 1,
+        EXEC_HALT_AND_CATCH_FIRE   = 2,
+        EXEC_CALL_STACK_OVERFLOW   = 3,
+        EXEC_CALL_STACK_UNDERFLOW  = 4,
+        EXEC_FRAME_STACK_OVERFLOW  = 5,
+        EXEC_FRAME_STACK_UNDERFLOW = 6,
+        EXEC_ILLEGAL_CALL_ID       = 7,
+        EXEC_ILLEGAL_HOST_ID       = 8,
+        EXEC_ILLEGAL_DATA_ID       = 9,
+        EXEC_DIVISION_BY_ZERO      = 10,
+
+        // Initialisation failures
+        INIT_OUT_OF_MEMORY         = 100,
+        INIT_TABLE_TOO_BIG         = 101,
+        INIT_INVALID_FRAME_DEF     = 102,
+
+        // Miscellaneous failures
+        MISC_ILLEGAL_VALUE         = 1000
+
+    } Result;
+
+    // Symbol ID values are 16 bit. When an ID is stored into a Scalar for later use, it is combined with a 2-bit
+    // tag value that identifies it as data, code or host. Whenever a Scalar is used to dereference a Symbol ID,
+    // the tag type is checked.
+    typedef enum {
+        TAG_ILLEGAL        = 0,
+        TAG_DATA_REFERENCE = 1 << 30,
+        TAG_CODE_REFERENCE = 2 << 30,
+        TAG_HOST_REFERNECE = 3 << 30,
+        TAG_MASK_REFERENCE = 3 << 30
+    } SymbolIDTypeTag;
+
     /**
      * Scalar
      *
@@ -21,6 +57,8 @@ namespace GVM {
         uint32  u;
         float32 f;
         Scalar* a;
+        Scalar(int i)   : i(i) {}
+        Scalar(float f) : f(f) {}
     };
 
     /**
@@ -44,18 +82,7 @@ namespace GVM {
         };
     };
 
-    /**
-     * CallInfo
-     *
-     * Describes the current function under evaluation.
-     */
-    struct CallInfo {
-        const uint8* returnAddress;
-        Scalar*      indirection[2];
-        uint16       functionId;
-        uint8        frameSize;
-        uint8        reserved;
-    };
+    typedef Result (*HostCall)(Scalar* stackFrame);
 
     /**
      * Interpreter
@@ -72,32 +99,7 @@ namespace GVM {
                 REDZONE_BUFFER = 128
             };
 
-            typedef enum {
-                SUCCESS                    = 0,
-
-                // Runtime execution result statuses
-                EXEC_RETURN_TO_HOST        = 1,
-                EXEC_HALT_AND_CATCH_FIRE   = 2,
-                EXEC_CALL_STACK_OVERFLOW   = 3,
-                EXEC_CALL_STACK_UNDERFLOW  = 4,
-                EXEC_FRAME_STACK_OVERFLOW  = 5,
-                EXEC_FRAME_STACK_UNDERFLOW = 6,
-                EXEC_ILLEGAL_CALL_ID       = 7,
-                EXEC_ILLEGAL_HOST_ID       = 8,
-                EXEC_ILLEGAL_DATA_ID       = 9,
-                EXEC_DIVISION_BY_ZERO      = 10,
-
-                // Initialisation failures
-                INIT_OUT_OF_MEMORY         = 100,
-                INIT_TABLE_TOO_BIG         = 101,
-                INIT_INVALID_FRAME_DEF     = 102,
-
-                // Miscellaneous failures
-                MISC_ILLEGAL_VALUE         = 1000
-
-            } Result;
-
-            static Result  init(size_t rSize, size_t fSize, const FuncInfo* table);
+            static Result  init(size_t rSize, size_t fSize, const FuncInfo* func, const HostCall* host, Scalar** data);
             static Result  invoke(uint16 functionId);
             static void    done();
 
@@ -106,6 +108,19 @@ namespace GVM {
             }
 
         private:
+            /**
+             * CallInfo
+             *
+             * Describes the current function under evaluation.
+             */
+            struct CallInfo {
+                const uint8* returnAddress;
+                Scalar*      indirection[2];
+                uint16       functionId;
+                uint8        frameSize;
+                uint8        reserved;
+            };
+
             // Primary allocation for all stack data
             static void*     workingSet;
 
@@ -119,12 +134,19 @@ namespace GVM {
             static const uint8*    programCounter;
             static const FuncInfo* functionTable;
             static uint32          functionTableSize;
+            static const HostCall* hostFunctionTable;
+            static uint32          hostFunctionTableSize;
+
+            static Scalar**        dataTable;
+            static uint32          dataTableSize;
 
             static Result enterFunction(const uint8* returnAddress, uint16 functionId);
             static Result enterClosure(const uint8* returnAddress, int16 branch, uint8 frameSize);
             static Result exitFunction();
+            static Result invokeHostFunction(uint16 functionId);
+
             static Result run();
-            static Result validateFunctionTable(const FuncInfo* table);
+            static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
     };
 
 };

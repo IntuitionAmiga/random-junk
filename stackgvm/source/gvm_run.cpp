@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cmath>
 #include "include/gvm_core.hpp"
+#include "include/gvm_debug.hpp"
 
 using namespace GVM;
 
@@ -29,8 +30,8 @@ using namespace GVM;
 
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
 #define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand) + 1]] )
-#define IX0(operand)     ( callStack->indirection[0][programCounter[(operand)] + 1] )
-#define IX1(operand)     ( callStack->indirection[1][programCounter[(operand)] + 1] )
+#define IX0(operand)     ( callStack->indirection[0][programCounter[(operand) + 1]] )
+#define IX1(operand)     ( callStack->indirection[1][programCounter[(operand) + 1]] )
 #define IR(idx) callStack->indirection[(idx)]
 
 // Vector Indirect Operand,
@@ -57,7 +58,7 @@ using namespace GVM;
 // Return address
 #define RTA(size)  (programCounter + (size))
 
-Interpreter::Result Interpreter::run() {
+Result Interpreter::run() {
 
 forever:
     FETCH {

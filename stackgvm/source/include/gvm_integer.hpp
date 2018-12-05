@@ -97,8 +97,14 @@ IS(LOAD_SL) {
     NEXT;
 }
 
-IS(LOAD_SI) {
+IS(LOAD_SI0) {
     IX0(1).i = S8(0);
+    STEP(3);
+    NEXT;
+}
+
+IS(LOAD_SI1) {
+    IX1(1).i = S8(0);
     STEP(3);
     NEXT;
 }
