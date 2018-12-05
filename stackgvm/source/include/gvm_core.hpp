@@ -57,8 +57,8 @@ namespace GVM {
         uint32  u;
         float32 f;
         Scalar* a;
-        explicit Scalar(int32 i)   : i(i) {}
-        Scalar(float32 f) : f(f) {}
+        Scalar(int i)   : i(i) {}
+        Scalar(float f) : f(f) {}
     };
 
     /**

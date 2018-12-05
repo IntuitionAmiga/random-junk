@@ -102,7 +102,8 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
         "\tCall Stack          [%p - %p]\n"
         "\tFrame Stack         [%p - %p]\n"
         "\tFunction Table      [%p] : %d entries\n"
-        "\tHost Function Table [%p] : %d entries\n",
+        "\tHost Function Table [%p] : %d entries\n"
+        "\tGlobal Data Table   [%p] : %d entries\n",
         callStackBase,
         callStackTop,
         frameStackBase,
@@ -110,7 +111,9 @@ Result Interpreter::init(size_t rSize, size_t fSize, const FuncInfo* func, const
         functionTable,
         (int)functionTableSize,
         hostFunctionTable,
-        (int)hostFunctionTableSize
+        (int)hostFunctionTableSize,
+        dataTable,
+        (int)dataTableSize
     );
     return SUCCESS;
 }

@@ -22,7 +22,8 @@ namespace GVM {
             _HCALL,   // Call a host function
             _RET,     // Return from the current function
 
-            _LLBNN,    // Load indirect to indirection register and branch if not null
+            _LI0BNN,    // Load indirect to indirection[0] register and branch if not null
+            _LI1BNN,    // Load indirect to indirection[1] register and branch if not null
 
             // Scalar instructions (float or integer) //////////////////////////////////////////////////////////////////
 
@@ -86,7 +87,8 @@ namespace GVM {
 
             // Load small literal integer
             _LOAD_SL,
-            _LOAD_SI,
+            _LOAD_SI0,
+            _LOAD_SI1,
 
             // Single bit operations
             _BSET_SL, // Set bit in local
