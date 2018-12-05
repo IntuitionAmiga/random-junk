@@ -417,21 +417,33 @@ IS(VSUB_LII) {
 // Three Operand Dot Product (Scalar Float Result) /////////////////////////////////////////////////////////////////////
 
 IS(VDOT_LLL) {
+    float32* vs1 = VLOC(0);
+    float32* vs2 = VLOC(1);
+    LOC(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
 }
 
 IS(VDOT_ILL) {
+    float32* vs1 = VIX0(0);
+    float32* vs2 = VLOC(1);
+    LOC(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
 }
 
 IS(VDOT_LLI) {
+    float32* vs1 = VLOC(0);
+    float32* vs2 = VLOC(1);
+    IX0(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
 }
 
 IS(VDOT_ILI) {
+    float32* vs1 = VIX0(0);
+    float32* vs2 = VLOC(1);
+    IX1(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
 }
@@ -439,36 +451,102 @@ IS(VDOT_ILI) {
 
 // Three Operand Cross Product (Noncommutative, 7 unique variants) /////////////////////////////////////////////////////
 IS(VCROSS_LLL) {
+    float32* vs1 = VLOC(0);
+    float32* vs2 = VLOC(1);
+    float32* vd  = VLOC(2);
+
+    // x =  v1.y * v2.z - v1.z * v2.y,
+    // y =  v1.z * v2.x - v1.x * v2.z,
+    // z =  v1.x * v2.y - v1.y * v2.x
+    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
+    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
+    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     STEP(4);
     NEXT;
 }
 
 IS(VCROSS_ILL) {
+    float32* vs1 = VIX0(0);
+    float32* vs2 = VLOC(1);
+    float32* vd  = VLOC(2);
+
+    // x =  v1.y * v2.z - v1.z * v2.y,
+    // y =  v1.z * v2.x - v1.x * v2.z,
+    // z =  v1.x * v2.y - v1.y * v2.x
+    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
+    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
+    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     STEP(4);
     NEXT;
 }
 
 IS(VCROSS_LLI) {
+    float32* vs1 = VLOC(0);
+    float32* vs2 = VLOC(1);
+    float32* vd  = VIX0(2);
+
+    // x =  v1.y * v2.z - v1.z * v2.y,
+    // y =  v1.z * v2.x - v1.x * v2.z,
+    // z =  v1.x * v2.y - v1.y * v2.x
+    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
+    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
+    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     STEP(4);
     NEXT;
 }
 
 IS(VCROSS_ILI) {
+    float32* vs1 = VIX0(0);
+    float32* vs2 = VLOC(1);
+    float32* vd  = VIX1(2);
+    // x =  v1.y * v2.z - v1.z * v2.y,
+    // y =  v1.z * v2.x - v1.x * v2.z,
+    // z =  v1.x * v2.y - v1.y * v2.x
+    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
+    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
+    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     STEP(4);
     NEXT;
 }
 
 IS(VCROSS_LIL) {
+    float32* vs1 = VLOC(0);
+    float32* vs2 = VIX0(1);
+    float32* vd  = VLOC(2);
+    // x =  v1.y * v2.z - v1.z * v2.y,
+    // y =  v1.z * v2.x - v1.x * v2.z,
+    // z =  v1.x * v2.y - v1.y * v2.x
+    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
+    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
+    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     STEP(4);
     NEXT;
 }
 
 IS(VCROSS_IIL) {
+    float32* vs1 = VIX0(0);
+    float32* vs2 = VIX1(1);
+    float32* vd  = VLOC(2);
+    // x =  v1.y * v2.z - v1.z * v2.y,
+    // y =  v1.z * v2.x - v1.x * v2.z,
+    // z =  v1.x * v2.y - v1.y * v2.x
+    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
+    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
+    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     STEP(4);
     NEXT;
 }
 
 IS(VCROSS_LII) {
+    float32* vs1 = VLOC(0);
+    float32* vs2 = VIX0(1);
+    float32* vd  = VIX1(2);
+    // x =  v1.y * v2.z - v1.z * v2.y,
+    // y =  v1.z * v2.x - v1.x * v2.z,
+    // z =  v1.x * v2.y - v1.y * v2.x
+    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
+    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
+    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
     STEP(4);
     NEXT;
 }
@@ -476,36 +554,78 @@ IS(VCROSS_LII) {
 
 // Three Operand Vector Scale (Commutative, mixed args, 7 unique variants) /////////////////////////////////////////////
 IS(VFMUL_LLL) {
+    float32* vs = VLOC(0);
+    float32  sf = LOC(1).f;
+    float32* vd = VLOC(2);
+    vd[0] = vs[0] * sf;
+    vd[1] = vs[1] * sf;
+    vd[2] = vs[2] * sf;
     STEP(4);
     NEXT;
 }
 
 IS(VFMUL_ILL) {
+    float32* vs = VIX0(0);
+    float32  sf = LOC(1).f;
+    float32* vd = VLOC(2);
+    vd[0] = vs[0] * sf;
+    vd[1] = vs[1] * sf;
+    vd[2] = vs[2] * sf;
     STEP(4);
     NEXT;
 }
 
 IS(VFMUL_LLI) {
+    float32* vs = VLOC(0);
+    float32  sf = LOC(1).f;
+    float32* vd = VIX0(2);
+    vd[0] = vs[0] * sf;
+    vd[1] = vs[1] * sf;
+    vd[2] = vs[2] * sf;
     STEP(4);
     NEXT;
 }
 
 IS(VFMUL_ILI) {
+    float32* vs = VIX0(0);
+    float32  sf = LOC(1).f;
+    float32* vd = VIX1(2);
+    vd[0] = vs[0] * sf;
+    vd[1] = vs[1] * sf;
+    vd[2] = vs[2] * sf;
     STEP(4);
     NEXT;
 }
 
 IS(VFMUL_LIL) {
+    float32* vs = VLOC(0);
+    float32  sf = IX0(1).f;
+    float32* vd = VLOC(2);
+    vd[0] = vs[0] * sf;
+    vd[1] = vs[1] * sf;
+    vd[2] = vs[2] * sf;
     STEP(4);
     NEXT;
 }
 
 IS(VFMUL_IIL) {
+    float32* vs = VIX0(0);
+    float32  sf = IX1(1).f;
+    float32* vd = VLOC(2);
+    vd[0] = vs[0] * sf;
+    vd[1] = vs[1] * sf;
+    vd[2] = vs[2] * sf;
     STEP(4);
     NEXT;
 }
 
 IS(VFMUL_LII) {
+    float32* vs = VLOC(0);
+    float32  sf = IX0(1).f;
+    float32* vd = VIX1(2);
+    vd[0] = vs[0] * sf;
+    vd[1] = vs[1] * sf;
+    vd[2] = vs[2] * sf;
     STEP(4);
     NEXT;
 }
