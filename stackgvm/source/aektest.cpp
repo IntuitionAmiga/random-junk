@@ -28,15 +28,16 @@ typedef enum {
     gv_const_ambient_rgb   = 18,
     gi_bitmap              = 21,
     gi_image_size          = 30,
-    gi_max_rays            = 31,
-    gf_dof_scale           = 32,
-    gf_rgb_scale           = 33,
-    gf_camera_scale        = 34,
-    gf_distance_max        = 35,
-    gf_distance_min        = 36,
+    gf_image_offset        = 31,
+    gi_max_rays            = 32,
+    gf_dof_scale           = 33,
+    gf_rgb_scale           = 34,
+    gf_camera_scale        = 35,
+    gf_distance_max        = 36,
+    gf_distance_min        = 37,
 } GlobalEnum;
 
-#define vec3(x, y, z) Scalar(x), Scalar(y), Scalar(z)
+
 Scalar globals[] = {
 
     // Vectors
@@ -60,20 +61,18 @@ Scalar globals[] = {
     16,     // 0000000000000010000
 
     // Other Scalars
-    512,    // gi_image_size
-    64,     // gi_max_rays
-    99.0f,  // gf_dof_scale
-    3.5f,   // gf_rgb_scale
-    0.002f, // gf_camera_scale
-    1e9f,   // gf_distamce_max
-    0.01f,  // gf_distance_min
+    512,     // gi_image_size
+    -256.0f, // gf_image_offset
+    64,      // gi_max_rays
+    99.0f,   // gf_dof_scale
+    3.5f,    // gf_rgb_scale
+    0.002f,  // gf_camera_scale
+    1e9f,    // gf_distamce_max
+    0.01f,   // gf_distance_min
 };
 
-Scalar* globalData[] = {
-    0,
-    globals,
-    0
-};
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -96,14 +95,6 @@ Result hostPrintRGB(Scalar* frame) {
     return SUCCESS;
 }
 
-HostCall hostFunctionTable[] = {
-    0,                           // Index 0 must be null
-    hostPrintHeader,
-    hostPrintRGB,
-    0                            // Null terminated set
-};
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Functions
@@ -116,24 +107,16 @@ typedef enum {
     sample
 } FunctionEnum;
 
-/**
- * return -
- * params -
- * locals                        Size Offs
- *      float camera_scale       1       0
- *      vec3  camera_forward     3       1
- *      vec3  camera_right       3       4
- *      vec3  camera_up          3       7
- *      int   image_size         1      10
- */
-
 typedef enum {
     //
     f_render_camera_scale      = 0,
     v_render_camera_forward    = 1,
     v_render_camera_right      = 4,
     v_render_camera_up         = 7,
-    i_render_image_size        = 10
+    v_render_eye_offset        = 10,
+    i_render_pixel_y_pos       = 13,
+    i_render_pixel_x_pos       = 14,
+    i_render_image_size        = 15
 } RenderLocalsEnum;
 
 GFUNC(render) {
@@ -145,12 +128,12 @@ GFUNC(render) {
 */
     copy_il     (0, gi_image_size, i_render_image_size)
     hcall       (print_header)
+
 /*
     vec3 camera_forward = vec3_normalize( // Unit forwards
         camera_dir
     ),
 */
-
     vnorm_il    (gv_camera_dir, v_render_camera_forward)
 
 /*
@@ -163,11 +146,61 @@ GFUNC(render) {
         ),
         0.002
     ),
- */
-    vcross_ill  (gv_normal_up, v_render_camera_forward, v_render_camera_up)
-    vnorm_ll    (v_render_camera_up, v_render_camera_up)
-    vfmul_lil   (v_render_camera_up, gf_camera_scale, v_render_camera_up)
+*/
+    vcross_ill  (gv_normal_up,          v_render_camera_forward,    v_render_camera_up)
+    vnorm_ll    (v_render_camera_up,    v_render_camera_up)
+    vfmul_lil   (v_render_camera_up,    gf_camera_scale,            v_render_camera_up)
 
+/*
+    vec3 camera_right = vec3_scale( // Unit right
+        vec3_normalize(
+            vec3_cross(
+                camera_forward,
+                camera_up
+            )
+        ),
+        0.002
+    ),
+*/
+    vcross_lll  (v_render_camera_forward,   v_render_camera_up,     v_render_camera_right)
+    vnorm_ll    (v_render_camera_right,     v_render_camera_right)
+    vfmul_lil   (v_render_camera_right,     gf_camera_scale,        v_render_camera_right)
+
+/*
+    vec3 eye_offset = vec3_add( // Offset frm eye to coner of focal plane
+        vec3_scale(
+            vec3_add(
+                camera_up,
+                camera_right
+            ),
+            -(image_size >> 1)
+        ),
+        camera_forward
+    )
+ */
+    vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)
+    vfmul_lil   (v_render_eye_offset,   gf_image_offset,            v_render_eye_offset)
+    vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)
+
+/*
+    for (int32 y = image_size; y--;) {
+*/
+    copy_ll     (i_render_image_size, i_render_pixel_y_pos)
+
+/*
+        for (int32 x = image_size; x--;) {
+*/
+    copy_ll     (i_render_image_size, i_render_pixel_x_pos)
+
+/*
+        } // x loop
+*/
+    dbnz_l      (i_render_pixel_x_pos, 0)
+
+/*
+    } // y loop
+*/
+    dbnz_l      (i_render_pixel_y_pos, -7)
     ret
 };
 
@@ -179,14 +212,22 @@ GFUNC(sample) {
     ret
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-FuncInfo functionTable[] = {
-    { 0, 0, 0, 0, 0 },           // index 0 must be null
-    { _gvm_render, 10, 0, 0, 10 },
-    { _gvm_trace, 0, 0, 0, 0 },
-    { _gvm_sample, 0, 0, 0, 0 },
-    { 0, 0, 0, 0, 0 }            // Null termimated set
-};
+BEGIN_GDATA_TABLE(globalData)
+    globals
+END_GDATA_TABLE
+
+BEGIN_GHOST_TABLE(hostFunctionTable)
+    hostPrintHeader,
+    hostPrintRGB
+END_GHOST_TABLE
+
+BEGIN_GFUNC_TABLE(functionTable)
+    { _gvm_render, 15,  0,  0, 15 },
+    { _gvm_trace,  0,   0,  0,  0 },
+    { _gvm_sample, 0,   0,  0,  0 }
+END_GFUNC_TABLE
 
 
 int main() {

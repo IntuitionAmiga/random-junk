@@ -7,14 +7,22 @@
 #ifndef _GVM_CODEMACROS_HPP_
     #define _GVM_CODEMACROS_HPP_
 
+#define vec3(x, y, z) Scalar(x), Scalar(y), Scalar(z)
+
+#define BEGIN_GDATA_TABLE(name) Scalar* name[] = { 0,
+#define END_GDATA_TABLE ,0 };
+#define BEGIN_GFUNC_TABLE(name) FuncInfo name[] = { { 0, 0, 0, 0, 0 },
+#define END_GFUNC_TABLE    ,{ 0, 0, 0, 0, 0 } };
+
+#define BEGIN_GHOST_TABLE(name) HostCall name[] = { 0,
+#define END_GHOST_TABLE ,0 };
+
 #define GFUNC(name) uint8 _gvm_##name [] =
+
 
 #define _OP(x)  (uint8)Opcode::_##x
 #define _D8(x)  (uint8)(x)
 #define _D16(x) (uint8)((x) >> 8), (uint8)((x) & 0xFF)
-
-
-
 
 #define SYM(x)  (uint8)((x) >> 8), (uint8)((x) & 0xFF)
 #define OFS(x)  (uint8)((x) >> 8), (uint8)((x) & 0xFF)

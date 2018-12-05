@@ -82,10 +82,10 @@ IS(BGT_II) {
 IS(DBNZ_L) {
     // Decrement local and branch if not zero
     if (--LOC(0).u) {
-        STEP(4);
+        STEP(J16(1));
         NEXT;
     }
-    STEP(J16(1));
+    STEP(4);
     NEXT;
 }
 
