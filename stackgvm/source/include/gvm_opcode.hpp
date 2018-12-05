@@ -193,6 +193,9 @@ namespace GVM {
             _MIN_LLI,
             _MIN_ILI,
 
+            // Random Integer
+            _RND_LLL,
+
             // Floating point specific instructions ////////////////////////////////////////////////////////////////////
 
             // Two operand branch if greater or equal
@@ -273,6 +276,9 @@ namespace GVM {
             _FMIN_LLI,
             _FMIN_ILI,
 
+            // Random Float
+            _FRND_LLL,
+
             // Vector specific instructions ////////////////////////////////////////////////////////////////////////////
 
             // Vector branch if equal
@@ -350,6 +356,8 @@ namespace GVM {
             _VFMUL_IIL,
             _VFMUL_LII,
 
+            _VRND_LLL,
+            
             _MAX
         };
     };
