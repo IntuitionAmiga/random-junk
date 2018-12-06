@@ -77,11 +77,23 @@ IS(BGT_II) {
     NEXT;
 }
 
-// Decrement Integer And Branch If Not Zero ///////////////////////////////////////////////////////////////////////////s/
+// Decrement Integer And Branch If Not Zero ////////////////////////////////////////////////////////////////////////////
 
 IS(DBNZ_L) {
     // Decrement local and branch if not zero
-    if (--LOC(0).u) {
+    if (--LOC(0).i) {
+        STEP(J16(1));
+        NEXT;
+    }
+    STEP(4);
+    NEXT;
+}
+
+// Decrement Integer And Branch If Not Negative ////////////////////////////////////////////////////////////////////////
+
+IS(DBNN_L) {
+    // Decrement local and branch if not zero
+    if (--LOC(0).i >= 0) {
         STEP(J16(1));
         NEXT;
     }

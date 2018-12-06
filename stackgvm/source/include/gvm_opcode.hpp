@@ -84,6 +84,7 @@ namespace GVM {
             _BGT_II,
 
             _DBNZ_L,   // Decrement local and branch if not zero
+            _DBNN_L,   // Decrement local and branch if not negative
 
             // Load small literal integer
             _LOAD_SL,
@@ -357,7 +358,7 @@ namespace GVM {
             _VFMUL_LII,
 
             _VRND_LLL,
-            
+
             _MAX
         };
     };

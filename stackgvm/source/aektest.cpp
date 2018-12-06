@@ -28,13 +28,12 @@ typedef enum {
     gv_const_ambient_rgb   = 18,
     gi_bitmap              = 21,
     gi_image_size          = 30,
-    gf_image_offset        = 31,
-    gi_max_rays            = 32,
-    gf_dof_scale           = 33,
-    gf_rgb_scale           = 34,
-    gf_camera_scale        = 35,
-    gf_distance_max        = 36,
-    gf_distance_min        = 37,
+    gi_max_rays            = 31,
+    gf_dof_scale           = 32,
+    gf_rgb_scale           = 33,
+    gf_camera_scale        = 34,
+    gf_distance_max        = 35,
+    gf_distance_min        = 36,
 } GlobalEnum;
 
 
@@ -61,8 +60,7 @@ Scalar globals[] = {
     16,     // 0000000000000010000
 
     // Other Scalars
-    512,     // gi_image_size
-    -256.0f, // gf_image_offset
+    4,       // 512 gi_image_size
     64,      // gi_max_rays
     99.0f,   // gf_dof_scale
     3.5f,    // gf_rgb_scale
@@ -70,8 +68,6 @@ Scalar globals[] = {
     1e9f,    // gf_distamce_max
     0.01f,   // gf_distance_min
 };
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,14 +105,16 @@ typedef enum {
 
 typedef enum {
     //
-    f_render_camera_scale      = 0,
-    v_render_camera_forward    = 1,
-    v_render_camera_right      = 4,
-    v_render_camera_up         = 7,
-    v_render_eye_offset        = 10,
-    i_render_pixel_y_pos       = 13,
-    i_render_pixel_x_pos       = 14,
-    i_render_image_size        = 15
+    i_render_one               = 0,
+    f_render_camera_scale      = 1,
+    v_render_camera_forward    = 2,
+    v_render_camera_right      = 5,
+    v_render_camera_up         = 8,
+    v_render_eye_offset        = 11,
+    i_render_pixel_y_pos       = 14,
+    i_render_pixel_x_pos       = 15,
+    m_render_temp              = 16,
+    i_render_image_size        = 17
 } RenderLocalsEnum;
 
 GFUNC(render) {
@@ -178,19 +176,23 @@ GFUNC(render) {
         camera_forward
     )
  */
+    load_sl     (1, i_render_one)
+    lsl_lll     (i_render_image_size,   i_render_one,               m_render_temp)
+    neg_ll      (m_render_temp,         m_render_temp)
+    itof_ll     (m_render_temp,         m_render_temp)
     vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)
-    vfmul_lil   (v_render_eye_offset,   gf_image_offset,            v_render_eye_offset)
+    vfmul_lil   (v_render_eye_offset,   m_render_temp,              v_render_eye_offset)
     vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)
 
 /*
     for (int32 y = image_size; y--;) {
 */
-    copy_ll     (i_render_image_size, i_render_pixel_y_pos)
+    sub_lll     (i_render_image_size, i_render_one, i_render_pixel_y_pos)
 
 /*
         for (int32 x = image_size; x--;) {
 */
-    copy_ll     (i_render_image_size, i_render_pixel_x_pos)
+    sub_lll     (i_render_image_size, i_render_one, i_render_pixel_x_pos)
 
 /*
         } // x loop
@@ -200,7 +202,7 @@ GFUNC(render) {
 /*
     } // y loop
 */
-    dbnz_l      (i_render_pixel_y_pos, -7)
+    dbnz_l      (i_render_pixel_y_pos, -8)
     ret
 };
 
@@ -224,7 +226,7 @@ BEGIN_GHOST_TABLE(hostFunctionTable)
 END_GHOST_TABLE
 
 BEGIN_GFUNC_TABLE(functionTable)
-    { _gvm_render, 15,  0,  0, 15 },
+    { _gvm_render, 17,  0,  0, 17 },
     { _gvm_trace,  0,   0,  0,  0 },
     { _gvm_sample, 0,   0,  0,  0 }
 END_GFUNC_TABLE
