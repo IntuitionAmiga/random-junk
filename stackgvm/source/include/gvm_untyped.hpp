@@ -28,6 +28,7 @@ IS(BCALL) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -37,6 +38,7 @@ IS(CALL) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -50,6 +52,7 @@ IS(ICALL_L) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -63,6 +66,7 @@ IS(ICALL_I) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -82,6 +86,7 @@ IS(RET) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 

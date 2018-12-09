@@ -418,3 +418,25 @@ Result Interpreter::invokeHostFunction(uint16 functionId) {
     frameStack -= currentFrameSize;
     return result;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Interpreter::dumpFrame() {
+    if (callStack->functionId) {
+        const FuncInfo* fInfo = &functionTable[callStack->functionId];
+        int top    = fInfo->frameSize;
+        Scalar *s  = &frameStack[fInfo->frameSize];
+        while (top >= 0) {
+            std::fprintf(
+                stderr,
+                "\t%3d : 0x%08X %12d %.7f\n",
+                top,
+                (unsigned)s->u,
+                (int)s->i,
+                (float)s->f
+            );
+            --top;
+            --s;
+        }
+    }
+}

@@ -107,6 +107,7 @@ namespace GVM {
                 return frameStack;
             }
 
+
         private:
             /**
              * CallInfo
@@ -147,6 +148,8 @@ namespace GVM {
 
             static Result run();
             static Result validateTables(const FuncInfo* func, const HostCall* host, Scalar** data);
+
+            static void   dumpFrame();
     };
 
 };

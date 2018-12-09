@@ -14,9 +14,9 @@ using namespace GVM;
 
 #define FETCH         switch (*programCounter)
 #ifdef _GVM_DEBUG_OPCODES_
-#define IS(opcode)    case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)programCounter[1], (int)programCounter[2], (int)programCounter[3]);
+    #define IS(opcode)    case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)programCounter[1], (int)programCounter[2], (int)programCounter[3]);
 #else
-#define IS(opcode)    case Opcode::_##opcode:
+    #define IS(opcode)    case Opcode::_##opcode:
 #endif
 #define NEXT          goto forever
 #define STEP(size)    programCounter += (size)
@@ -24,7 +24,18 @@ using namespace GVM;
 
 // Local Operand, dereferences a Scalar on the stack frame by the signed 8-bit operand.
 // Parameter is the operand byte number.
-#define LOC(operand)   ( frameStack[(int8)programCounter[(operand) + 1]] )
+
+#ifdef _GVM_OPT_CACHE_POINTERS_
+    #define DECLARE_PTRS     Scalar* myFS, myIR[2];
+    #define UPDATE_PTRS      myFS = frameStack; myIR[0] = callStack->indirection[0]; myIR[1] = callStack->indirection[1];
+    #define LOC(operand)   ( myFS[(int8)programCounter[(operand) + 1]] )
+    #define IR(idx)          myIR[(idx)]
+#else
+    #define DECLARE_PTRS
+    #define UPDATE_PTRS
+    #define LOC(operand)   ( frameStack[(int8)programCounter[(operand) + 1]] )
+    #define IR(idx)          callStack->indirection[(idx)]
+#endif
 
 // Vector local operand, returns a float32 pointer to the zeroth element of the vector
 #define VLOC(operand)  ( (float32*)&LOC(operand) )
@@ -33,10 +44,11 @@ using namespace GVM;
 #define ULOC(operand)  ( (uint32*)&LOC(operand) )
 
 // Indirect Operand, dereferences one of the index registers by the unsigned 8-bit operand.
-#define IX(idx, operand) ( callStack->indirection[(idx)][programCounter[(operand) + 1]] )
-#define IX0(operand)     ( callStack->indirection[0][programCounter[(operand) + 1]] )
-#define IX1(operand)     ( callStack->indirection[1][programCounter[(operand) + 1]] )
-#define IR(idx) callStack->indirection[(idx)]
+
+#define IX(idx, operand) ( IR(idx)[programCounter[(operand) + 1]] )
+#define IX0(operand)     ( IR(0)[programCounter[(operand) + 1]] )
+#define IX1(operand)     ( IR(1)[programCounter[(operand) + 1]] )
+
 
 // Vector Indirect Operand,
 #define VIX0(operand)    ((float32*)&IX0(operand))
@@ -62,13 +74,18 @@ using namespace GVM;
 // Return address
 #define RTA(size)  (programCounter + (size))
 
+
 const float32 invRMax = 1.0f / (float32)RAND_MAX;
 
 Result Interpreter::run() {
+    DECLARE_PTRS;
 
     float32 *vs1, *vs2, *vd, sf;
     uint32  *us, *ud;
+
+    UPDATE_PTRS;
 forever:
+
     FETCH {
         #include "include/gvm_untyped.hpp"
         #include "include/gvm_integer.hpp"
