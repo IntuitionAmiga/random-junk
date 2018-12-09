@@ -13,7 +13,11 @@
 using namespace GVM;
 
 #define FETCH         switch (*programCounter)
+#ifdef _GVM_DEBUG_OPCODES__
 #define IS(opcode)    case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)programCounter[1], (int)programCounter[2], (int)programCounter[3]);
+#else
+#define IS(opcode)    case Opcode::_##opcode:
+#endif
 #define NEXT          goto forever
 #define STEP(size)    programCounter += (size)
 #define EXIT(code)    return ((code))
@@ -58,8 +62,12 @@ using namespace GVM;
 // Return address
 #define RTA(size)  (programCounter + (size))
 
+const float32 invRMax = 1.0f / (float32)RAND_MAX;
+
 Result Interpreter::run() {
 
+    float32 *vs1, *vs2, *vd, sf;
+    uint32  *us, *ud;
 forever:
     FETCH {
         #include "include/gvm_untyped.hpp"

@@ -193,6 +193,8 @@
 #define min_ill(i,l1,l2)   _OP(MIN_ILL), _D8(i),  _D8(l1), _D8(l2),
 #define min_lli(l1,l2,i)   _OP(MIN_LLI), _D8(l1), _D8(l2), _D8(i),
 #define min_ili(i1,l,i2)   _OP(MIN_ILI), _D8(i1), _D8(l),  _D8(i2),
+
+
 //
 // // Floating point specific instructions ////////////////////////////////////////////////////////////////////
 //
