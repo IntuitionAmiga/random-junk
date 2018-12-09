@@ -28,6 +28,7 @@ IS(BCALL) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -37,6 +38,7 @@ IS(CALL) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -50,6 +52,7 @@ IS(ICALL_L) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -63,6 +66,7 @@ IS(ICALL_I) {
     if (result != SUCCESS) {
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -80,8 +84,10 @@ IS(RET) {
     // Return from the current function
     Result result = exitFunction();
     if (result != SUCCESS) {
+        std::printf("\nExecuted: %d instructions total.\n", numExecuted);
         EXIT(result);
     }
+    UPDATE_PTRS;
     NEXT;
 }
 
@@ -249,6 +255,7 @@ IS(ADDR_D0) {
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
     IR(0) = dataTable[symbolId];
+    SAVE_IR(0);
     STEP(3);
     NEXT;
 }
@@ -260,6 +267,7 @@ IS(ADDR_D1) {
         EXIT(EXEC_ILLEGAL_DATA_ID);
     }
     IR(1) = dataTable[symbolId];
+    SAVE_IR(1);
     STEP(3);
     NEXT;
 }
@@ -291,6 +299,7 @@ IS(ADDR_CI1) {
 IS(LOAD_L0) {
     // Load local reference to index register
     IR(0) = &LOC(0);
+    SAVE_IR(0);
     STEP(2);
     NEXT;
 }
@@ -298,6 +307,7 @@ IS(LOAD_L0) {
 IS(LOAD_L1) {
     // Load local reference to index register
     IR(1) = &LOC(0);
+    SAVE_IR(1);
     STEP(2);
     NEXT;
 }

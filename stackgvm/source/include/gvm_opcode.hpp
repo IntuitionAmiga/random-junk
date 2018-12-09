@@ -84,6 +84,7 @@ namespace GVM {
             _BGT_II,
 
             _DBNZ_L,   // Decrement local and branch if not zero
+            _DBNN_L,   // Decrement local and branch if not negative
 
             // Load small literal integer
             _LOAD_SL,
@@ -193,10 +194,10 @@ namespace GVM {
             _MIN_LLI,
             _MIN_ILI,
 
-            // Random Integer
-            _RND_LLL,
-
             // Floating point specific instructions ////////////////////////////////////////////////////////////////////
+
+            // Single operand get a random value between 0.0f and 1.0f
+            _FRND_L,
 
             // Two operand branch if greater or equal
             _FBGE_LL,
@@ -217,7 +218,6 @@ namespace GVM {
             _FSIN_LL,  // Sine
             _FCOS_LL,  // Cosine
             _FACOS_LL, // Arccosine
-
 
             // Two operand float negate
             _FNEG_LL,
@@ -276,10 +276,10 @@ namespace GVM {
             _FMIN_LLI,
             _FMIN_ILI,
 
-            // Random Float
-            _FRND_LLL,
-
             // Vector specific instructions ////////////////////////////////////////////////////////////////////////////
+
+            // Single operandector random - produce a normalised vector with random orientation
+            _VRND_L,
 
             // Vector branch if equal
             _VBEQ_LL,
@@ -356,8 +356,6 @@ namespace GVM {
             _VFMUL_IIL,
             _VFMUL_LII,
 
-            _VRND_LLL,
-            
             _MAX
         };
     };

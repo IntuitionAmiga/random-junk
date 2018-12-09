@@ -1,244 +1,204 @@
 
 // Vector specific Instructions ////////////////////////////////////////////////////////////////////////////////////////
 
+// Single Operand Random Vector ////////////////////////////////////////////////////////////////////////////////////////
+
+IS(VRND_L) {
+    vd = VLOC(0);
+    float32 x = (invRMax * std::rand()) - 1.0f;
+    float32 y = (invRMax * std::rand()) - 1.0f;
+    float32 z = (invRMax * std::rand()) - 1.0f;
+    sf = 1.0f / std::sqrt((x * x) + (y * y) + (z * z));
+    vd[0] = x*sf;
+    vd[1] = y*sf;
+    vd[2] = z*sf;
+    STEP(2);
+    NEXT;
+}
+
 // Two Operand Branch If Vector Equal //////////////////////////////////////////////////////////////////////////////////
 
 IS(VBEQ_LL) {
-    uint32* vs = ULOC(0);
-    uint32* vd = ULOC(1);
-    if (
-        vd[0] == vs[0] &&
-        vd[1] == vs[1] &&
-        vd[2] == vs[2]
-    ) {
-        STEP(J16(2));
-        NEXT;
-    }
-    STEP(5);
-    NEXT;
+    us = ULOC(0);
+    ud = ULOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_branch_equal;
+#else
+    #include "gvm_vector_branch_equal.hpp"
+#endif
 }
 
 IS(VBEQ_IL) {
-    uint32* vs = UIX0(0);
-    uint32* vd = ULOC(1);
-    if (
-        vd[0] == vs[0] &&
-        vd[1] == vs[1] &&
-        vd[2] == vs[2]
-    ) {
-        STEP(J16(2));
-        NEXT;
-    }
-    STEP(5);
-    NEXT;
+    us = UIX0(0);
+    ud = ULOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_branch_equal;
+#else
+    #include "gvm_vector_branch_equal.hpp"
+#endif
 }
 
 IS(VBEQ_II) {
-    uint32* vs = UIX0(0);
-    uint32* vd = UIX1(1);
-    if (
-        vd[0] == vs[0] &&
-        vd[1] == vs[1] &&
-        vd[2] == vs[2]
-    ) {
-        STEP(J16(2));
-        NEXT;
-    }
-    STEP(5);
-    NEXT;
+    us = UIX0(0);
+    ud = UIX1(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_branch_equal:
+#endif
+#include "gvm_vector_branch_equal.hpp"
 }
 
 // Two Operand Branch if Vector Not Equal //////////////////////////////////////////////////////////////////////////////
 
 IS(VBNE_LL) {
-    uint32* vs = ULOC(0);
-    uint32* vd = ULOC(1);
-    if (
-        vd[0] != vs[0] &&
-        vd[1] != vs[1] &&
-        vd[2] != vs[2]
-    ) {
-        STEP(J16(2));
-        NEXT;
-    }
-    STEP(5);
-    NEXT;
+    us = ULOC(0);
+    ud = ULOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_branch_not_equal;
+#else
+    #include "gvm_vector_branch_not_equal.hpp"
+#endif
 }
 
 IS(VBNE_IL) {
-    uint32* vs = UIX0(0);
-    uint32* vd = ULOC(1);
-    if (
-        vd[0] != vs[0] &&
-        vd[1] != vs[1] &&
-        vd[2] != vs[2]
-    ) {
-        STEP(J16(2));
-        NEXT;
-    }
-    STEP(5);
-    NEXT;
+    us = UIX0(0);
+    ud = ULOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_branch_not_equal;
+#else
+    #include "gvm_vector_branch_not_equal.hpp"
+#endif
 }
 
 IS(VBNE_II) {
-    uint32* vs = UIX0(0);
-    uint32* vd = UIX1(1);
-    if (
-        vd[0] != vs[0] &&
-        vd[1] != vs[1] &&
-        vd[2] != vs[2]
-    ) {
-        STEP(J16(2));
-        NEXT;
-    }
-    STEP(5);
-    NEXT;
+    us = UIX0(0);
+    ud = UIX1(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_branch_not_equal:
+#endif
+#include "gvm_vector_branch_not_equal.hpp"
 }
 
 // Two Operand Vector Copy /////////////////////////////////////////////////////////////////////////////////////////////
 
 IS(VCOPY_LL) {
-    uint32* vs = ULOC(0);
-    uint32* vd = ULOC(1);
-    vd[0] = vs[0];
-    vd[1] = vs[1];
-    vd[2] = vs[2];
-    STEP(3);
-    NEXT;
+    us = ULOC(0);
+    ud = ULOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_copy;
+#else
+    #include "gvm_vector_copy.hpp"
+#endif
 }
 
 IS(VCOPY_IL) {
-    uint32* vs = UIX0(0);
-    uint32* vd = ULOC(1);
-    vd[0] = vs[0];
-    vd[1] = vs[1];
-    vd[2] = vs[2];
-    STEP(3);
-    NEXT;
+    us = UIX0(0);
+    ud = ULOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_copy;
+#else
+    #include "gvm_vector_copy.hpp"
+#endif
 }
 
 IS(VCOPY_LI) {
-    uint32* vs = ULOC(0);
-    uint32* vd = UIX0(1);
-    vd[0] = vs[0];
-    vd[1] = vs[1];
-    vd[2] = vs[2];
-    STEP(3);
-    NEXT;
+    us = ULOC(0);
+    ud = UIX0(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_copy;
+#else
+    #include "gvm_vector_copy.hpp"
+#endif
 }
 
 IS(VCOPY_II) {
-    uint32* vs = UIX0(0);
-    uint32* vd = UIX1(1);
-    vd[0] = vs[0];
-    vd[1] = vs[1];
-    vd[2] = vs[2];
-    STEP(3);
-    NEXT;
+    us = UIX0(0);
+    ud = UIX1(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_copy:
+#endif
+#include "gvm_vector_copy.hpp"
 }
 
 // Two Operand Vector Negate ///////////////////////////////////////////////////////////////////////////////////////////
 
 IS(VNEG_LL) {
-    float32* vs = VLOC(0);
-    float32* vd = VLOC(1);
-    vd[0] = -vs[0];
-    vd[1] = -vs[1];
-    vd[2] = -vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VLOC(0);
+    vd  = VLOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_negate;
+#else
+    #include "gvm_vector_negate.hpp"
+#endif
 }
 
 IS(VNEG_IL) {
-    float32* vs = VIX0(0);
-    float32* vd = VLOC(1);
-    vd[0] = -vs[0];
-    vd[1] = -vs[1];
-    vd[2] = -vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VIX0(0);
+    vd  = VLOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_negate;
+#else
+    #include "gvm_vector_negate.hpp"
+#endif
 }
 
 IS(VNEG_LI) {
-    float32* vs = VLOC(0);
-    float32* vd = VIX0(1);
-    vd[0] = -vs[0];
-    vd[1] = -vs[1];
-    vd[2] = -vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VLOC(0);
+    vd  = VIX0(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_negate;
+#else
+    #include "gvm_vector_negate.hpp"
+#endif
 }
 
 IS(VNEG_II) {
-    float32* vs = VIX0(0);
-    float32* vd = VIX1(1);
-    vd[0] = -vs[0];
-    vd[1] = -vs[1];
-    vd[2] = -vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VIX0(0);
+    vd  = VIX1(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_negate:
+#endif
+#include "gvm_vector_negate.hpp"
 }
 
 // Two Operand Vector Normalisation ////////////////////////////////////////////////////////////////////////////////////
 
 IS(VNORM_LL) {
-    float32* vs = VLOC(0);
-    float32* vd = VLOC(1);
-    float32 f = 1.0f / std::sqrt(
-        (vs[0] * vs[0]) +
-        (vs[1] * vs[1]) +
-        (vs[2] * vs[2])
-    );
-    vd[0] = f * vs[0];
-    vd[1] = f * vs[1];
-    vd[2] = f * vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VLOC(0);
+    vd  = VLOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_normalise;
+#else
+    #include "gvm_vector_normalise.hpp"
+#endif
 }
 
 IS(VNORM_IL) {
-    float32* vs = VIX0(0);
-    float32* vd = VLOC(1);
-    float32 f = 1.0f / std::sqrt(
-        (vs[0] * vs[0]) +
-        (vs[1] * vs[1]) +
-        (vs[2] * vs[2])
-    );
-    vd[0] = f * vs[0];
-    vd[1] = f * vs[1];
-    vd[2] = f * vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VIX0(0);
+    vd  = VLOC(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_normalise;
+#else
+    #include "gvm_vector_normalise.hpp"
+#endif
 }
 
 IS(VNORM_LI) {
-    float32* vs = VLOC(0);
-    float32* vd = VIX0(1);
-    float32 f = 1.0f / std::sqrt(
-        (vs[0] * vs[0]) +
-        (vs[1] * vs[1]) +
-        (vs[2] * vs[2])
-    );
-    vd[0] = f * vs[0];
-    vd[1] = f * vs[1];
-    vd[2] = f * vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VLOC(0);
+    vd  = VIX0(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_normalise;
+#else
+    #include "gvm_vector_normalise.hpp"
+#endif
 }
 
 IS(VNORM_II) {
-    float32* vs = VIX0(0);
-    float32* vd = VIX1(1);
-    float32 f = 1.0f / std::sqrt(
-        (vs[0] * vs[0]) +
-        (vs[1] * vs[1]) +
-        (vs[2] * vs[2])
-    );
-    vd[0] = f * vs[0];
-    vd[1] = f * vs[1];
-    vd[2] = f * vs[2];
-    STEP(3);
-    NEXT;
+    vs1 = VIX0(0);
+    vd  = VIX1(1);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_normalise:
+#endif
+#include "gvm_vector_normalise.hpp"
 }
 
 // Two Operand Vector Magnitude (Float Result) /////////////////////////////////////////////////////////////////////////
@@ -291,158 +251,157 @@ IS(VMAG_II) {
 
 // Three Operand Vector Addition (Commutative, 4 unique variants) //////////////////////////////////////////////////////
 IS(VADD_LLL) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VLOC(2);
-    vd[0] = vs1[0] + vs2[0];
-    vd[1] = vs1[1] + vs2[1];
-    vd[2] = vs1[2] + vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_add;
+#else
+    #include "gvm_vector_add.hpp"
+#endif
 }
 
 IS(VADD_ILL) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VLOC(2);
-    vd[0] = vs1[0] + vs2[0];
-    vd[1] = vs1[1] + vs2[1];
-    vd[2] = vs1[2] + vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    vs2 = VLOC(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_add;
+#else
+    #include "gvm_vector_add.hpp"
+#endif
 }
 
 IS(VADD_LLI) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VIX0(2);
-    vd[0] = vs1[0] + vs2[0];
-    vd[1] = vs1[1] + vs2[1];
-    vd[2] = vs1[2] + vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
+    vd  = VIX0(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_add;
+#else
+    #include "gvm_vector_add.hpp"
+#endif
 }
 
 IS(VADD_ILI) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VIX1(2);
-    vd[0] = vs1[0] + vs2[0];
-    vd[1] = vs1[1] + vs2[1];
-    vd[2] = vs1[2] + vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    vs2 = VLOC(1);
+    vd  = VIX1(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_add:
+#endif
+#include "gvm_vector_add.hpp"
 }
 
 // Three Operand Vector Subtraction (Noncommutative, 7 unique variants) ////////////////////////////////////////////////
 
 IS(VSUB_LLL) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VLOC(2);
-    vd[0] = vs1[0] - vs2[0];
-    vd[1] = vs1[1] - vs2[1];
-    vd[2] = vs1[2] - vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_subtract;
+#else
+    #include "gvm_vector_subtract.hpp"
+#endif
 }
 
 IS(VSUB_ILL) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VLOC(2);
-    vd[0] = vs1[0] - vs2[0];
-    vd[1] = vs1[1] - vs2[1];
-    vd[2] = vs1[2] - vs2[2];
-    STEP(4);
-    NEXT;
+    vs2 = VLOC(1);
+    vd  = VLOC(2);
+    vs1 = VIX0(0);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_subtract;
+#else
+    #include "gvm_vector_subtract.hpp"
+#endif
 }
 
 IS(VSUB_LLI) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VIX0(2);
-    vd[0] = vs1[0] - vs2[0];
-    vd[1] = vs1[1] - vs2[1];
-    vd[2] = vs1[2] - vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
+    vd  = VIX0(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_subtract;
+#else
+    #include "gvm_vector_subtract.hpp"
+#endif
 }
 
 IS(VSUB_ILI) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VIX1(2);
-    vd[0] = vs1[0] - vs2[0];
-    vd[1] = vs1[1] - vs2[1];
-    vd[2] = vs1[2] - vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    vs2 = VLOC(1);
+    vd  = VIX1(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_subtract;
+#else
+    #include "gvm_vector_subtract.hpp"
+#endif
 }
 
 IS(VSUB_LIL) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VIX0(1);
-    float32* vd  = VLOC(2);
-    vd[0] = vs1[0] - vs2[0];
-    vd[1] = vs1[1] - vs2[1];
-    vd[2] = vs1[2] - vs2[2];
-    STEP(4);
-    NEXT;
+    vs2 = VIX0(1);
+    vs1 = VLOC(0);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_subtract;
+#else
+    #include "gvm_vector_subtract.hpp"
+#endif
 }
 
 IS(VSUB_IIL) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VIX1(1);
-    float32* vd  = VLOC(2);
-    vd[0] = vs1[0] - vs2[0];
-    vd[1] = vs1[1] - vs2[1];
-    vd[2] = vs1[2] - vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    vs2 = VIX1(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_subtract;
+#else
+    #include "gvm_vector_subtract.hpp"
+#endif
 }
 
 IS(VSUB_LII) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VIX0(1);
-    float32* vd  = VIX1(2);
-    vd[0] = vs1[0] - vs2[0];
-    vd[1] = vs1[1] - vs2[1];
-    vd[2] = vs1[2] - vs2[2];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VIX0(1);
+    vd  = VIX1(2);
+
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_subtract:
+#endif
+#include "gvm_vector_subtract.hpp"
 }
 
 
 // Three Operand Dot Product (Scalar Float Result) /////////////////////////////////////////////////////////////////////
 
 IS(VDOT_LLL) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
     LOC(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
 }
 
 IS(VDOT_ILL) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
+    vs1 = VIX0(0);
+    vs2 = VLOC(1);
     LOC(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
 }
 
 IS(VDOT_LLI) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
     IX0(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
 }
 
 IS(VDOT_ILI) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
+    vs1 = VIX0(0);
+    vs2 = VLOC(1);
     IX1(2).f = vs1[0] * vs2[0] + vs1[1] * vs2[1] + vs1[2] * vs2[2];
     STEP(4);
     NEXT;
@@ -451,181 +410,157 @@ IS(VDOT_ILI) {
 
 // Three Operand Cross Product (Noncommutative, 7 unique variants) /////////////////////////////////////////////////////
 IS(VCROSS_LLL) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VLOC(2);
-
-    // x =  v1.y * v2.z - v1.z * v2.y,
-    // y =  v1.z * v2.x - v1.x * v2.z,
-    // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
-    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
-    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_cross_product;
+#else
+    #include "gvm_vector_cross_product.hpp"
+#endif
 }
 
 IS(VCROSS_ILL) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VLOC(2);
-
-    // x =  v1.y * v2.z - v1.z * v2.y,
-    // y =  v1.z * v2.x - v1.x * v2.z,
-    // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
-    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
-    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    vs2 = VLOC(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_cross_product;
+#else
+    #include "gvm_vector_cross_product.hpp"
+#endif
 }
 
 IS(VCROSS_LLI) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VIX0(2);
-
-    // x =  v1.y * v2.z - v1.z * v2.y,
-    // y =  v1.z * v2.x - v1.x * v2.z,
-    // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
-    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
-    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VLOC(1);
+    vd  = VIX0(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_cross_product;
+#else
+    #include "gvm_vector_cross_product.hpp"
+#endif
 }
 
 IS(VCROSS_ILI) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VLOC(1);
-    float32* vd  = VIX1(2);
-    // x =  v1.y * v2.z - v1.z * v2.y,
-    // y =  v1.z * v2.x - v1.x * v2.z,
-    // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
-    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
-    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    vs2 = VLOC(1);
+    vd  = VIX1(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_cross_product;
+#else
+    #include "gvm_vector_cross_product.hpp"
+#endif
 }
 
 IS(VCROSS_LIL) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VIX0(1);
-    float32* vd  = VLOC(2);
-    // x =  v1.y * v2.z - v1.z * v2.y,
-    // y =  v1.z * v2.x - v1.x * v2.z,
-    // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
-    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
-    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VIX0(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_cross_product;
+#else
+    #include "gvm_vector_cross_product.hpp"
+#endif
 }
 
 IS(VCROSS_IIL) {
-    float32* vs1 = VIX0(0);
-    float32* vs2 = VIX1(1);
-    float32* vd  = VLOC(2);
-    // x =  v1.y * v2.z - v1.z * v2.y,
-    // y =  v1.z * v2.x - v1.x * v2.z,
-    // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
-    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
-    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    vs2 = VIX1(1);
+    vd  = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_cross_product;
+#else
+    #include "gvm_vector_cross_product.hpp"
+#endif
 }
 
 IS(VCROSS_LII) {
-    float32* vs1 = VLOC(0);
-    float32* vs2 = VIX0(1);
-    float32* vd  = VIX1(2);
-    // x =  v1.y * v2.z - v1.z * v2.y,
-    // y =  v1.z * v2.x - v1.x * v2.z,
-    // z =  v1.x * v2.y - v1.y * v2.x
-    vd[0] = vs1[1] * vs2[2] - vs1[2] * vs2[1];
-    vd[1] = vs1[2] * vs2[0] - vs1[0] * vs2[2];
-    vd[2] = vs1[0] * vs2[1] - vs1[1] * vs2[0];
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    vs2 = VIX0(1);
+    vd  = VIX1(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_cross_product:
+#endif
+#include "gvm_vector_cross_product.hpp"
 }
 
 
 // Three Operand Vector Scale (Commutative, mixed args, 7 unique variants) /////////////////////////////////////////////
 IS(VFMUL_LLL) {
-    float32* vs = VLOC(0);
-    float32  sf = LOC(1).f;
-    float32* vd = VLOC(2);
-    vd[0] = vs[0] * sf;
-    vd[1] = vs[1] * sf;
-    vd[2] = vs[2] * sf;
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    sf = LOC(1).f;
+    vd = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_scale_by_float;
+#else
+    #include "gvm_vector_scale_by_float.hpp"
+#endif
 }
 
 IS(VFMUL_ILL) {
-    float32* vs = VIX0(0);
-    float32  sf = LOC(1).f;
-    float32* vd = VLOC(2);
-    vd[0] = vs[0] * sf;
-    vd[1] = vs[1] * sf;
-    vd[2] = vs[2] * sf;
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    sf = LOC(1).f;
+    vd = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_scale_by_float;
+#else
+    #include "gvm_vector_scale_by_float.hpp"
+#endif
 }
 
 IS(VFMUL_LLI) {
-    float32* vs = VLOC(0);
-    float32  sf = LOC(1).f;
-    float32* vd = VIX0(2);
-    vd[0] = vs[0] * sf;
-    vd[1] = vs[1] * sf;
-    vd[2] = vs[2] * sf;
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    sf = LOC(1).f;
+    vd = VIX0(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_scale_by_float;
+#else
+    #include "gvm_vector_scale_by_float.hpp"
+#endif
 }
 
 IS(VFMUL_ILI) {
-    float32* vs = VIX0(0);
-    float32  sf = LOC(1).f;
-    float32* vd = VIX1(2);
-    vd[0] = vs[0] * sf;
-    vd[1] = vs[1] * sf;
-    vd[2] = vs[2] * sf;
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    sf = LOC(1).f;
+    vd = VIX1(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_scale_by_float;
+#else
+    #include "gvm_vector_scale_by_float.hpp"
+#endif
 }
 
 IS(VFMUL_LIL) {
-    float32* vs = VLOC(0);
-    float32  sf = IX0(1).f;
-    float32* vd = VLOC(2);
-    vd[0] = vs[0] * sf;
-    vd[1] = vs[1] * sf;
-    vd[2] = vs[2] * sf;
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    sf = IX0(1).f;
+    vd = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_scale_by_float;
+#else
+    #include "gvm_vector_scale_by_float.hpp"
+#endif
 }
 
 IS(VFMUL_IIL) {
-    float32* vs = VIX0(0);
-    float32  sf = IX1(1).f;
-    float32* vd = VLOC(2);
-    vd[0] = vs[0] * sf;
-    vd[1] = vs[1] * sf;
-    vd[2] = vs[2] * sf;
-    STEP(4);
-    NEXT;
+    vs1 = VIX0(0);
+    sf = IX1(1).f;
+    vd = VLOC(2);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto vector_scale_by_float;
+#else
+    #include "gvm_vector_scale_by_float.hpp"
+#endif
 }
 
 IS(VFMUL_LII) {
-    float32* vs = VLOC(0);
-    float32  sf = IX0(1).f;
-    float32* vd = VIX1(2);
-    vd[0] = vs[0] * sf;
-    vd[1] = vs[1] * sf;
-    vd[2] = vs[2] * sf;
-    STEP(4);
-    NEXT;
+    vs1 = VLOC(0);
+    sf = IX0(1).f;
+    vd = VIX1(2);
+
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    vector_scale_by_float:
+#endif
+#include "gvm_vector_scale_by_float.hpp"
+
 }
