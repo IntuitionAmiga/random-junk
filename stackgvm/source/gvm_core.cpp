@@ -141,7 +141,7 @@ Result Interpreter::validateTables(const FuncInfo* funcTable, const HostCall* ho
     while (globalData[numGlobals]) {
         if (numGlobals > FuncInfo::MAX_ID) {
             gvmDebug(
-                "GVM::Interpreter::validateTables()\n\Global data table too long, exceeded %d entries\n",
+                "GVM::Interpreter::validateTables()\n\tGlobal data table too long, exceeded %d entries\n",
                 FuncInfo::MAX_ID
             );
             return INIT_TABLE_TOO_BIG;
@@ -301,7 +301,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
         callStack->functionId    = functionId;
         callStack->frameSize     = functionTable[functionId].frameSize;
         programCounter           = functionTable[functionId].entryPoint;
-
+#ifdef _GVM_DEBUG_FUNCTIONS_
         gvmDebug(
             "GVM::Interpreter::enterFunction(%d) {\n\tAddress: %p\n\tSize: %d\n\tReturn Address: %p\n\tPC Entry: %p\n}\n",
             (int)functionId,
@@ -310,7 +310,7 @@ Result Interpreter::enterFunction(const uint8* returnAddress, uint16 functionId)
             returnAddress,
             programCounter
         );
-
+#endif
         return SUCCESS;
     }
 
@@ -336,7 +336,7 @@ Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8
         callStack->functionId    = 0;
         callStack->frameSize     = frameSize;
         programCounter           += branch;
-
+#ifdef _GVM_DEBUG_FUNCTIONS_
         gvmDebug(
             "GVM::Interpreter::enterClosure() {\n\tAddress: %p\n\tSize: %d\n\tReturn Address: %p\n\tPC Entry: %p\n}\n",
             frameStack,
@@ -344,7 +344,7 @@ Result Interpreter::enterClosure(const uint8* returnAddress, int16 branch, uint8
             returnAddress,
             programCounter
         );
-
+#endif
         return SUCCESS;
     }
 
@@ -367,12 +367,14 @@ Result Interpreter::exitFunction() {
         }
         frameStack -= callStack->frameSize;
         programCounter = returnTo;
+#ifdef _GVM_DEBUG_FUNCTIONS_
         gvmDebug(
             "GVM::Interpreter::exitFunction(%d) {\n\tReturn to function:%d\n\tPC Resume: %p\n}\n",
             currentId,
             (int)callStack->functionId,
             programCounter
         );
+#endif
         return returnTo ? SUCCESS : EXEC_RETURN_TO_HOST;
     }
     return EXEC_CALL_STACK_UNDERFLOW;
@@ -405,11 +407,13 @@ Result Interpreter::invokeHostFunction(uint16 functionId) {
         return EXEC_FRAME_STACK_OVERFLOW;
     }
     frameStack += currentFrameSize;
+#ifdef _GVM_DEBUG_FUNCTIONS_
     gvmDebug(
         "GVM::Interpreter::invokeHostFunction() id: %d, stack address %p\n",
         (int)functionId,
         frameStack
     );
+#endif
     Result result = hostFunctionTable[functionId](frameStack);
     frameStack -= currentFrameSize;
     return result;

@@ -13,7 +13,7 @@
 using namespace GVM;
 
 #define FETCH         switch (*programCounter)
-#ifdef _GVM_DEBUG_OPCODES__
+#ifdef _GVM_DEBUG_OPCODES_
 #define IS(opcode)    case Opcode::_##opcode: std::fprintf(stderr, "\t%-10s %3d %3d %3d\n", #opcode, (int)programCounter[1], (int)programCounter[2], (int)programCounter[3]);
 #else
 #define IS(opcode)    case Opcode::_##opcode:
