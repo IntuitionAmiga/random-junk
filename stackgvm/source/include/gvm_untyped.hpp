@@ -84,6 +84,7 @@ IS(RET) {
     // Return from the current function
     Result result = exitFunction();
     if (result != SUCCESS) {
+        std::printf("\nExecuted: %d instructions total.\n", numExecuted);
         EXIT(result);
     }
     UPDATE_PTRS;
