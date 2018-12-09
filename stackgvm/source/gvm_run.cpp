@@ -26,7 +26,7 @@ using namespace GVM;
 // Parameter is the operand byte number.
 
 #ifdef _GVM_OPT_CACHE_POINTERS_
-    #define DECLARE_PTRS     Scalar* myFS, myIR[2];
+    #define DECLARE_PTRS     Scalar *myFS, *myIR[2];
     #define UPDATE_PTRS      myFS = frameStack; myIR[0] = callStack->indirection[0]; myIR[1] = callStack->indirection[1];
     #define LOC(operand)   ( myFS[(int8)programCounter[(operand) + 1]] )
     #define IR(idx)          myIR[(idx)]
