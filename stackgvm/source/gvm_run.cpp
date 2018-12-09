@@ -30,11 +30,13 @@ using namespace GVM;
     #define UPDATE_PTRS      myFS = frameStack; myIR[0] = callStack->indirection[0]; myIR[1] = callStack->indirection[1];
     #define LOC(operand)   ( myFS[(int8)programCounter[(operand) + 1]] )
     #define IR(idx)          myIR[(idx)]
+    #define SAVE_IR(idx)     callStack->indirection[(idx)] =  myIR[(idx)]
 #else
     #define DECLARE_PTRS
     #define UPDATE_PTRS
     #define LOC(operand)   ( frameStack[(int8)programCounter[(operand) + 1]] )
     #define IR(idx)          callStack->indirection[(idx)]
+    #define SAVE_IR(idx)
 #endif
 
 // Vector local operand, returns a float32 pointer to the zeroth element of the vector

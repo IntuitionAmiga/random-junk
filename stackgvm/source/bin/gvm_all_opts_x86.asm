@@ -2766,12 +2766,16 @@ _ZN3GVM11Interpreter3runEv:
 	addl	$2, %ebx
 	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
 	leal	(%esi,%eax,4), %ebp
+	movl	_ZN3GVM11Interpreter9callStackE, %eax
+	movl	%ebp, 8(%eax)
 	jmp	.L2
 .L33:
 	movsbl	1(%ebx), %eax
 	addl	$2, %ebx
 	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
 	leal	(%esi,%eax,4), %edi
+	movl	_ZN3GVM11Interpreter9callStackE, %eax
+	movl	%edi, 4(%eax)
 	jmp	.L2
 .L32:
 	movzbl	2(%ebx), %eax
@@ -2819,6 +2823,8 @@ _ZN3GVM11Interpreter3runEv:
 	addl	$3, %ebx
 	movl	(%eax,%edx,4), %ebp
 	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
+	movl	_ZN3GVM11Interpreter9callStackE, %eax
+	movl	%ebp, 8(%eax)
 	jmp	.L2
 .L28:
 	movzwl	1(%ebx), %eax
@@ -2830,6 +2836,8 @@ _ZN3GVM11Interpreter3runEv:
 	addl	$3, %ebx
 	movl	(%eax,%edx,4), %edi
 	movl	%ebx, _ZN3GVM11Interpreter14programCounterE
+	movl	_ZN3GVM11Interpreter9callStackE, %eax
+	movl	%edi, 4(%eax)
 	jmp	.L2
 .L27:
 	movzwl	1(%ebx), %eax
