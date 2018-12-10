@@ -123,22 +123,24 @@ typedef enum {
 } RenderLocalsEnum;
 
 GFUNC(render) {
-    addr_d      (g_globals, 0)
+//  Instruction (Arguments... )                                                                     Size [breakdown]
+
+    addr_d      (g_globals, 0)                                                                      // 3 [1, 2]
 
 
 //  int image_size = 512;
 //  printf("P6 %d %d 255 ", image_size, image_size);
 
-    copy_il     (0, gi_image_size,    i_render_image_size)
-    copy_ll     (i_render_image_size, m_next_func_param_space)
-    hcall       (print_header)
+    copy_il     (0, gi_image_size,    i_render_image_size)                                          // 3 [1, 1, 1]
+    copy_ll     (i_render_image_size, m_next_func_param_space)                                      // 3 [1, 1, 1]
+    hcall       (print_header)                                                                      // 3 [1, 2]
 
 
 //  vec3 camera_forward = vec3_normalize( // Unit forwards
 //      camera_dir
 //  ),
 
-    vnorm_il    (gv_camera_dir, v_render_camera_forward)
+    vnorm_il    (gv_camera_dir, v_render_camera_forward)                                            // 3 [1, 1, 1]
 
 
 //  vec3 camera_up = vec3_scale( // Unit up - Z is up in this system
@@ -151,9 +153,9 @@ GFUNC(render) {
 //      0.002
 //  ),
 
-    vcross_ill  (gv_normal_up,          v_render_camera_forward,    v_render_camera_up)
-    vnorm_ll    (v_render_camera_up,    v_render_camera_up)
-    vfmul_lil   (v_render_camera_up,    gf_camera_scale,            v_render_camera_up)
+    vcross_ill  (gv_normal_up,          v_render_camera_forward,    v_render_camera_up)             // 4 [1, 1, 1, 1]
+    vnorm_ll    (v_render_camera_up,    v_render_camera_up)                                         // 3 [1, 1, 1]
+    vfmul_lil   (v_render_camera_up,    gf_camera_scale,            v_render_camera_up)             // 4 [1, 1, 1, 1]
 
 //  vec3 camera_right = vec3_scale( // Unit right
 //      vec3_normalize(
@@ -165,9 +167,9 @@ GFUNC(render) {
 //      0.002
 //  ),
 
-    vcross_lll  (v_render_camera_forward,   v_render_camera_up,     v_render_camera_right)
-    vnorm_ll    (v_render_camera_right,     v_render_camera_right)
-    vfmul_lil   (v_render_camera_right,     gf_camera_scale,        v_render_camera_right)
+    vcross_lll  (v_render_camera_forward,   v_render_camera_up,     v_render_camera_right)          // 4 [1, 1, 1, 1]
+    vnorm_ll    (v_render_camera_right,     v_render_camera_right)                                  // 3 [1, 1, 1]
+    vfmul_lil   (v_render_camera_right,     gf_camera_scale,        v_render_camera_right)          // 4 [1, 1, 1, 1]
 
 
 //  vec3 eye_offset = vec3_add( // Offset frm eye to coner of focal plane
@@ -181,42 +183,42 @@ GFUNC(render) {
 //      camera_forward
 //  )
 
-    load_sl     (1, m_render_temp_1)
-    lsl_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)
-    neg_ll      (m_render_temp_0,       m_render_temp_0)
-    itof_ll     (m_render_temp_0,       m_render_temp_0)
-    vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)
-    vfmul_lil   (v_render_eye_offset,   m_render_temp_0,            v_render_eye_offset)
-    vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)
-    vsub_lll    (i_render_image_size,   m_render_temp_1,            i_render_image_size)
+    load_sl     (1, m_render_temp_1)                                                                // 3 [1, 1, 1]
+    lsl_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)                // 4 [1, 1, 1, 1]
+    neg_ll      (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
+    itof_ll     (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
+    vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)            // 4 [1, 1, 1, 1]
+    vfmul_lil   (v_render_eye_offset,   m_render_temp_0,            v_render_eye_offset)            // 4 [1, 1, 1, 1]
+    vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)            // 4 [1, 1, 1, 1]
+    vsub_lll    (i_render_image_size,   m_render_temp_1,            i_render_image_size)            // 4 [1, 1, 1, 1]
 
 
 //  for (int32 y = image_size; y--;) {
-    copy_ll     (i_render_image_size, i_render_pixel_y_pos)
+    copy_ll     (i_render_image_size, i_render_pixel_y_pos)                                         // 3 [1, 1, 1]
 
 
 //      for (int32 x = image_size; x--;) {
 
-    copy_ll     (i_render_image_size, i_render_pixel_x_pos)
+    copy_ll     (i_render_image_size, i_render_pixel_x_pos)                                         // 3 [1, 1, 1]
 
 
 //          vec3 pixel(13.0, 13.0, 13.0);
 
-    vcopy_il    (gv_const_ambient_rgb, v_pixel_accumulator)
+    vcopy_il    (gv_const_ambient_rgb, v_pixel_accumulator)                                         // 3 [1, 1, 1]
 
 //  printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
 
-    hcall       (print_rgb)
+    hcall       (print_rgb)                                                                         // 3 [1, 2]
 
 //      } // x loop
 
-    dbnn_l      (i_render_pixel_x_pos, -3-3)
+    dbnn_l      (i_render_pixel_x_pos, -3-3)                                                        // 4 [1, 1, 2]
 
 
 //  } // y loop
 
-    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3)
-    ret
+    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3)                                                    // 4 [1, 1, 2]
+    ret                                                                                             // 1
 };
 
 GFUNC(trace) {
