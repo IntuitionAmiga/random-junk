@@ -1,0 +1,139 @@
+GVM::Interpreter::init()
+	Require 45840 bytes for working set:
+	1616 bytes for call stack  (100 [+1 redzone] of 16 bytes each)
+	44224 bytes for frame stack (10800 of 4 bytes each, including start and end red zones of 128 entries each)
+GVM::Interpreter::validateTables()
+	Function table has 3 entries
+	Host function table has 2 entries
+	Global data table has 1 entries
+GVM::Interpreter::init()
+	Call Stack          [0x8b82018 - 0x8b82648]
+	Frame Stack         [0x8b82868 - 0x8b8d124]
+	Function Table      [0x8055080] : 4 entries
+	Host Function Table [0x80550a8] : 3 entries
+	Global Data Table   [0x80550b8] : 2 entries
+GVM::Interpreter::enterFunction(1) {
+	Address: 0x8b82868
+	Size: 32
+	Return Address: (nil)
+	PC Entry: 0x80550e0
+}
+	ADDR_D0      0   1  35
+	COPY_I0L    30   0  34
+	COPY_LL      0  32   7
+	HCALL        0   1 200
+GVM::Interpreter::invokeHostFunction() id: 1, stack address 0x8b828e8
+	VNORM_IL     0   2 223
+	VCROSS_ILL   6   2   8
+	VNORM_LL     8   8 233
+	VFMUL_LIL    8  34   8
+	VCROSS_LLL   2   8   5
+	VNORM_LL     5   5 233
+	VFMUL_LIL    5  34   5
+	LOAD_SL      1  17 112
+	LSL_LLL      0  17  16
+	NEG_LL      16  16  40
+	ITOF_LL     16  16 207
+	VADD_LLL     8   5  11
+	VFMUL_LIL   11  16  11
+	VADD_LLL    11   2  11
+	VSUB_LLL     0  17   0
+	COPY_LL      0  14  34
+	COPY_LL      0  15 192
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	DBNN_L      14 255 243
+	COPY_LL      0  15 192
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	DBNN_L      14 255 243
+	COPY_LL      0  15 192
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	DBNN_L      14 255 243
+	COPY_LL      0  15 192
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	VCOPY_IL    18  32   7
+	HCALL        0   2  51
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
+	DBNN_L      15 255 250
+	DBNN_L      14 255 243
+	RET          0   0   0
+GVM::Interpreter::exitFunction(1) {
+	Return to function:0
+	PC Resume: (nil)
+}
+GVM::Interpreter::done()
+	Released working set
+OUTPUT PPM HEADER {P6 4 4 255}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+OUTPUT PPM PIXEL {13, 13, 13}
+
+Executed: 76 instructions total.
