@@ -82,6 +82,7 @@
 #define bgt_ii(i1,i2,j)   _OP(BGT_II),       _D8(i1), _D8(i2),  _D16(j),
 //
 #define dbnz_l(l,j)       _OP(DBNZ_L),       _D8(l),  _D16(j),
+#define dbnn_l(l,j)       _OP(DBNN_L),       _D8(l),  _D16(j),
 
 //
 // // Load small literal integer

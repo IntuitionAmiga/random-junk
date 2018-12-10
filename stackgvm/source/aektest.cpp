@@ -82,12 +82,14 @@ typedef enum {
 } HostFunctionEnum;
 
 Result hostPrintHeader(Scalar* frame) {
-    std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
+    //std::printf("P6 %d %d 255 ", (int)frame[0].i, (int)frame[0].i);
+    std::printf("OUTPUT PPM HEADER {P6 %d %d 255}\n", (int)frame[0].i, (int)frame[0].i);
     return SUCCESS;
 }
 
 Result hostPrintRGB(Scalar* frame) {
-    printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
+    //std::printf("%c%c%c", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
+    std::printf("OUTPUT PPM PIXEL {%d, %d, %d}\n", (int)frame[0].f, (int)frame[1].f, (int)frame[2].f);
     return SUCCESS;
 }
 
@@ -105,7 +107,7 @@ typedef enum {
 
 typedef enum {
     //
-    i_render_one               = 0,
+    i_render_image_size        = 0,
     f_render_camera_scale      = 1,
     v_render_camera_forward    = 2,
     v_render_camera_right      = 5,
@@ -113,96 +115,107 @@ typedef enum {
     v_render_eye_offset        = 11,
     i_render_pixel_y_pos       = 14,
     i_render_pixel_x_pos       = 15,
-    m_render_temp              = 16,
-    i_render_image_size        = 17
+    m_render_temp_0            = 16,
+    m_render_temp_1            = 17,
+
+    m_next_func_param_space    = 32,
+    v_pixel_accumulator        = 32, // Crafty, Maybe.
 } RenderLocalsEnum;
 
 GFUNC(render) {
     addr_d      (g_globals, 0)
 
-/*
-    int image_size = 512;
-    printf("P6 %d %d 255 ", image_size, image_size);
-*/
-    copy_il     (0, gi_image_size, i_render_image_size)
+
+//  int image_size = 512;
+//  printf("P6 %d %d 255 ", image_size, image_size);
+
+    copy_il     (0, gi_image_size,    i_render_image_size)
+    copy_ll     (i_render_image_size, m_next_func_param_space)
     hcall       (print_header)
 
-/*
-    vec3 camera_forward = vec3_normalize( // Unit forwards
-        camera_dir
-    ),
-*/
+
+//  vec3 camera_forward = vec3_normalize( // Unit forwards
+//      camera_dir
+//  ),
+
     vnorm_il    (gv_camera_dir, v_render_camera_forward)
 
-/*
-    vec3 camera_up = vec3_scale( // Unit up - Z is up in this system
-        vec3_normalize(
-            vec3_cross(
-                normal_up,
-                camera_forward
-            )
-        ),
-        0.002
-    ),
-*/
+
+//  vec3 camera_up = vec3_scale( // Unit up - Z is up in this system
+//      vec3_normalize(
+//          vec3_cross(
+//              normal_up,
+//              camera_forward
+//          )
+//      ),
+//      0.002
+//  ),
+
     vcross_ill  (gv_normal_up,          v_render_camera_forward,    v_render_camera_up)
     vnorm_ll    (v_render_camera_up,    v_render_camera_up)
     vfmul_lil   (v_render_camera_up,    gf_camera_scale,            v_render_camera_up)
 
-/*
-    vec3 camera_right = vec3_scale( // Unit right
-        vec3_normalize(
-            vec3_cross(
-                camera_forward,
-                camera_up
-            )
-        ),
-        0.002
-    ),
-*/
+//  vec3 camera_right = vec3_scale( // Unit right
+//      vec3_normalize(
+//          vec3_cross(
+//              camera_forward,
+//              camera_up
+//          )
+//      ),
+//      0.002
+//  ),
+
     vcross_lll  (v_render_camera_forward,   v_render_camera_up,     v_render_camera_right)
     vnorm_ll    (v_render_camera_right,     v_render_camera_right)
     vfmul_lil   (v_render_camera_right,     gf_camera_scale,        v_render_camera_right)
 
-/*
-    vec3 eye_offset = vec3_add( // Offset frm eye to coner of focal plane
-        vec3_scale(
-            vec3_add(
-                camera_up,
-                camera_right
-            ),
-            -(image_size >> 1)
-        ),
-        camera_forward
-    )
- */
-    load_sl     (1, i_render_one)
-    lsl_lll     (i_render_image_size,   i_render_one,               m_render_temp)
-    neg_ll      (m_render_temp,         m_render_temp)
-    itof_ll     (m_render_temp,         m_render_temp)
+
+//  vec3 eye_offset = vec3_add( // Offset frm eye to coner of focal plane
+//      vec3_scale(
+//          vec3_add(
+//              camera_up,
+//              camera_right
+//          ),
+//          -(image_size >> 1)
+//      ),
+//      camera_forward
+//  )
+
+    load_sl     (1, m_render_temp_1)
+    lsl_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)
+    neg_ll      (m_render_temp_0,       m_render_temp_0)
+    itof_ll     (m_render_temp_0,       m_render_temp_0)
     vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)
-    vfmul_lil   (v_render_eye_offset,   m_render_temp,              v_render_eye_offset)
+    vfmul_lil   (v_render_eye_offset,   m_render_temp_0,            v_render_eye_offset)
     vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)
+    vsub_lll    (i_render_image_size,   m_render_temp_1,            i_render_image_size)
 
-/*
-    for (int32 y = image_size; y--;) {
-*/
-    sub_lll     (i_render_image_size, i_render_one, i_render_pixel_y_pos)
 
-/*
-        for (int32 x = image_size; x--;) {
-*/
-    sub_lll     (i_render_image_size, i_render_one, i_render_pixel_x_pos)
+//  for (int32 y = image_size; y--;) {
+    copy_ll     (i_render_image_size, i_render_pixel_y_pos)
 
-/*
-        } // x loop
-*/
-    dbnz_l      (i_render_pixel_x_pos, 0)
 
-/*
-    } // y loop
-*/
-    dbnz_l      (i_render_pixel_y_pos, -8)
+//      for (int32 x = image_size; x--;) {
+
+    copy_ll     (i_render_image_size, i_render_pixel_x_pos)
+
+
+//          vec3 pixel(13.0, 13.0, 13.0);
+
+    vcopy_il    (gv_const_ambient_rgb, v_pixel_accumulator)
+
+//  printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
+
+    hcall       (print_rgb)
+
+//      } // x loop
+
+    dbnn_l      (i_render_pixel_x_pos, -3-3)
+
+
+//  } // y loop
+
+    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3)
     ret
 };
 
@@ -226,7 +239,7 @@ BEGIN_GHOST_TABLE(hostFunctionTable)
 END_GHOST_TABLE
 
 BEGIN_GFUNC_TABLE(functionTable)
-    { _gvm_render, 17,  0,  0, 17 },
+    { _gvm_render, 32,  0,  0, 32 },
     { _gvm_trace,  0,   0,  0,  0 },
     { _gvm_sample, 0,   0,  0,  0 }
 END_GFUNC_TABLE
