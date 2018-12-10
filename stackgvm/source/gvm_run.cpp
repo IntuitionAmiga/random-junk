@@ -88,8 +88,8 @@ Result Interpreter::run() {
     DECLARE_PTRS;
 
     float32 *vs1, *vs2, *vd, sf;
-    uint32  *us, *ud;
-
+    uint32  *us, *ud, tag;
+    Result  result;
 
     UPDATE_PTRS;
 

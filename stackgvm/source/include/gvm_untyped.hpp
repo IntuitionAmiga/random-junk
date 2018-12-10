@@ -24,55 +24,54 @@ IS(BRA) {
 
 IS(BCALL) {
     // Call an anonymous local function
-    Result result = enterClosure(RTA(4), J16(1), U8(0));
-    if (result != SUCCESS) {
-        EXIT(result);
-    }
-    UPDATE_PTRS;
-    NEXT;
+    result = enterClosure(RTA(4), J16(1), U8(0));
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto gvm_untyped_handle_exit;
+#else
+    #include "gvm_untyped_handle_exit.hpp"
+#endif
 }
 
 IS(CALL) {
     // Call a named function by ID
-    Result result = enterFunction(RTA(3), SYM(0));
-    if (result != SUCCESS) {
-        EXIT(result);
-    }
-    UPDATE_PTRS;
-    NEXT;
+    result = enterFunction(RTA(3), SYM(0));
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto gvm_untyped_handle_exit;
+#else
+    #include "gvm_untyped_handle_exit.hpp"
+#endif
 }
 
 IS(ICALL_L) {
     // Call a named function by ID stored in local refrence. Must be tagged with TAG_CODE_REFERENCE
-    uint32 functionTag = LOC(0).u;
-    if ((functionTag & TAG_MASK_REFERENCE) != TAG_CODE_REFERENCE) {
+    tag = LOC(0).u;
+    if ((tag & TAG_MASK_REFERENCE) != TAG_CODE_REFERENCE) {
         EXIT(EXEC_ILLEGAL_CALL_ID);
     }
-    Result result = enterFunction(RTA(2), functionTag & 0xFFFF);
-    if (result != SUCCESS) {
-        EXIT(result);
-    }
-    UPDATE_PTRS;
-    NEXT;
+    result = enterFunction(RTA(2), tag & 0xFFFF);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    goto gvm_untyped_handle_exit;
+#else
+    #include "gvm_untyped_handle_exit.hpp"
+#endif
 }
 
 IS(ICALL_I) {
     // Call a named function by ID stored in an indirect reference. Must be tagged with TAG_CODE_REFERENCE
-    uint32 functionTag = IX(0, 1).u;
-    if ((functionTag & TAG_MASK_REFERENCE) != TAG_CODE_REFERENCE) {
+    tag = IX(0, 1).u;
+    if ((tag & TAG_MASK_REFERENCE) != TAG_CODE_REFERENCE) {
         EXIT(EXEC_ILLEGAL_CALL_ID);
     }
-    Result result = enterFunction(RTA(3), functionTag & 0xFFFF);
-    if (result != SUCCESS) {
-        EXIT(result);
-    }
-    UPDATE_PTRS;
-    NEXT;
+    result = enterFunction(RTA(3), tag & 0xFFFF);
+#ifdef _GVM_OPT_ALLOW_GOTO_
+    gvm_untyped_handle_exit:
+#endif
+#include "gvm_untyped_handle_exit.hpp"
 }
 
 IS(HCALL) {
     // Call a host function by ID
-    Result result = invokeHostFunction(SYM(0));
+    result = invokeHostFunction(SYM(0));
     if (result != SUCCESS) {
         EXIT(result);
     }
@@ -82,7 +81,7 @@ IS(HCALL) {
 
 IS(RET) {
     // Return from the current function
-    Result result = exitFunction();
+    result = exitFunction();
     if (result != SUCCESS) {
         std::printf("\nExecuted: %d instructions total.\n", numExecuted);
         EXIT(result);
