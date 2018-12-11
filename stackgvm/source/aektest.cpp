@@ -60,8 +60,13 @@ Scalar globals[] = {
     16,     // 0000000000000010000
 
     // Other Scalars
-    4,       // 512 gi_image_size
+#ifdef _GVM_DEBUGGING_
+    4,       // gi_image_size
+    4,       // gi_max_rays
+#else
+    512,     // gi_image_size
     64,      // gi_max_rays
+#endif
     99.0f,   // gf_dof_scale
     3.5f,    // gf_rgb_scale
     0.002f,  // gf_camera_scale
@@ -115,8 +120,9 @@ typedef enum {
     v_render_eye_offset        = 11,
     i_render_pixel_y_pos       = 14,
     i_render_pixel_x_pos       = 15,
-    m_render_temp_0            = 16,
-    m_render_temp_1            = 17,
+    i_render_ray_count         = 16,
+    m_render_temp_0            = 17,
+    m_render_temp_1            = 18,
 
     m_next_func_param_space    = 32,
     v_pixel_accumulator        = 32, // Crafty, Maybe.
@@ -206,18 +212,27 @@ GFUNC(render) {
 
     vcopy_il    (gv_const_ambient_rgb, v_pixel_accumulator)                                         // 3 [1, 1, 1]
 
-//  printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
+//          for (int32 ray_count = 64; ray_count--;) {
+
+    copy_il     (0, gi_max_rays, i_render_ray_count)                                                // 3 [1, 1, 1]
+
+
+//          } // ray loop
+
+    dbnz_l      (i_render_ray_count, 0)                                                             // 4 [1, 1, 2]
+
+//          printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
 
     hcall       (print_rgb)                                                                         // 3 [1, 2]
 
 //      } // x loop
 
-    dbnn_l      (i_render_pixel_x_pos, -3-3)                                                        // 4 [1, 1, 2]
+    dbnn_l      (i_render_pixel_x_pos, -3-3-4-3)                                                    // 4 [1, 1, 2]
 
 
 //  } // y loop
 
-    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3)                                                    // 4 [1, 1, 2]
+    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3-4-3)                                                // 4 [1, 1, 2]
     ret                                                                                             // 1
 };
 
