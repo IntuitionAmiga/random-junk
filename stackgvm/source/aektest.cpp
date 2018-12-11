@@ -30,10 +30,11 @@ typedef enum {
     gi_image_size          = 30,
     gi_max_rays            = 31,
     gf_dof_scale           = 32,
-    gf_rgb_scale           = 33,
-    gf_camera_scale        = 34,
-    gf_distance_max        = 35,
-    gf_distance_min        = 36,
+    gf_dof_bias            = 33,
+    gf_rgb_scale           = 34,
+    gf_camera_scale        = 35,
+    gf_distance_max        = 36,
+    gf_distance_min        = 37,
 } GlobalEnum;
 
 
@@ -68,6 +69,7 @@ Scalar globals[] = {
     64,      // gi_max_rays
 #endif
     99.0f,   // gf_dof_scale
+    0.5f,    // gf_dof_bias
     3.5f,    // gf_rgb_scale
     0.002f,  // gf_camera_scale
     1e9f,    // gf_distamce_max
@@ -124,6 +126,10 @@ typedef enum {
     m_render_temp_0            = 17,
     m_render_temp_1            = 18,
 
+    v_render_temp_0            = 19,
+    v_render_temp_1            = 22,
+    v_render_delta             = 25,
+
     m_next_func_param_space    = 32,
     v_pixel_accumulator        = 32, // Crafty, Maybe.
 } RenderLocalsEnum;
@@ -178,7 +184,7 @@ GFUNC(render) {
     vfmul_lil   (v_render_camera_right,     gf_camera_scale,        v_render_camera_right)          // 4 [1, 1, 1, 1]
 
 
-//  vec3 eye_offset = vec3_add( // Offset frm eye to coner of focal plane
+//  vec3 eye_offset = vec3_add( // Offset from eye to coner of focal plane
 //      vec3_scale(
 //          vec3_add(
 //              camera_up,
@@ -189,10 +195,12 @@ GFUNC(render) {
 //      camera_forward
 //  )
 
+    // (float) -(image_size >> 1)
     load_sl     (1, m_render_temp_1)                                                                // 3 [1, 1, 1]
     lsl_lll     (i_render_image_size,   m_render_temp_1,            m_render_temp_0)                // 4 [1, 1, 1, 1]
     neg_ll      (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
     itof_ll     (m_render_temp_0,       m_render_temp_0)                                            // 3 [1, 1, 1]
+
     vadd_lll    (v_render_camera_up,    v_render_camera_right,      v_render_eye_offset)            // 4 [1, 1, 1, 1]
     vfmul_lil   (v_render_eye_offset,   m_render_temp_0,            v_render_eye_offset)            // 4 [1, 1, 1, 1]
     vadd_lll    (v_render_eye_offset,   v_render_camera_forward,    v_render_eye_offset)            // 4 [1, 1, 1, 1]
@@ -200,26 +208,45 @@ GFUNC(render) {
 
 
 //  for (int32 y = image_size; y--;) {
-    copy_ll     (i_render_image_size, i_render_pixel_y_pos)                                         // 3 [1, 1, 1]
+    copy_ll     (i_render_image_size,   i_render_pixel_y_pos)                                       // 3 [1, 1, 1]
 
 
 //      for (int32 x = image_size; x--;) {
 
-    copy_ll     (i_render_image_size, i_render_pixel_x_pos)                                         // 3 [1, 1, 1]
+    copy_ll     (i_render_image_size,   i_render_pixel_x_pos)                                       // 3 [1, 1, 1]
 
 
 //          vec3 pixel(13.0, 13.0, 13.0);
 
-    vcopy_il    (gv_const_ambient_rgb, v_pixel_accumulator)                                         // 3 [1, 1, 1]
+    vcopy_il    (gv_const_ambient_rgb,  v_pixel_accumulator)                                        // 3 [1, 1, 1]
 
 //          for (int32 ray_count = 64; ray_count--;) {
 
     copy_il     (0, gi_max_rays, i_render_ray_count)                                                // 3 [1, 1, 1]
 
+//          // Random delta to be added for depth of field effects
+//              vec3 delta = vec3_add(
+//                  vec3_scale(camera_up,    (frand() - 0.5) * 99.0),
+//                  vec3_scale(camera_right, (frand() - 0.5) * 99.0)
+//              );
+
+    // vec3_scale(camera_up,    (frand() - 0.5) * 99.0)                                             // 14
+    frnd_l      (m_render_temp_0)                                                                   // 2 [1, 1]
+    fsub_lil    (m_render_temp_0,       gf_dof_bias,                m_render_temp_0)                // 4 [1, 1, 1, 1]
+    fmul_ill    (gf_dof_scale,          m_render_temp_0,            m_render_temp_0)                // 4 [1, 1, 1, 1]
+    vfmul_lll   (v_render_camera_up,    m_render_temp_0,            v_render_temp_0)                // 4 [1, 1, 1, 1]
+
+    // vec3_scale(camera_right, (frand() - 0.5) * 99.0)                                             // 14
+    frnd_l      (m_render_temp_0)                                                                   // 2 [1, 1]
+    fsub_lil    (m_render_temp_0,       gf_dof_bias,                m_render_temp_0)                // 4 [1, 1, 1, 1]
+    fmul_ill    (gf_dof_scale,          m_render_temp_0,            m_render_temp_0)                // 4 [1, 1, 1, 1]
+    vfmul_lll   (v_render_camera_right, m_render_temp_0,            v_render_temp_1)                // 4 [1, 1, 1, 1]
+
+    vadd_lll    (v_render_temp_0,       v_render_temp_1,            v_render_delta)                 // 4 [1, 1, 1, 1]
 
 //          } // ray loop
 
-    dbnz_l      (i_render_ray_count, 0)                                                             // 4 [1, 1, 2]
+    dbnz_l      (i_render_ray_count, -14-14-4)                                                        // 4 [1, 1, 2]
 
 //          printf("%c%c%c", (int32)pixel.x, (int32)pixel.y, (int32)pixel.z);
 
@@ -227,12 +254,12 @@ GFUNC(render) {
 
 //      } // x loop
 
-    dbnn_l      (i_render_pixel_x_pos, -3-3-4-3)                                                    // 4 [1, 1, 2]
+    dbnn_l      (i_render_pixel_x_pos, -3-3-4-3-14-14-4)                                            // 4 [1, 1, 2]
 
 
 //  } // y loop
 
-    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3-4-3)                                                // 4 [1, 1, 2]
+    dbnn_l      (i_render_pixel_y_pos, -4-3-3-3-4-3-14-14-4)                                        // 4 [1, 1, 2]
     ret                                                                                             // 1
 };
 

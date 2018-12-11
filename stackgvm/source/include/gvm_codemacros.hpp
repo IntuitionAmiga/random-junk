@@ -199,6 +199,9 @@
 //
 // // Floating point specific instructions ////////////////////////////////////////////////////////////////////
 //
+
+#define frnd_l(l)            _OP(FRND_L),        _D8(l),
+
 // // Two operand branch if greater or equal
 #define fbge_ll(l1,l2,j)     _OP(FBGE_LL),       _D8(l1), _D8(l2),  _D16(j),
 #define fbge_il(i,l,j)       _OP(FBGE_IL),       _D8(i),  _D8(l),   _D16(j),

@@ -7,13 +7,13 @@ GVM::Interpreter::validateTables()
 	Host function table has 2 entries
 	Global data table has 1 entries
 GVM::Interpreter::init()
-	Call Stack          [0x8b82018 - 0x8b82648]
-	Frame Stack         [0x8b82868 - 0x8b8d124]
+	Call Stack          [0x97e1018 - 0x97e1648]
+	Frame Stack         [0x97e1868 - 0x97ec124]
 	Function Table      [0x8055080] : 4 entries
 	Host Function Table [0x80550a8] : 3 entries
 	Global Data Table   [0x80550b8] : 2 entries
 GVM::Interpreter::enterFunction(1) {
-	Address: 0x8b82868
+	Address: 0x97e1868
 	Size: 32
 	Return Address: (nil)
 	PC Entry: 0x80550e0
@@ -22,96 +22,752 @@ GVM::Interpreter::enterFunction(1) {
 	COPY_I0L    30   0  34
 	COPY_LL      0  32   7
 	HCALL        0   1 200
-GVM::Interpreter::invokeHostFunction() id: 1, stack address 0x8b828e8
+GVM::Interpreter::invokeHostFunction() id: 1, stack address 0x97e18e8
 	VNORM_IL     0   2 223
 	VCROSS_ILL   6   2   8
 	VNORM_LL     8   8 233
-	VFMUL_LIL    8  34   8
+	VFMUL_LIL    8  35   8
 	VCROSS_LLL   2   8   5
 	VNORM_LL     5   5 233
-	VFMUL_LIL    5  34   5
-	LOAD_SL      1  17 112
-	LSL_LLL      0  17  16
-	NEG_LL      16  16  40
-	ITOF_LL     16  16 207
+	VFMUL_LIL    5  35   5
+	LOAD_SL      1  18 112
+	LSL_LLL      0  18  17
+	NEG_LL      17  17  40
+	ITOF_LL     17  17 207
 	VADD_LLL     8   5  11
-	VFMUL_LIL   11  16  11
+	VFMUL_LIL   11  17  11
 	VADD_LLL    11   2  11
-	VSUB_LLL     0  17   0
+	VSUB_LLL     0  18   0
 	COPY_LL      0  14  34
 	COPY_LL      0  15 192
-	VCOPY_IL    18  32   7
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	DBNN_L      14 255 243
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	DBNN_L      14 255 204
 	COPY_LL      0  15 192
-	VCOPY_IL    18  32   7
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	DBNN_L      14 255 243
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	DBNN_L      14 255 204
 	COPY_LL      0  15 192
-	VCOPY_IL    18  32   7
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	DBNN_L      14 255 243
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	DBNN_L      14 255 204
 	COPY_LL      0  15 192
-	VCOPY_IL    18  32   7
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	VCOPY_IL    18  32   7
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	VCOPY_IL    18  32  35
+	COPY_I0L    31  16 128
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    8  17  19
+	FRND_L      17 155  17
+	FSUB_LIL    17  33  17
+	FMUL_ILL    32  17  17
+	VFMUL_LLL    5  17  22
+	VADD_LLL    19  22  25
+	DBNZ_L      16 255 224
 	HCALL        0   2  51
-GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x8b828e8
-	DBNN_L      15 255 250
-	DBNN_L      14 255 243
-	RET          0   0   0
+GVM::Interpreter::invokeHostFunction() id: 2, stack address 0x97e18e8
+	DBNN_L      15 255 211
+	DBNN_L      14 255 204
+	RET          0   0 192
 GVM::Interpreter::exitFunction(1) {
 	Return to function:0
 	PC Resume: (nil)
@@ -136,4 +792,4 @@ OUTPUT PPM PIXEL {13, 13, 13}
 OUTPUT PPM PIXEL {13, 13, 13}
 OUTPUT PPM PIXEL {13, 13, 13}
 
-Executed: 76 instructions total.
+Executed: 732 instructions total.
