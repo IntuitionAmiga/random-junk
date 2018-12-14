@@ -20,6 +20,7 @@
     #define _GVM_HOST_AMIGAOS4_PPC     3
     #define _GVM_HOST_MORPHOS_PPC      4
     #define _GVM_HOST_LINUX_INTEL_32   5
+    #define _GVM_HOST_HAIKU_X64	       6
 
     // Target sanity checks
     #if (_GVM_HOST_OS == _GVM_HOST_AMIGAOS3_68K)
@@ -61,6 +62,8 @@
     //    #include "platforms/machine_amiga_os4.hpp"
     //#elif (_GVM_HOST_OS == _GVM_HOST_MORPHOS_PPC)
     //    #include "platforms/machine_amiga_mos.hpp"
+    #elif (_GVM_HOST_OS == _GVM_HOST_HAIKU_X64)
+        #include "platforms/machine_haiku_x64.hpp"
     #else
         #error Unrecognised Machine
     #endif
